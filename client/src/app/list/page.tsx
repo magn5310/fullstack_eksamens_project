@@ -1,9 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-//import { buttonVariants } from "@/components/ui/button"
-
 import Link from "next/link";
 import { Button } from '@/components/ui/button';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -34,21 +31,14 @@ const list = () => {
             <CardContent>
               <Image src="/images/kebab.jpg" alt="Torvets" width={300} height={200} />
             </CardContent>
-            <CardContent className='flex justify-center gap-2'>
-            <FontAwesomeIcon icon={faStar} className="text-yellow-200 w-10"/>
-            <p className="text-2xl font-semibold">5/5</p>
+            <CardContent className="flex justify-center gap-2">
+              <FontAwesomeIcon icon={faStar} className="text-yellow-200 w-10" />
+              <p className="text-2xl font-semibold">5/5</p>
             </CardContent>
             <CardFooter>
-<<<<<<< HEAD
-              <Button className="w-full">
-                <Link href={`/products/torvets`}>View</Link>
-              </Button>
-              
-=======
-              <Link className="w-full" href="/products">
-                <Button className="w-full">See more</Button>
+              <Link className='w-full' href={`/products/torvets`}>
+                <Button className="w-full">View</Button>
               </Link>
->>>>>>> magnus-branch
             </CardFooter>
           </Card>
         ))}
