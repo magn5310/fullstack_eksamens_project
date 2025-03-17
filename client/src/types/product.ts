@@ -5,4 +5,5 @@ export interface Product {
     price:number;
     slug: string;
     image: string;
+    rating: number;
 }
