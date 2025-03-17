@@ -1,7 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 
@@ -30,7 +29,7 @@ const list = () => {
               <Image src="/images/kebab.jpg" alt="Torvets" width={300} height={200} />
             </CardContent>
             <CardFooter>
-              <Button className="w-full">See more</Button>
+              <Link href="/products" className="w-full bg-black text-white text-center rounded text-2xl font-semibold">See more</Link>
             </CardFooter>
           </Card>
         ))}
