@@ -1,16 +1,16 @@
 import Image from 'next/image';
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
-import type { Product } from '@/types/product';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { getProductBySlug } from '@/lib/api';
-import { Textarea } from "@/components/ui/textarea"
-import { Button } from '@/components/ui/button';
+//import { use } from 'react'; // For non-async function approach
 
-interface ProductPageProps {
-  params: { slug: string };
-}
-
-export default async function ProductPage({ params }: ProductPageProps) {
-  const product = await getProductBySlug(params.slug);
+// Option 1: Using async/await
+export default async function ProductPage({ 
+  params 
+}: { 
+  params: Promise<{ slug: string }> 
+}) {
+  const { slug } = await params;
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     return <div>Product not found</div>;
@@ -34,18 +34,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
             />
           )}
           <p className="text-gray-700 text-lg">{product.description}</p>
-          <div className="mt-4 flex align-center justify-evenly">
+          <div className="mt-4">
             <span className="text-lg font-semibold">Price: {product.price} DKK</span>
-            <span className="text-lg font-semibold">Rating: {product.rating}/5  </span>
           </div>
         </CardContent>
-        <CardFooter className='flex flex-col justify-center items-center gap-5'>
-          <Textarea placeholder="Leave a comment" />
-          <Button className="w-2xs ">Submit</Button>
-          
-
-        </CardFooter>
-        
       </Card>
     </div>
   );
