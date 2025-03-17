@@ -29,14 +29,14 @@ const list = () => {
               <CardTitle className="text-center">Torvets</CardTitle>
             </CardHeader>
             <CardContent>
-              <Image src="/images/kebab.jpg" alt="Torvets" width={300} height={200} />
+              <Image src="/images/kebab.jpg" className="w-full h-auto" alt="Torvets" width={100} height={200} />
             </CardContent>
             <CardContent className="flex justify-center gap-2">
               <FontAwesomeIcon icon={faStar} className="text-yellow-200 w-10" />
               <p className="text-2xl font-semibold">5/5</p>
             </CardContent>
             <CardFooter>
-              <Link className='w-full' href={`/products/torvets`}>
+              <Link className="w-full" href={`/products/torvets`}>
                 <Button className="w-full">View</Button>
               </Link>
             </CardFooter>
