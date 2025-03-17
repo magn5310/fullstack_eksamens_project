@@ -22,9 +22,9 @@ const list = () => {
           </li>
         </ul>
       </nav>
-      <div className="grid grid-cols-12 gap-4 p-4">
+      <div className="grid grid-cols-12  gap-4 p-4">
         {Array.from({ length: 20 }).map((_, index) => (
-          <Card className="col-span-2" key={index}>
+          <Card className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3" key={index}>
             <CardHeader>
               <CardTitle className="text-center">Torvets</CardTitle>
             </CardHeader>
