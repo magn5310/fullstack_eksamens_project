@@ -2,6 +2,9 @@ import React from 'react'
 import Image from 'next/image'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
+import { Button } from '@/components/ui/button';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar } from "@fortawesome/free-regular-svg-icons";
 
 
 
@@ -28,8 +31,14 @@ const list = () => {
             <CardContent>
               <Image src="/images/kebab.jpg" alt="Torvets" width={300} height={200} />
             </CardContent>
+            <CardContent className='flex justify-center gap-2'>
+            <FontAwesomeIcon icon={faStar} className="text-yellow-200 w-10"/>
+            <p className="text-2xl font-semibold">5/5</p>
+            </CardContent>
             <CardFooter>
-              <Link href="/products" className="w-full bg-black text-white text-center rounded text-2xl font-semibold">See more</Link>
+              <Link className="w-full" href="/products">
+                <Button className="w-full">See more</Button>
+              </Link>
             </CardFooter>
           </Card>
         ))}
