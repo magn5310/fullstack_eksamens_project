@@ -4,12 +4,14 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: kebab_reviews
-      MYSQL_USER: kebabuser
+      MYSQL_USER: kebabusers
       MYSQL_PASSWORD: kebabpass
+      MYSQL_ROOT_HOST: "%"
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    command: --bind-address=0.0.0.0 --default-authentication-plugin=mysql_native_password
 
 volumes:
   mysql_data:
