@@ -14,29 +14,68 @@ datasource db {
 }
 
 
-model Restaurant {
-  id          Int      @id @default(autoincrement())
-  name        String
-  description String?  @db.Text
-  address     String?
-  phone       String?
-  website     String?
-  slug        String   @unique
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-  reviews     Review[]
+model User {  
+  id        String   @id @default(uuid())
+  email     String   @map("user_email") @unique
+  firstName String   @map("user_firstname") 
+  lastName  String   @map("user_lastname")
+  password  String   @map("user_password")
+  role      Role     @relation(fields: [roleId], references: [id])
+  roleId    String   @map("user_roleId")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  reviews   Review[]
+  comments  Comment[]
 
+  @@map("users")  
+}
+
+model Role {
+  id     String      @id @default(uuid())
+  name   String   @map("role_name") @unique
+  users  User[]
+  @@map("roles")
+}
+
+model Restaurant {
+  id        String   @id @default(uuid())
+  name      String   @map("restaurant_name")
+  address   String   @map("restaurant_address")
+  slug      String   @map("restaurant_slug") @unique
+  description String   @map("restaurant_description")
+  openHours   String   @map("restaurant_open_hours")
+  phone     String   @map("restaurant_phone")
+  website   String   @map("restaurant_website")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  reviews   Review[]
   @@map("restaurants")
 }
 
 model Review {
-  id           Int        @id @default(autoincrement())
-  restaurantId Int        @map("restaurant_id")
-  authorName   String     @map("author_name")
+  id           String     @id @default(uuid())
+  restaurantId String     @map("restaurant_id")
+  authorId     String     @map("author_id")
   rating       Int
-  comment      String?    @db.Text
+  title        String?    // Måske en titel på reviewet
   createdAt    DateTime   @default(now()) @map("created_at")
-  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  author       User       @relation(fields: [authorId], references: [id])
+  comments     Comment[] 
 
   @@map("reviews")
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  reviewId  String   @map("review_id")
+  authorId  String   @map("author_id")
+  content   String   @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+  
+  review    Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  author    User     @relation(fields: [authorId], references: [id])
+
+  @@map("comments")
 }
