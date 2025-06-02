@@ -1,0 +1,42 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+
+model Restaurant {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?  @db.Text
+  address     String?
+  phone       String?
+  website     String?
+  slug        String   @unique
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  reviews     Review[]
+
+  @@map("restaurants")
+}
+
+model Review {
+  id           Int        @id @default(autoincrement())
+  restaurantId Int        @map("restaurant_id")
+  authorName   String     @map("author_name")
+  rating       Int
+  comment      String?    @db.Text
+  createdAt    DateTime   @default(now()) @map("created_at")
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+
+  @@map("reviews")
+}
