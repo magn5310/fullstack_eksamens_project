@@ -1,113 +1,96 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { useEffect, useState } from "react";
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import Link from "next/link";
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-regular-svg-icons";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+import Image from "next/image";
+
+interface Review {
+  id: number;
+  authorName: string;
+  comment?: string;
+  createdAt: string;
+  tasteScore: number;
+  serviceScore: number;
+  priceScore: number;
+}
 
 interface Restaurant {
   id: number;
   name: string;
-  cuisine: string;
-  lat: number;
-  lon: number;
-  rating?: number; // optional rating
+  description: string;
+  address?: string;
+  phone?: string;
+  website?: string;
+  slug: string;
+  reviews: Review[];
+  
 }
-
-const ITEMS_PER_PAGE = 100;
 
 export default function List() {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchRestaurants = async () => {
-      const res = await fetch('/api/restaurants');
+      const res = await fetch("/api/restaurants");
       const data = await res.json();
-
-      // Example: Assign random ratings (1–5) if none available
-      const enrichedData = data.map((r: any) => ({
-        ...r,
-        rating: r.rating || Math.floor(Math.random() * 5) + 1, // random fallback
-      }));
-
-      setRestaurants(enrichedData);
+      setRestaurants(data);
     };
 
     fetchRestaurants();
   }, []);
 
-  const totalPages = Math.ceil(restaurants.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const paginatedRestaurants = restaurants.slice(startIndex, endIndex);
-
-  const goToPage = (page: number) => {
-    if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
-    }
-  };
-
   return (
-    <>
-      <h1 className="font-bold text-2xl mb-4">List of Restaurants</h1>
-      <nav className="mb-4">
-        <ul className="flex gap-4">
-          <li>
-            <Link href="/" className="text-primary hover:underline">Home</Link>
-          </li>
-          <li>
-            <Link href="/list" className="text-primary hover:underline">See all</Link>
-          </li>
-        </ul>
-      </nav>
+    <div>
+      <h1 className="text-2xl font-bold mb-4">Restaurants</h1>
 
-      <div className="grid grid-cols-12 gap-4 p-4">
-        {paginatedRestaurants.map((r) => (
-          <Card key={r.id} className="col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3 rounded-2xl shadow hover:shadow-lg transition-shadow">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {restaurants.map((restaurant) => (
+          <Card key={restaurant.id} className="rounded-2xl shadow hover:shadow-lg transition-shadow">
             <CardHeader>
-              <CardTitle className="text-center">{r.name}</CardTitle>
+              <CardTitle className="text-center">{restaurant.name}</CardTitle>
+              <Image className="align-center mx-auto rounded-lg mb-2" 
+                src={`/images/kebab.jpg`} // Assuming images are named by slug
+                alt={restaurant.name}
+                width={250}
+                height={250}
+                ></Image>
             </CardHeader>
 
             <CardContent>
-              <Image
-                src="/images/kebab.jpg"
-                className="w-full h-auto object-cover rounded"
-                alt={r.name}
-                width={100}
-                height={200}
-              />
+              <p className="text-sm text-muted-foreground">{restaurant.description}</p>
+              {restaurant.address && (
+                <p className="text-xs mt-2 text-foreground">
+                  📍 {restaurant.address}
+                </p>
+              )}
             </CardContent>
 
-            <CardContent className="flex justify-center gap-2 items-center">
+            <CardContent className="flex justify-center gap-2 items-center mt-2">
               <FontAwesomeIcon icon={faStar} className="text-yellow-400 w-4 h-4" />
-              <p className="text-sm font-semibold">{r.rating}/5</p>
+              
+              <p className="text-sm font-semibold">
+                {calculateAverageRating(restaurant.reviews).toFixed(1)} / 5
+              </p>
             </CardContent>
 
             <CardFooter>
-              <Link href={`/products/${r.id}`} className="w-full">
+              <Link href={`/products/${restaurant.slug}`} className="w-full">
                 <Button className="w-full">View</Button>
               </Link>
             </CardFooter>
           </Card>
         ))}
       </div>
-
-      {/* Pagination Controls */}
-      <div className="flex justify-center items-center gap-4 mt-6">
-        <Button variant="outline" size="sm" onClick={() => goToPage(currentPage - 1)} disabled={currentPage === 1}>
-          Previous
-        </Button>
-        <p className="text-sm">
-          Page {currentPage} of {totalPages}
-        </p>
-        <Button variant="outline" size="sm" onClick={() => goToPage(currentPage + 1)} disabled={currentPage === totalPages}>
-          Next
-        </Button>
-      </div>
-    </>
+    </div>
   );
+}
+
+function calculateAverageRating(reviews: Review[]): number {
+  if (!reviews.length) return 0;
+  const sum = reviews.reduce((acc, review) => acc + review.tasteScore + review.serviceScore + review.priceScore, 0);
+  return sum / (reviews.length * 3); // Assuming each review has taste, service, and price scores
 }
