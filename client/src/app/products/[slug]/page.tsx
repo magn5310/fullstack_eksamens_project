@@ -17,6 +17,9 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
     include: {
       reviews: {
         orderBy: { createdAt: 'desc' },
+        include:{
+          author: true,
+        },
       },
     },
   });
@@ -80,7 +83,15 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
           )}
           </div>
 
-          <ReviewList reviews={restaurant.reviews} />
+          <ReviewList reviews={restaurant.reviews.map(r => ({
+            ...r,
+            createdAt: r.createdAt.toISOString(),
+            author: {
+              ...r.author,
+              createdAt: r.author.createdAt.toISOString(),
+              updatedAt: r.author.updatedAt.toISOString(),
+            }
+          }))} />
 
           <div className="flex flex-row gap-2 mt-4 align-center justify-center">
           
