@@ -25,7 +25,8 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   reviews   Review[]
-  comments  Comment[]
+  restaurants Restaurant[]
+  
 
   @@map("users")  
 }
@@ -48,6 +49,8 @@ model Restaurant {
   website   String   @map("restaurant_website")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+  ownerId   String   @map("owner_id")
+  owner     User     @relation(fields: [ownerId], references: [id])
   reviews   Review[]
   @@map("restaurants")
 }
@@ -56,26 +59,17 @@ model Review {
   id           String     @id @default(uuid())
   restaurantId String     @map("restaurant_id")
   authorId     String     @map("author_id")
-  rating       Int
-  title        String?    // Måske en titel på reviewet
+  tasteScore   Int        @map("taste_score")
+  serviceScore Int        @map("service_score")
+  priceScore   Int        @map("price_score")
+  title        String
+  
   createdAt    DateTime   @default(now()) @map("created_at")
   
   restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
   author       User       @relation(fields: [authorId], references: [id])
-  comments     Comment[] 
+  
 
   @@map("reviews")
 }
 
-model Comment {
-  id        String   @id @default(uuid())
-  reviewId  String   @map("review_id")
-  authorId  String   @map("author_id")
-  content   String   @db.Text
-  createdAt DateTime @default(now()) @map("created_at")
-  
-  review    Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
-  author    User     @relation(fields: [authorId], references: [id])
-
-  @@map("comments")
-}
