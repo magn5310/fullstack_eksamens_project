@@ -1,14 +1,11 @@
 import Image from "next/image";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Testamonials from "@/components/Testamonials";
-import NavBar from "@/components/NavBar";
 import Link from "next/link";
 
 export default function Home() {
   return (
-    <div>
-      <NavBar />
+    <div data-homepage>
 
       <main className="bg-[#fffffe]">
         <div className="w-full h-[100vh] flex items-center justify-center relative bg-black before:absolute before:inset-0 before:bg-black/30 before:z-10">

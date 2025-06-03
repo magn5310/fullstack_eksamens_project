@@ -12,7 +12,7 @@ export async function GET() {
       },
     });
     return NextResponse.json(restaurants);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: "Failed to fetch restaurants" }, { status: 500 });
   }
 }

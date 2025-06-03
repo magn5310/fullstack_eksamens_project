@@ -7,7 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 interface RestaurantPageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export default async function RestaurantPage({ params }: RestaurantPageProps) {
