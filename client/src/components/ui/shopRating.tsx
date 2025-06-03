@@ -1,21 +1,21 @@
 interface shopRating{
     rating?: number;
-    openingHours?: string;
+    openHours?: string;
     description?: string;
     address ?: string;
-    phone?: string;
+    phone?: string; 
 }
 
 
-export default function ShopRating({ rating, openingHours, address, phone }: shopRating) {
+export default function ShopRating({ rating = 0, openHours, address, phone }: shopRating) {
     return (
         <div className="text-center">
             <span className="text-yellow-500">
                 ⭐ {(rating ?? 0).toFixed(1)} / 5
             </span>
-            {openingHours && (
+            {openHours && (
                 <div className="text-sm text-muted-foreground">
-                    {openingHours}
+                    {openHours}
                 </div>
             )}
             {address && (

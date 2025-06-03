@@ -11,9 +11,11 @@ import Image from "next/image";
 interface Review {
   id: number;
   authorName: string;
-  rating: number;
   comment?: string;
   createdAt: string;
+  tasteScore: number;
+  serviceScore: number;
+  priceScore: number;
 }
 
 interface Restaurant {
@@ -25,6 +27,7 @@ interface Restaurant {
   website?: string;
   slug: string;
   reviews: Review[];
+  
 }
 
 export default function List() {
@@ -88,6 +91,6 @@ export default function List() {
 
 function calculateAverageRating(reviews: Review[]): number {
   if (!reviews.length) return 0;
-  const sum = reviews.reduce((acc, review) => acc + review.rating, 0);
-  return sum / reviews.length;
+  const sum = reviews.reduce((acc, review) => acc + review.tasteScore + review.serviceScore + review.priceScore, 0);
+  return sum / (reviews.length * 3); // Assuming each review has taste, service, and price scores
 }

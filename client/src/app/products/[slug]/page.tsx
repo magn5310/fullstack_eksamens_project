@@ -1,6 +1,7 @@
 import ReviewList from '@/components/Reviews';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import ShopRating from '@/components/ui/shopRating';
 import { prisma } from '@/lib/prisma'; // Prisma client
 import Image from 'next/image';
 import Link from 'next/link';
@@ -42,15 +43,14 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
         </CardHeader>
 
         <CardContent>
-        <span id="ratings">
-          <span className="text-yellow-500">
-            ⭐ {restaurant.reviews.reduce((acc, review) => acc + review.rating, 0) / restaurant.reviews.length || 0} / 5
-          </span>
-          <div className="openingHours">
-            <span className="text-sm text-muted-foreground">
-              {restaurant.openingHours || 'Opening hours not available'}
-            </span>
-          </div>
+        <ShopRating 
+          rating={avarageRating}
+          openHours={restaurant.openHours}
+          address={restaurant.address}
+          phone={restaurant.phone}
+        />
+          <span className="text-sm text-muted-foreground mb-2">
+            {restaurant.website ? 'Website:' : 'No website available'}
 
           </span>
           {restaurant.website && (
