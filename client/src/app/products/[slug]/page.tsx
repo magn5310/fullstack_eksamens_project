@@ -25,6 +25,13 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
     return <div>Restaurant not found</div>;
   }
 
+  const averageRating =
+  restaurant.reviews.reduce((acc, review) => {
+    const reviewAverage =
+      (review.tasteScore + review.serviceScore + review.priceScore) / 3;
+    return acc + reviewAverage;
+  }, 0) / restaurant.reviews.length || 0;
+
   return (
     <div className="max-w-3xl mx-auto border-none">
       <Card className="border-none shadow-none">
@@ -44,7 +51,7 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
 
         <CardContent>
         <ShopRating 
-          rating={avarageRating}
+          rating={averageRating}
           openHours={restaurant.openHours}
           address={restaurant.address}
           phone={restaurant.phone}
