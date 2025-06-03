@@ -7,7 +7,7 @@ interface NavBarProps {
   className?: string;
 }
 
-function NavBar({className}: NavBarProps) {
+function NavBar({}: NavBarProps) {
   const [login, setLogin] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
