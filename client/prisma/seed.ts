@@ -10,14 +10,14 @@ async function main() {
   // Real kebab places in Nørrebro
   const kebabShops = [
     "Torvets Kebab",
-    "Nørrebro Shawarma",
+    "Noerrebro Shawarma",
     "Shawarma Grill House",
     "Kebabistan",
     "Kebab Spot",
     "Al Diwan",
     "Liban Kebab",
     "Den Fede Kebab",
-    "Nørrebro Kebab House",
+    "Noerrebro Kebab House",
     "Café Kebabish",
     "Ali Baba Kebab",
     "King of Kebab",
@@ -68,7 +68,7 @@ async function main() {
         rating: 5,
         comment: "Elsker deres kebab, kommer helt sikkert igen!",
       },
-    ].slice(0, Math.floor(Math.random() * 3) + 1); // 1-3 reviews
+    ].slice(0, Math.floor(Math.random() * 10) + 1); // 1-3 reviews
 
     await prisma.review.createMany({
       data: reviewsData,

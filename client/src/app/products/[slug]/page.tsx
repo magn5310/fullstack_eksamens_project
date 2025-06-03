@@ -1,15 +1,18 @@
+import ReviewList from '@/components/Reviews';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { prisma } from '@/lib/prisma'; // Prisma client
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface RestaurantPageProps {
   params: { slug: string };
 }
 
 export default async function RestaurantPage({ params }: RestaurantPageProps) {
+  const { slug } = await params;
   const restaurant = await prisma.restaurant.findUnique({
-    where: { slug: params.slug },
+    where: { slug},
     include: {
       reviews: {
         orderBy: { createdAt: 'desc' },
@@ -48,17 +51,11 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
               {restaurant.openingHours || 'Opening hours not available'}
             </span>
           </div>
-          <div className="website">
-            <span className="text-sm text-muted-foreground">
-              {restaurant.website ? `Website: ${restaurant.website}` : 'No website available'}
-            </span>
-          </div>
 
           </span>
           {restaurant.website && (
             <a
               href={restaurant.website}
-              target="_blank"
               rel="noopener noreferrer"
               className="text-blue-500 hover:underline block mb-2"
             >
@@ -67,30 +64,22 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
           )}
 
           <p className="text-gray-700 text-lg mb-4">{restaurant.description}</p>
+          <div className="flex flex-row items-start mb-4 place-content-evenly">
           {restaurant.address && (
             <p className="text-sm text-muted-foreground mb-2">📍 {restaurant.address}</p>
           )}
           {restaurant.phone && (
             <p className="text-sm text-muted-foreground mb-4">📞 {restaurant.phone}</p>
           )}
+          </div>
 
-          <h3 className="text-xl font-semibold mb-2">Reviews</h3>
-          {restaurant.reviews.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No reviews yet.</p>
-          ) : (
-            <ul className="space-y-2">
-              {restaurant.reviews.map((review) => (
-                <li key={review.id} className="border rounded p-2">
-                  <p className="text-sm font-semibold">{review.authorName}</p>
-                  <p className="text-sm text-yellow-500">⭐ {review.rating} / 5</p>
-                  <p className="text-sm">{review.comment}</p>
-                </li>
-              ))}
-            </ul>
-          )}
+          <ReviewList reviews={restaurant.reviews} />
 
           <div className="flex flex-row gap-2 mt-4 align-center justify-center">
-          <Button variant="secondary" className=" my-4">Visit website</Button>  
+          
+            <Button asChild variant="secondary" className="s my-4">
+            <Link href={restaurant.website || "#"}>Visit Website</Link></Button>
+            
           <Button  className="s my-4">Write a review!</Button> 
           </div>
            
