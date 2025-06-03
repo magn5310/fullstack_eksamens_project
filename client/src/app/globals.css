@@ -7,6 +7,8 @@
 @theme {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --lilla: #6246ea;
+  --color-lilla: var(--lilla);
 }
 
 :root {
@@ -81,6 +83,7 @@
 }
 
 @theme inline {
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);

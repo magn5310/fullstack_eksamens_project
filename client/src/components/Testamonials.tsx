@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 function Testamonials() {
   return (
-    <Carousel className="w-full max-w-sm m-auto">
+    <Carousel className="w-full m-auto">
       <CarouselContent>
         <CarouselItem>
           <Card>
