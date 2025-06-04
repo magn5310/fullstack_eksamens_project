@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@/contexts/AuthContext";
 import { loginSchema, LoginFormData } from "@/lib/validations/auth";
 import { FormField } from "@/components/ui/FormField";
+import { toast } from "sonner";
 
 export function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -29,9 +30,11 @@ export function LoginForm() {
       await login(data.email, data.password);
 
       console.log("Login successful!");
+      toast.success("Login successful!");
       // Her kan du redirect eller opdatere UI
     } catch (error) {
       setServerError(error instanceof Error ? error.message : "Login fejlede");
+      toast.error("Login failed: " + (error instanceof Error ? error.message : "Unknown error"));
     } finally {
       setIsLoading(false);
     }

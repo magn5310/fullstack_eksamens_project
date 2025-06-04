@@ -4,6 +4,8 @@ import "./globals.css";
 import "@/app/globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
 import NavBar from "@/components/NavBar";
+import Footer from "@/components/ui/footer";
+import { Toaster } from "sonner";
 
 
 
@@ -29,11 +31,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col flex-1 min-h-screen`}>
       <NavBar />
         <AuthProvider>
-          <div className="pt-25 [&>*:first-child[data-homepage]]:!-mt-25">{children}</div>
+          <div className="flex-1 pt-25 [&>*:first-child[data-homepage]]:!-mt-25">{children}</div>
+          <Toaster position="top-center" richColors />
         </AuthProvider>
+        <Footer></Footer>
         
         
       </body>
