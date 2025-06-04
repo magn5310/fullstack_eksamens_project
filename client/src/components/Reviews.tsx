@@ -4,19 +4,26 @@ import { formatDistanceToNow } from 'date-fns';
 import {da} from 'date-fns/locale'; // Importing Danish locale for date formatting
 
 interface Review {
+  id: string;
+  restaurantId: string;
+  authorId: string;
+  author: {
     id: string;
-    author: {
-        firstName: string;
-        lastName: string;
-        email: string;
-    };
-    comment?: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    roleId: string;
     createdAt: string;
-    tasteScore: number;
-    serviceScore: number;
-    priceScore: number;
-    reviews?: Review[];
-
+    updatedAt: string;
+  };
+  comment: string | null;
+  createdAt: string;
+  // Fjern updatedAt - det findes ikke i dit Review model
+  tasteScore: number;
+  serviceScore: number;
+  priceScore: number;
+  title: string;
 }
 
 export default function ReviewList ({ reviews }: { reviews: Review[] }) {
