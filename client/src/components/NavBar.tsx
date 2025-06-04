@@ -38,7 +38,7 @@ function NavBar({}: NavBarProps) {
               </svg>
             </Link>
           ) : (
-            <Link href="/login" className="text-[#fffffe]">
+            <Link href="/login" className="text-[#fffffe] font-bold">
               Login
             </Link>
           )}
