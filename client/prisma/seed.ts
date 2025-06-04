@@ -331,6 +331,7 @@ async function main() {
         serviceScore: 3,
         priceScore: 4,
         title: "Rigtig god kebab",
+        comment: "Kødet var mørt, og saucen var perfekt krydret. Dog ventede vi lidt længe på maden.",
       },
     })
   );
@@ -344,6 +345,7 @@ async function main() {
         serviceScore: 5,
         priceScore: 5,
         title: "Føler mig hjemme",
+        comment: "Elsker at komme her! Maden smager som i hjemlandet, og personalet er altid venlige.",
       },
     })
   );
@@ -357,6 +359,7 @@ async function main() {
         serviceScore: 3,
         priceScore: 3,
         title: "Okay mad",
+        comment: "Maden var gennemsnitlig. Ikke noget særlig"
       },
     })
   );
@@ -370,6 +373,7 @@ async function main() {
         serviceScore: 4,
         priceScore: 4,
         title: "Autentisk syrisk mad",
+        comment: "Elsker deres falafel og hummus! Virkelig autentisk smag. Mah drillah!",
       },
     })
   );
@@ -383,6 +387,7 @@ async function main() {
         serviceScore: 5,
         priceScore: 5,
         title: "Perfekt frokoststed",
+        comment: "Hurtig service og lækker mad. Deres shawarma er fantastisk!",
       },
     })
   );
@@ -396,6 +401,7 @@ async function main() {
         serviceScore: 3,
         priceScore: 4,
         title: "Store portioner, okay smag",
+        comment: "Maden var ikke så god som forventet. Portionerne var dog store, så det var fint til prisen.",
       },
     })
   );
@@ -409,6 +415,7 @@ async function main() {
         serviceScore: 4,
         priceScore: 4,
         title: "Bedste shawarma i København!",
+        comment: "Elsker deres krydderier og den hjemmelavede sauce. Atmosfæren er også rigtig hyggelig.",
       },
     })
   );
@@ -422,6 +429,7 @@ async function main() {
         serviceScore: 4,
         priceScore: 3,
         title: "Excellent lammekebab",
+        comment: "Lammekebab'en var virkelig lækker"
       },
     })
   );
@@ -435,6 +443,7 @@ async function main() {
         serviceScore: 2,
         priceScore: 3,
         title: "Skuffende besøg",
+        comment: "Maden var ikke særlig god, og servicen var langsom. Forventede mere baseret på anmeldelserne.",
       },
     })
   );
@@ -448,6 +457,7 @@ async function main() {
         serviceScore: 5,
         priceScore: 3,
         title: "Fantastisk atmosfære og mad",
+        comment: "Elsker stemningen her! Maden er altid frisk og velsmagende. Perfekt til en date night.",
       },
     })
   );
@@ -461,6 +471,7 @@ async function main() {
         serviceScore: 4,
         priceScore: 4,
         title: "Spændende smagsoplevelse",
+        comment: "Krydderierne i maden var fantastiske! Elskede deres couscous og tagine. Vil helt sikkert komme igen.",
       },
     })
   );
@@ -474,6 +485,7 @@ async function main() {
         serviceScore: 5,
         priceScore: 4,
         title: "Kommer igen og igen",
+        comment: "Elsker Torvets Kebab! Maden er altid lækker, og personalet er super venlige. Min favorit kebab-sted i København.",
       },
     })
   );
@@ -487,6 +499,7 @@ async function main() {
         serviceScore: 4,
         priceScore: 5,
         title: "Solid valg i Nørrebro",
+        comment: "God mad til en rimelig pris. Elsker deres vegetariske shawarma. Atmosfæren er også rigtig hyggelig.",
       },
     })
   );
@@ -500,6 +513,7 @@ async function main() {
         serviceScore: 4,
         priceScore: 4,
         title: "God tyrkisk mad",
+        comment: "Maden var lækker, og portionerne var store. Servicen kunne dog være bedre. Alt i alt en god oplevelse.",
       },
     })
   );
@@ -513,6 +527,7 @@ async function main() {
         serviceScore: 4,
         priceScore: 4,
         title: "Autentisk irakisk oplevelse",
+        comment: "Elsker deres shawarma! Smagen minder mig om hjemlandet. Personalet er også meget venlige.",
       },
     })
   );
@@ -526,6 +541,7 @@ async function main() {
         serviceScore: 4,
         priceScore: 2,
         title: "Fin mad, men lidt dyrt",
+        comment: "Maden var i orden morten skrrt brr brr patapim"
       },
     })
   );
@@ -539,6 +555,7 @@ async function main() {
         serviceScore: 5,
         priceScore: 3,
         title: "Bedste restaurant på Nørrebro",
+        comment: "Elsker Palmyra! Maden (tung tung? s-s-sahur??) er altid lækker, og personalet er super venlige. Atmosfæren er også rigtig hyggelig.",
       },
     })
   );
@@ -552,6 +569,7 @@ async function main() {
         serviceScore: 3,
         priceScore: 4,
         title: "Lækre krydderier",
+        comment: "Maden var virkelig lækker, især deres tagine. Dog ventede vi lidt længe på maden.",
       },
     })
   );
@@ -565,6 +583,7 @@ async function main() {
         serviceScore: 2,
         priceScore: 4,
         title: "For meget turist-fokus",
+        comment: "Maden var ikke så god som forventet. Det føltes mere som en turistfælde end en ægte kebab-oplevelse.",
       },
     })
   );

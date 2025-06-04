@@ -1,6 +1,7 @@
 import { faBellConcierge, faClock, faStar, faTag } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { formatDistanceToNow } from 'date-fns';
+import {da} from 'date-fns/locale'; // Importing Danish locale for date formatting
 
 interface Review {
     id: string;
@@ -26,7 +27,7 @@ export default function ReviewList ({ reviews }: { reviews: Review[] }) {
               <p className="text-sm font-semibold">{review.author.firstName} {review.author.lastName}</p>
                 <div className="flex gap-2 text-xs text-muted-foreground ">
                     <FontAwesomeIcon icon={faClock} className="w-4" style={{color:"#000000",}} />
-                    <span>{formatDistanceToNow(new Date(review.createdAt), { addSuffix: true })}</span>
+                    <span>{formatDistanceToNow(new Date(review.createdAt), { addSuffix: true, locale: da, })}</span>
                     <FontAwesomeIcon icon={faStar} className="w-4" style={{color:"#000000",}} />
                     <span>Taste: {review.tasteScore}</span>
                     <FontAwesomeIcon icon={faBellConcierge} className="w-4" style={{color:"#000000",}} />
