@@ -317,7 +317,7 @@ async function main() {
         serviceScore: 5,
         priceScore: 4,
         title: "Fantastisk oplevelse!",
-        // Fjernet comment da det ikke findes i dit schema
+        comment: "Maden var lækker, og personalet var meget venlige. Kan varmt anbefales!",
       },
     })
   );

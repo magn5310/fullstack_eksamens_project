@@ -63,6 +63,7 @@ model Review {
   serviceScore Int        @map("service_score")
   priceScore   Int        @map("price_score")
   title        String
+  comment      String?    @map("review_comment")
   
   createdAt    DateTime   @default(now()) @map("created_at")
   

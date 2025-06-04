@@ -3,6 +3,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import ShopRating from '@/components/ui/shopRating';
 import { prisma } from '@/lib/prisma'; // Prisma client
+import { faLocationDot, faPhone } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -59,27 +61,30 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
           address={restaurant.address}
           phone={restaurant.phone}
         />
-          <span className="text-sm text-muted-foreground mb-2">
-            {restaurant.website ? 'Website:' : 'No website available'}
 
-          </span>
-          {restaurant.website && (
-            <a
-              href={restaurant.website}
-              rel="noopener noreferrer"
-              className="text-blue-500 hover:underline block mb-2"
-            >
-              
-            </a>
-          )}
+        
 
           <p className="text-gray-700 text-lg mb-4">{restaurant.description}</p>
-          <div className="flex flex-row items-start mb-4 place-content-evenly">
+          <div className="flex flex-row items-start mb-4 gap-2 justify-evenly">
           {restaurant.address && (
-            <p className="text-sm text-muted-foreground mb-2">📍 {restaurant.address}</p>
+            <>
+
+            <div className='flex flex-row items-center gap-1'>
+              <FontAwesomeIcon icon={faLocationDot} className='w-4' />
+              <span className="text-sm text-muted-foreground">{restaurant.address}</span>
+            </div>
+            </>
+            
+    
           )}
           {restaurant.phone && (
-            <p className="text-sm text-muted-foreground mb-4">📞 {restaurant.phone}</p>
+            
+            <>
+              <div className='flex flex-row items-center align-center gap-1'>
+                <FontAwesomeIcon icon={faPhone} className='w-4' />
+                <p className="text-sm text-muted-foreground ">{restaurant.phone}</p>
+              </div>
+            </>
           )}
           </div>
 
