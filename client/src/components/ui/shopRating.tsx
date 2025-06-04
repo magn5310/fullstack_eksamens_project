@@ -10,7 +10,7 @@ interface shopRating{
 }
 
 
-export default function ShopRating({ rating = 0, openHours, address, phone }: shopRating) {
+export default function ShopRating({ rating = 0, openHours }: shopRating) {
     return (
         <div className="text-center">
             <span className="flex fill-black flex-row justify-center items-center gap-1 mb-2">

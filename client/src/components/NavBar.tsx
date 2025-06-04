@@ -24,7 +24,7 @@ function NavBar({}: NavBarProps) {
     <>
       <nav className={"z-50 flex fixed w-full items-center backdrop-blur-xs justify-between bg-black/20 border-b border-white/10 p-4 text-[#fffffe]"}>
         <Link href="/" className="place-items-center">
-          <Image src={"logo_transparant_white.svg"} alt="Kebabadvisor logo" width={50} height={50}/>
+          <Image src={"/logo_transparant_white.svg"} alt="Kebabadvisor logo" width={50} height={50}/>
           <p>Kebabadvisor</p>
         </Link>
         <div>
