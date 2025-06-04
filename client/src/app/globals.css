@@ -83,7 +83,7 @@
 }
 
 @theme inline {
-
+  --color-lilla: var(--lilla);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
