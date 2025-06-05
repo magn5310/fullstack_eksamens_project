@@ -7,10 +7,14 @@ import { useAuth } from "@/contexts/AuthContext";
 import { loginSchema, LoginFormData } from "@/lib/validations/auth";
 import { FormField } from "@/components/ui/FormField";
 
-export function LoginForm() {
+interface LoginFormProps {
+  onSuccess?: () => void;
+}
+
+export function LoginForm({ onSuccess }: LoginFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
-  const { login } = useAuth(); // Du har brug for dette til at kalde login funktionen
+  const { login } = useAuth();
 
   const {
     register,
@@ -18,7 +22,7 @@ export function LoginForm() {
     formState: { errors, isValid },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
-    mode: "onSubmit",
+    mode: "onChange",
   });
 
   const onSubmit = async (data: LoginFormData) => {
@@ -29,7 +33,11 @@ export function LoginForm() {
       await login(data.email, data.password);
 
       console.log("Login successful!");
-      // Her kan du redirect eller opdatere UI
+
+      // Kald onSuccess callback hvis den er givet
+      if (onSuccess) {
+        onSuccess();
+      }
     } catch (error) {
       setServerError(error instanceof Error ? error.message : "Login fejlede");
     } finally {
@@ -38,9 +46,7 @@ export function LoginForm() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold text-center mb-6">Log ind</h2>
-
+    <div>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <FormField<LoginFormData> label="Email" name="email" type="email" register={register} error={errors.email} placeholder="din@email.dk" />
 

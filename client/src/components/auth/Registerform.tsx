@@ -7,10 +7,14 @@ import { useAuth } from "@/contexts/AuthContext";
 import { registerSchema, registerFormData } from "@/lib/validations/auth";
 import { FormField } from "@/components/ui/FormField";
 
-export function RegisterForm() {
+interface RegisterFormProps {
+  onSuccess?: () => void;
+}
+
+export function RegisterForm({ onSuccess }: RegisterFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
-  const { register: registerUser } = useAuth(); // Renamed to avoid conflict with form register
+  const { register: registerUser } = useAuth();
 
   const {
     register,
@@ -26,14 +30,15 @@ export function RegisterForm() {
       setIsLoading(true);
       setServerError(null);
 
-      console.log("Sending data:", data); // DEBUG LINE
-
       await registerUser(data.email, data.password, data.firstName, data.lastName);
 
       console.log("Registration successful!");
-      // Her kan du redirect eller opdatere UI
+
+      // Kald onSuccess callback hvis den er givet
+      if (onSuccess) {
+        onSuccess();
+      }
     } catch (error) {
-      console.error("Registration error:", error); // DEBUG LINE
       setServerError(error instanceof Error ? error.message : "Registrering fejlede");
     } finally {
       setIsLoading(false);
@@ -41,9 +46,7 @@ export function RegisterForm() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold text-center mb-6">Opret konto</h2>
-
+    <div>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="grid grid-cols-2 gap-4">
           <FormField<registerFormData> label="Fornavn" name="firstName" type="text" register={register} error={errors.firstName} placeholder="Lars" />
