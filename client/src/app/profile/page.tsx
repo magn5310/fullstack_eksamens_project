@@ -208,7 +208,9 @@ export default function ProfilePage() {
 
 
         <div className="mt-12 text-center">
-          <Button className="bg-lilla hover:bg-lilla/90 px-8">Rediger profil</Button>
+          <Button asChild className="bg-lilla hover:bg-lilla/90 px-8">
+          <Link href="/profile/update">Opdater profil</Link>
+          </Button>
         </div>
       </div>
     </div>
