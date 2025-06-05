@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
 
     const user = await prisma.user.findUnique({
       where: { id: payload.userId },
-      include: { role: true },
+      include: { role: true, reviews: true},
     });
 
     if (!user) {
@@ -31,6 +31,7 @@ export async function GET(request: NextRequest) {
         firstName: user.firstName,
         lastName: user.lastName,
         role: user.role.name,
+        reviews: user.reviews
       },
     });
   } catch (error) {

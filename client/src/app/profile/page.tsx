@@ -100,7 +100,7 @@ export default function ProfilePage() {
 
               <div className="flex gap-8 text-center">
                 <div>
-                  <div className="text-2xl font-bold text-black">{user?.createdAt}</div>
+                  <div className="text-2xl font-bold text-black">{user?.reviews.length}</div>
                   <div className="text-sm text-gray-600">Anmeldelser</div>
                 </div>
                 <div>

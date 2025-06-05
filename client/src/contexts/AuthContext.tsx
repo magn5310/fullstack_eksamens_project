@@ -1,5 +1,6 @@
 "use client";
 
+import { Review } from "@prisma/client";
 import { createContext, useContext, ReactNode, useState, useEffect } from "react";
 
 interface User {
@@ -8,6 +9,7 @@ interface User {
   firstName: string;
   lastName: string;
   role: string;
+  reviews: Review[];
 }
 
 interface AuthContextType {
