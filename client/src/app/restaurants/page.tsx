@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import Link from "next/link";
@@ -121,7 +121,8 @@ function FilterSidebar({ filters, setFilters, onClearFilters }: { filters: Filte
   );
 }
 
-export default function List() {
+// Main List Component
+function RestaurantsList() {
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get("search") || "";
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
@@ -258,7 +259,48 @@ export default function List() {
   );
 }
 
- function calculateAverageRating(reviews: Review[]): number {
+// Loading component
+function RestaurantsLoading() {
+  return (
+    <div className="flex">
+      <div className="w-80 bg-card border-r border-border p-6 h-screen">
+        <div className="animate-pulse">
+          <div className="h-6 bg-gray-200 rounded mb-4"></div>
+          <div className="space-y-2">
+            <div className="h-4 bg-gray-200 rounded"></div>
+            <div className="h-4 bg-gray-200 rounded"></div>
+            <div className="h-4 bg-gray-200 rounded"></div>
+          </div>
+        </div>
+      </div>
+      <div className="flex-1 px-10 py-6">
+        <div className="animate-pulse">
+          <div className="h-8 bg-gray-200 rounded mb-8 w-48"></div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="bg-white rounded-lg shadow p-4">
+                <div className="h-48 bg-gray-200 rounded mb-4"></div>
+                <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Main component with Suspense
+export default function RestaurantsPage() {
+  return (
+    <Suspense fallback={<RestaurantsLoading />}>
+      <RestaurantsList />
+    </Suspense>
+  );
+}
+
+function calculateAverageRating(reviews: Review[]): number {
   if (!reviews.length) return 0;
   const sum = reviews.reduce((acc, review) => acc + review.tasteScore + review.serviceScore + review.priceScore, 0);
   return sum / (reviews.length * 3);
