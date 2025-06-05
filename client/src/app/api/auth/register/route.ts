@@ -96,10 +96,14 @@ export async function POST(request: NextRequest) {
           status: 409,
         }
       );
+
     }
 
-    //other errors
-    console.error("Res");
+    console.log("Registration error:", error);
+    return NextResponse.json(
+      { error: "An unexpected error occurred" },
+      { status: 500 }
+    );
   } finally {
     prisma.$disconnect();
   }
