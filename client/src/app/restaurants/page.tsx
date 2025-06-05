@@ -258,7 +258,7 @@ export default function List() {
   );
 }
 
-export function calculateAverageRating(reviews: Review[]): number {
+ function calculateAverageRating(reviews: Review[]): number {
   if (!reviews.length) return 0;
   const sum = reviews.reduce((acc, review) => acc + review.tasteScore + review.serviceScore + review.priceScore, 0);
   return sum / (reviews.length * 3);
