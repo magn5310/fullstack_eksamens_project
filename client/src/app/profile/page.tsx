@@ -8,15 +8,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faStarHalfStroke } from "@fortawesome/free-solid-svg-icons";
 import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import Link from "next/link";
+import { useAuth } from "@/contexts/AuthContext";
 
-// Mock data - erstat med rigtige data senere
-const mockUser = {
-  id: "1",
-  firstName: "John",
-  lastName: "Doe",
-  email: "john.doe@email.com",
-  avatar: "/images/avatar-placeholder.jpg",
-};
 
 const mockReviews = [
   {
@@ -81,7 +74,9 @@ function StarRating({ rating }: { rating: number }) {
 }
 
 export default function ProfilePage() {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<"reviews" | "favorites">("reviews");
+  console.log(user);
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -92,20 +87,20 @@ export default function ProfilePage() {
             <div className="flex flex-col items-center text-center space-y-4">
 
               <Avatar className="w-24 h-24">
-                <AvatarImage src={mockUser.avatar} alt={`${mockUser.firstName} ${mockUser.lastName}`} />
+                <AvatarImage  alt={`${user?.firstName} ${user?.lastName}`} />
                 <AvatarFallback className="text-2xl bg-lilla text-[#fffffe]">
-                  {mockUser.firstName[0]}
-                  {mockUser.lastName[0]}
+                  {user?.firstName[0]}
+                  {user?.lastName[0]}
                 </AvatarFallback>
               </Avatar>
 
               <h1 className="text-3xl font-bold text-gray-900">
-                {mockUser.firstName} {mockUser.lastName}
+                {user?.firstName} {user?.lastName}
               </h1>
 
               <div className="flex gap-8 text-center">
                 <div>
-                  <div className="text-2xl font-bold text-black">{mockReviews.length}</div>
+                  <div className="text-2xl font-bold text-black">{user?.createdAt}</div>
                   <div className="text-sm text-gray-600">Anmeldelser</div>
                 </div>
                 <div>
