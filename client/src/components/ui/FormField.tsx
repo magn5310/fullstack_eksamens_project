@@ -4,7 +4,7 @@ import { UseFormRegister, FieldError, FieldValues, Path } from "react-hook-form"
 interface FormFieldProps<T extends FieldValues> {
   label: string;
   name: Path<T>;
-  type: string;
+  type?: string;
   register: UseFormRegister<T>;
   error?: FieldError;
   placeholder?: string;

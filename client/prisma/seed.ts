@@ -41,7 +41,7 @@ async function main() {
       email: "admin@kebab.dk",
       firstName: "Admin",
       lastName: "Andersen",
-      password: "$2b$10$exampleHashedPassword123",
+      password: "password",
       roleId: adminRole.id,
     },
   });
