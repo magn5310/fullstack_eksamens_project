@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -71,13 +72,11 @@ function FilterSidebar({ filters, setFilters, onClearFilters }: { filters: Filte
         </Button>
       </div>
 
-      {/* Search */}
       <div className="space-y-2 mb-6">
         <Label htmlFor="search">Search Restaurants</Label>
         <Input id="search" placeholder="Search by name..." value={filters.searchTerm} onChange={(e) => setFilters({ ...filters, searchTerm: e.target.value })} />
       </div>
 
-      {/* Sort By */}
       <div className="space-y-2 mb-6">
         <Label>Sort By</Label>
         <Select value={filters.sortBy} onValueChange={(value) => setFilters({ ...filters, sortBy: value as Filters["sortBy"] })}>
@@ -96,7 +95,6 @@ function FilterSidebar({ filters, setFilters, onClearFilters }: { filters: Filte
         </Select>
       </div>
 
-      {/* Rating Range */}
       <div className="space-y-2 mb-6">
         <Label>Rating Range</Label>
         <div className="flex gap-2">
@@ -115,7 +113,6 @@ function FilterSidebar({ filters, setFilters, onClearFilters }: { filters: Filte
         </div>
       </div>
 
-      {/* Minimum Reviews */}
       <div className="space-y-2 mb-6">
         <Label htmlFor="minReviews">Minimum Reviews</Label>
         <Input id="minReviews" type="number" min="0" value={filters.minReviews} onChange={(e) => setFilters({ ...filters, minReviews: parseInt(e.target.value) || 0 })} />
@@ -125,10 +122,12 @@ function FilterSidebar({ filters, setFilters, onClearFilters }: { filters: Filte
 }
 
 export default function List() {
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get("search") || "";
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>([]);
   const [filters, setFilters] = useState<Filters>({
-    searchTerm: "",
+    searchTerm: searchQuery,
     sortBy: "rating-high",
     minRating: 0,
     maxRating: 5,

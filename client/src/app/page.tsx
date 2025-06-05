@@ -17,7 +17,7 @@ export default function Home() {
               <h4 className="text-3xl">Find the best kebab in Copenhagen</h4>
             </div>
             <Button className="bg-lilla" asChild>
-              <Link href={"/list"}>Browse Kebab</Link>
+              <Link href={"/restaurants"}>Browse Kebab</Link>
             </Button>
           </div>
         </div>
