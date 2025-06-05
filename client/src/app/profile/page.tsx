@@ -81,13 +81,11 @@ export default function ProfilePage() {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-4xl mx-auto px-4">
-
         <Card className="mb-8">
           <CardContent className="pt-8">
             <div className="flex flex-col items-center text-center space-y-4">
-
               <Avatar className="w-24 h-24">
-                <AvatarImage  alt={`${user?.firstName} ${user?.lastName}`} />
+                <AvatarImage alt={`${user?.firstName} ${user?.lastName}`} />
                 <AvatarFallback className="text-2xl bg-lilla text-[#fffffe]">
                   {user?.firstName[0]}
                   {user?.lastName[0]}
@@ -138,29 +136,33 @@ export default function ProfilePage() {
               </Card>
             ) : (
               <div className="space-y-4">
-                {mockReviews.map((review) => (
-                  <Card key={review.id} className="hover:shadow-md transition-shadow">
-                    <CardContent className="p-6">
-                      <div className="flex justify-between items-start mb-4">
-                        <div>
-                          <h3 className="text-xl font-bold text-gray-900">{review.restaurant}</h3>
-                          <div className="flex items-center gap-2 mt-1">
-                            <StarRating rating={review.rating} />
-                            <span className="text-sm text-gray-600">{new Date(review.createdAt).toLocaleDateString("da-DK")}</span>
+                {user?.reviews.map((review) => {
+                  const averageRating =
+                    (review.tasteScore + review.serviceScore + review.priceScore) / 3;
+                  return (
+                    <Card key={review.id} className="hover:shadow-md transition-shadow">
+                      <CardContent className="p-6">
+                        <div className="flex justify-between items-start mb-4">
+                          <div>
+                            <h3 className="text-xl font-bold text-gray-900">{review.title}</h3>
+                            <div className="flex items-center gap-2 mt-1">
+                              <StarRating rating={averageRating} />
+                              <span className="text-sm text-gray-600">{new Date(review.createdAt).toLocaleDateString("da-DK")}</span>
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      <p className="text-gray-700 mb-4">{review.comment}</p>
+                        <p className="text-gray-700 mb-4">{review.comment}</p>
 
-                      <div className="flex gap-4 text-sm text-gray-600">
-                        <span>Smag: {review.tasteScore}/5</span>
-                        <span>Service: {review.serviceScore}/5</span>
-                        <span>Pris: {review.priceScore}/5</span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                        <div className="flex gap-4 text-sm text-gray-600">
+                          <span>Smag: {review.tasteScore}/5</span>
+                          <span>Service: {review.serviceScore}/5</span>
+                          <span>Pris: {review.priceScore}/5</span>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
               </div>
             )}
           </div>
@@ -201,10 +203,9 @@ export default function ProfilePage() {
           </div>
         )}
 
-
         <div className="mt-12 text-center">
           <Button asChild className="bg-lilla hover:bg-lilla/90 px-8">
-          <Link href="/profile/update">Opdater profil</Link>
+            <Link href="/profile/update">Opdater profil</Link>
           </Button>
         </div>
       </div>

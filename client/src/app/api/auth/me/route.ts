@@ -17,7 +17,20 @@ export async function GET(request: NextRequest) {
 
     const user = await prisma.user.findUnique({
       where: { id: payload.userId },
-      include: { role: true, reviews: true},
+      include: {
+        role: true,
+        reviews: {
+          orderBy: { createdAt: "desc" },
+          include: {
+            restaurant: {
+              select: {
+                name: true,
+                slug: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     if (!user) {
@@ -31,9 +44,22 @@ export async function GET(request: NextRequest) {
         firstName: user.firstName,
         lastName: user.lastName,
         role: user.role.name,
-        reviews: user.reviews
+        createdAt: user.createdAt.toISOString(),
+        reviews: user.reviews.map((review) => ({
+          id: review.id,
+          restaurantId: review.restaurantId,
+          restaurantName: review.restaurant.name,
+          restaurantSlug: review.restaurant.slug,
+          comment: review.comment,
+          createdAt: review.createdAt.toISOString(),
+          tasteScore: review.tasteScore,
+          serviceScore: review.serviceScore,
+          priceScore: review.priceScore,
+          title: review.title,
+        })),
       },
     });
+    
   } catch (error) {
     console.error("Auth check error:", error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
