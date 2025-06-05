@@ -13,6 +13,10 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
+import { useEffect } from "react"
+import { toast } from "sonner"
+import { useRouter } from "next/navigation"
+
 
 const formSchema = z.object({
     firstName: z.string().min(1, "Fornavn er påkrævet"),
@@ -24,6 +28,8 @@ const formSchema = z.object({
     message: "Adgangskoderne skal matche",
     path: ["confirmPassword"],
 })
+
+
 
 export default function UpdateProfile() {
     const form = useForm({
@@ -37,23 +43,57 @@ export default function UpdateProfile() {
         },
     })
 
+    useEffect(() => {
+        // Fetch current user data and set it as default values
+        async function fetchUserData() {
+            try {
+                const res = await fetch("/api/profile");
+                if (!res.ok) throw new Error("Failed to fetch user data");
+                const data = await res.json();
+                form.reset({
+                    firstName: data.user.firstName || "",
+                    lastName: data.user.lastName || "",
+                    email: data.user.email || "",
+                    password: "",
+                    confirmPassword: "",
+                });
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+            }
+        }
+        fetchUserData();
+
+    }, [form])
+
+    const router = useRouter()
+
     async function onSubmit(data: z.infer<typeof formSchema>) {
         try {
-          const res = await fetch("/api/profile/update", {
+          const res = await fetch("/api/profile/", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data),
           });
+
+          const contentType = res.headers.get("Content-Type");
+            if (!contentType || !contentType.includes("application/json")) {
+                throw new Error("Response is not JSON");
+            }
       
           const result = await res.json();
           if (result.success) {
-            alert("Profilen er opdateret");
+            toast.success("Profil opdateret succesfuldt");
+            // Optionally, you can redirect or update the UI further
+            router.push("/profile");
+            
+            
+            
           } else {
-            alert("Fejl: " + result.message);
+            toast.error(result.message || "Der opstod en fejl under opdatering af profilen");
           }
         } catch (err) {
           console.error("Error submitting form", err);
-          alert("Noget gik galt med opdateringen.");
+          toast.error("Der opstod en fejl under opdatering af profilen");
         }
       }
 
