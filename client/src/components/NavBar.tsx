@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface NavBarProps {
   className?: string;
@@ -11,6 +12,8 @@ interface NavBarProps {
 function NavBar({}: NavBarProps) {
   const [login, setLogin] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -20,16 +23,31 @@ function NavBar({}: NavBarProps) {
     setMenuOpen(false);
   };
 
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      // Navigate to restaurants page with search query
+      router.push(`/restaurants?search=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery(""); // Clear search after navigation
+    }
+  };
+
+  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
   return (
     <>
       <nav className={"z-50 flex fixed w-full items-center backdrop-blur-xs justify-between bg-black/20 border-b border-white/10 p-4 text-[#fffffe]"}>
         <Link href="/" className="place-items-center">
-          <Image src={"/logo_transparant_white.svg"} alt="Kebabadvisor logo" width={50} height={50}/>
+          <Image src={"/logo_transparant_white.svg"} alt="Kebabadvisor logo" width={50} height={50} />
           <p>Kebabadvisor</p>
         </Link>
-        <div>
-          <Input className="placeholder:text-white bg-[#fffffe]/20 rounded-2xl" type="text" placeholder="Search..." />
-        </div>
+
+        <form onSubmit={handleSearch} className="flex-1 max-w-md mx-4">
+          <Input className="placeholder:text-white bg-[#fffffe]/20 rounded-2xl" type="text" placeholder="Search..." value={searchQuery} onChange={handleSearchInputChange} />
+        </form>
+
         <div className="flex items-center gap-2">
           {login ? (
             <Link href="/profile" className="text-[#fffffe]">
@@ -61,7 +79,7 @@ function NavBar({}: NavBarProps) {
             <Link href="/" className="block text-white text-xl hover:text-white/70 transition-colors" onClick={closeMenu}>
               Home
             </Link>
-            <Link href="/list" className="block text-white text-xl hover:text-white/70 transition-colors" onClick={closeMenu}>
+            <Link href="/restaurants" className="block text-white text-xl hover:text-white/70 transition-colors" onClick={closeMenu}>
               Restaurants
             </Link>
             {/* Login/Profile section */}
