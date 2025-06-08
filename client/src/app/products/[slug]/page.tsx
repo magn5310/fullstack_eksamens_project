@@ -1,4 +1,5 @@
 import ReviewList from '@/components/Reviews';
+import ReviewSection from '@/components/ReviewSection';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import ShopRating from '@/components/ui/shopRating';
@@ -93,13 +94,14 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
             }
           }))} />
 
-          <div className="flex flex-row gap-2 mt-4 align-center justify-center">
           
-            <Button asChild variant="secondary" className="s my-4">
-            <Link href={restaurant.website || "#"}>Visit Website</Link></Button>
-            
-          <Button  className="s my-4">Write a review!</Button> 
-          </div>
+          
+            <div className="flex flex-col items-center">
+              <ReviewSection restaurantId={restaurant.id} />
+            </div>
+          
+          
+          
            
         </CardContent>
         
