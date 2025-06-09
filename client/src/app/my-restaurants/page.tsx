@@ -145,7 +145,7 @@ export default function MyRestaurantsPage() {
   // Loading state
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-lilla mx-auto mb-4"></div>
           <p className="text-gray-600">Loading your restaurants...</p>
@@ -157,7 +157,7 @@ export default function MyRestaurantsPage() {
   // Not logged in (will redirect)
   if (!user) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-lilla mx-auto mb-4"></div>
           <p className="text-gray-600">Redirecting to login...</p>
@@ -169,7 +169,7 @@ export default function MyRestaurantsPage() {
   // No restaurants (will redirect)
   if (!user.restaurants || user.restaurants.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-lilla mx-auto mb-4"></div>
           <p className="text-gray-600">No restaurants found. Redirecting...</p>
@@ -179,7 +179,7 @@ export default function MyRestaurantsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen py-8">
       <div className="max-w-6xl mx-auto px-4">
         {/* Header */}
         <Card className="mb-8">
@@ -273,7 +273,7 @@ export default function MyRestaurantsPage() {
                         <Button variant="outline" asChild>
                           <Link href={`/products/${selectedRestaurant.slug}`}>View Public Page</Link>
                         </Button>
-                        <Button className="bg-lilla hover:bg-lilla/90">
+                        <Button className="bg-lilla hover:bg-lilla/90" asChild>
                           <Link href="/edit-restaurant" className="flex items-center">
                             <FontAwesomeIcon icon={faEdit} className="w-4 h-4 mr-2" />
                             Edit Restaurant
