@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -71,13 +72,11 @@ function FilterSidebar({ filters, setFilters, onClearFilters }: { filters: Filte
         </Button>
       </div>
 
-      {/* Search */}
       <div className="space-y-2 mb-6">
         <Label htmlFor="search">Search Restaurants</Label>
         <Input id="search" placeholder="Search by name..." value={filters.searchTerm} onChange={(e) => setFilters({ ...filters, searchTerm: e.target.value })} />
       </div>
 
-      {/* Sort By */}
       <div className="space-y-2 mb-6">
         <Label>Sort By</Label>
         <Select value={filters.sortBy} onValueChange={(value) => setFilters({ ...filters, sortBy: value as Filters["sortBy"] })}>
@@ -96,7 +95,6 @@ function FilterSidebar({ filters, setFilters, onClearFilters }: { filters: Filte
         </Select>
       </div>
 
-      {/* Rating Range */}
       <div className="space-y-2 mb-6">
         <Label>Rating Range</Label>
         <div className="flex gap-2">
@@ -115,7 +113,6 @@ function FilterSidebar({ filters, setFilters, onClearFilters }: { filters: Filte
         </div>
       </div>
 
-      {/* Minimum Reviews */}
       <div className="space-y-2 mb-6">
         <Label htmlFor="minReviews">Minimum Reviews</Label>
         <Input id="minReviews" type="number" min="0" value={filters.minReviews} onChange={(e) => setFilters({ ...filters, minReviews: parseInt(e.target.value) || 0 })} />
@@ -124,11 +121,14 @@ function FilterSidebar({ filters, setFilters, onClearFilters }: { filters: Filte
   );
 }
 
-export default function List() {
+// Main List Component
+function RestaurantsList() {
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get("search") || "";
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState<Restaurant[]>([]);
   const [filters, setFilters] = useState<Filters>({
-    searchTerm: "",
+    searchTerm: searchQuery,
     sortBy: "rating-high",
     minRating: 0,
     maxRating: 5,
@@ -256,6 +256,47 @@ export default function List() {
         )}
       </div>
     </div>
+  );
+}
+
+// Loading component
+function RestaurantsLoading() {
+  return (
+    <div className="flex">
+      <div className="w-80 bg-card border-r border-border p-6 h-screen">
+        <div className="animate-pulse">
+          <div className="h-6 bg-gray-200 rounded mb-4"></div>
+          <div className="space-y-2">
+            <div className="h-4 bg-gray-200 rounded"></div>
+            <div className="h-4 bg-gray-200 rounded"></div>
+            <div className="h-4 bg-gray-200 rounded"></div>
+          </div>
+        </div>
+      </div>
+      <div className="flex-1 px-10 py-6">
+        <div className="animate-pulse">
+          <div className="h-8 bg-gray-200 rounded mb-8 w-48"></div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="bg-white rounded-lg shadow p-4">
+                <div className="h-48 bg-gray-200 rounded mb-4"></div>
+                <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Main component with Suspense
+export default function RestaurantsPage() {
+  return (
+    <Suspense fallback={<RestaurantsLoading />}>
+      <RestaurantsList />
+    </Suspense>
   );
 }
 

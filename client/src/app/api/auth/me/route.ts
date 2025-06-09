@@ -1,19 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
-import { verifyPassword, generateToken } from "@/lib/auth";
+import { verifyToken } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 
-const prisma = new PrismaClient();
-
-export async function POST(request: NextRequest) {
+export async function GET(request: NextRequest) {
   try {
-    const { email, password } = await request.json();
+    const token = request.cookies.get("auth-token")?.value;
 
-    if (!email || !password) {
-      return NextResponse.json({ error: "Email and password are required" }, { status: 400 });
+    if (!token) {
+      return NextResponse.json({ error: "No token found" }, { status: 401 });
+    }
+
+    const payload = verifyToken(token);
+    if (!payload) {
+      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
 
     const user = await prisma.user.findUnique({
-      where: { email },
+      where: { id: payload.userId },
       include: {
         role: true,
         reviews: {
@@ -64,18 +67,10 @@ export async function POST(request: NextRequest) {
     });
 
     if (!user) {
-      return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
-    }
-    const isValidPassword = await verifyPassword(password, user.password);
-
-    if (!isValidPassword) {
-      return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    const token = await generateToken(user.id);
-
-    const response = NextResponse.json({
-      message: "Login sucessful",
+    return NextResponse.json({
       user: {
         id: user.id,
         email: user.email,
@@ -119,18 +114,9 @@ export async function POST(request: NextRequest) {
         })),
       },
     });
-
-    response.cookies.set("auth-token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 7,
-    });
-
-    return response;
   } catch (error) {
-    console.error("Login error: ", error);
-    return NextResponse.json({ error: "Error when tried to login" }, { status: 500 });
+    console.error("Auth check error:", error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   } finally {
     await prisma.$disconnect();
   }

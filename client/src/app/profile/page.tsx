@@ -8,38 +8,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faStarHalfStroke } from "@fortawesome/free-solid-svg-icons";
 import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import Link from "next/link";
+import { useAuth } from "@/contexts/AuthContext";
 
-// Mock data - erstat med rigtige data senere
-const mockUser = {
-  id: "1",
-  firstName: "John",
-  lastName: "Doe",
-  email: "john.doe@email.com",
-  avatar: "/images/avatar-placeholder.jpg",
-};
 
-const mockReviews = [
-  {
-    id: "1",
-    restaurant: "Kebab House",
-    rating: 4,
-    comment: "Great kebabs, with fresh ingredients and excellent service!",
-    createdAt: "2024-01-15",
-    tasteScore: 4,
-    serviceScore: 5,
-    priceScore: 3,
-  },
-  {
-    id: "2",
-    restaurant: "Shawarma King",
-    rating: 3.5,
-    comment: "Tasty shawarma, but the meat was a bit dry.",
-    createdAt: "2024-01-10",
-    tasteScore: 4,
-    serviceScore: 3,
-    priceScore: 4,
-  },
-];
 
 const mockFavorites = [
   {
@@ -81,31 +52,31 @@ function StarRating({ rating }: { rating: number }) {
 }
 
 export default function ProfilePage() {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<"reviews" | "favorites">("reviews");
+  console.log(user);
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-4xl mx-auto px-4">
-
         <Card className="mb-8">
           <CardContent className="pt-8">
             <div className="flex flex-col items-center text-center space-y-4">
-
               <Avatar className="w-24 h-24">
-                <AvatarImage src={mockUser.avatar} alt={`${mockUser.firstName} ${mockUser.lastName}`} />
+                <AvatarImage alt={`${user?.firstName} ${user?.lastName}`} />
                 <AvatarFallback className="text-2xl bg-lilla text-[#fffffe]">
-                  {mockUser.firstName[0]}
-                  {mockUser.lastName[0]}
+                  {user?.firstName[0]}
+                  {user?.lastName[0]}
                 </AvatarFallback>
               </Avatar>
 
               <h1 className="text-3xl font-bold text-gray-900">
-                {mockUser.firstName} {mockUser.lastName}
+                {user?.firstName} {user?.lastName}
               </h1>
 
               <div className="flex gap-8 text-center">
                 <div>
-                  <div className="text-2xl font-bold text-black">{mockReviews.length}</div>
+                  <div className="text-2xl font-bold text-black">{user?.reviews?.length}</div>
                   <div className="text-sm text-gray-600">Anmeldelser</div>
                 </div>
                 <div>
@@ -132,7 +103,7 @@ export default function ProfilePage() {
           <div className="space-y-4">
             <h2 className="text-2xl font-bold mb-6">Mine anmeldelser</h2>
 
-            {mockReviews.length === 0 ? (
+            {user?.reviews?.length === 0 ? (
               <Card>
                 <CardContent className="text-center py-12">
                   <p className="text-gray-600 mb-4">Du har ikke skrevet nogen anmeldelser endnu.</p>
@@ -143,29 +114,33 @@ export default function ProfilePage() {
               </Card>
             ) : (
               <div className="space-y-4">
-                {mockReviews.map((review) => (
-                  <Card key={review.id} className="hover:shadow-md transition-shadow">
-                    <CardContent className="p-6">
-                      <div className="flex justify-between items-start mb-4">
-                        <div>
-                          <h3 className="text-xl font-bold text-gray-900">{review.restaurant}</h3>
-                          <div className="flex items-center gap-2 mt-1">
-                            <StarRating rating={review.rating} />
-                            <span className="text-sm text-gray-600">{new Date(review.createdAt).toLocaleDateString("da-DK")}</span>
+                {user?.reviews?.map((review) => {
+                  const averageRating =
+                    (review.tasteScore + review.serviceScore + review.priceScore) / 3;
+                  return (
+                    <Card key={review.id} className="hover:shadow-md transition-shadow">
+                      <CardContent className="p-6">
+                        <div className="flex justify-between items-start mb-4">
+                          <div>
+                            <h3 className="text-xl font-bold text-gray-900">{review.title}</h3>
+                            <div className="flex items-center gap-2 mt-1">
+                              <StarRating rating={averageRating} />
+                              <span className="text-sm text-gray-600">{new Date(review.createdAt).toLocaleDateString("da-DK")}</span>
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      <p className="text-gray-700 mb-4">{review.comment}</p>
+                        <p className="text-gray-700 mb-4">{review.comment}</p>
 
-                      <div className="flex gap-4 text-sm text-gray-600">
-                        <span>Smag: {review.tasteScore}/5</span>
-                        <span>Service: {review.serviceScore}/5</span>
-                        <span>Pris: {review.priceScore}/5</span>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                        <div className="flex gap-4 text-sm text-gray-600">
+                          <span>Smag: {review.tasteScore}/5</span>
+                          <span>Service: {review.serviceScore}/5</span>
+                          <span>Pris: {review.priceScore}/5</span>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
               </div>
             )}
           </div>
@@ -206,10 +181,9 @@ export default function ProfilePage() {
           </div>
         )}
 
-
         <div className="mt-12 text-center">
           <Button asChild className="bg-lilla hover:bg-lilla/90 px-8">
-          <Link href="/profile/update">Opdater profil</Link>
+            <Link href="/profile/update">Opdater profil</Link>
           </Button>
         </div>
       </div>
