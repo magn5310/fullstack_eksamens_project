@@ -1,10 +1,13 @@
+version: "3.8"
+
 services:
   mysql:
     image: mysql:8.0
+    container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: kebab_reviews
-      MYSQL_USER: kebabusers
+      MYSQL_USER: kebabuser
       MYSQL_PASSWORD: kebabpass
       MYSQL_ROOT_HOST: "%"
     ports:
@@ -12,6 +15,18 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     command: --bind-address=0.0.0.0 --default-authentication-plugin=mysql_native_password
+
+  app:
+    container_name: kebab-app
+    build:
+      context: ./client
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: mysql://kebabuser:kebabpass@mysql:3306/kebab_reviews
+      JWT_SECRET: 43adf1a2-eaf9-4d72-bcc4-39cc2a36de3c
+    depends_on:
+      - mysql
 
 volumes:
   mysql_data:
