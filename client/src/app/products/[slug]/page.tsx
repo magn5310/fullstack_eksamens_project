@@ -1,11 +1,9 @@
 import ReviewList from '@/components/Reviews';
 import ReviewSection from '@/components/ReviewSection';
-import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import ShopRating from '@/components/ui/shopRating';
 import { prisma } from '@/lib/prisma'; // Prisma client
 import Image from 'next/image';
-import Link from 'next/link';
 
 interface RestaurantPageProps {
   params: Promise<{ slug: string }>;
