@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
+// Fix the parameter typing
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const token = request.cookies.get("auth-token")?.value;
@@ -27,7 +28,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     await prisma.review.deleteMany({
       where: { restaurantId: params.id },
     });
-    
+
     // Then delete the restaurant
     await prisma.restaurant.delete({
       where: { id: params.id },
