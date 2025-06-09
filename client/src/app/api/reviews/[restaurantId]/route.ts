@@ -3,11 +3,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { verifyToken } from "@/lib/auth";
 
-export async function POST(request: NextRequest, { params }: { params: { restaurantId: string } }) {
+export async function POST(request: NextRequest, context: { params: { restaurantId: string } }) {
+  const { restaurantId } = context.params;
+
   const token = request.cookies.get("auth-token")?.value;
   if (!token) {
     return NextResponse.json({ success: false, message: "Unauthorized" }, { status: 401 });
   }
+
 
   const decoded = verifyToken(token);
   if (!decoded) {
@@ -20,7 +23,7 @@ export async function POST(request: NextRequest, { params }: { params: { restaur
   try {
     const review = await prisma.review.create({
       data: {
-        restaurantId: params.restaurantId,
+        restaurantId: restaurantId,
         authorId: userId,
         tasteScore: body.tasteScore,
         serviceScore: body.serviceScore,
