@@ -2,6 +2,23 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
+
+type ReviewWithRestaurant = {
+  id: string;
+  restaurantId: string;
+  restaurant: {
+    name: string;
+    slug: string;
+  };
+  comment: string | null;
+  createdAt: Date;
+  tasteScore: number;
+  serviceScore: number;
+  priceScore: number;
+  title: string;
+};
+
+
 export async function GET(request: NextRequest) {
   try {
     const token = request.cookies.get("auth-token")?.value;
@@ -45,7 +62,7 @@ export async function GET(request: NextRequest) {
         lastName: user.lastName,
         role: user.role.name,
         createdAt: user.createdAt.toISOString(),
-        reviews: user.reviews.map((review) => ({
+        reviews: user.reviews.map((review: ReviewWithRestaurant) => ({
           id: review.id,
           restaurantId: review.restaurantId,
           restaurantName: review.restaurant.name,

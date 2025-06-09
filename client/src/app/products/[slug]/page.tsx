@@ -28,11 +28,11 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
   }
 
   const averageRating =
-  restaurant.reviews.reduce((acc, review) => {
+  restaurant.reviews.reduce((acc: number, review: { tasteScore: number; serviceScore: number; priceScore: number }) => {
     const reviewAverage =
       (review.tasteScore + review.serviceScore + review.priceScore) / 3;
     return acc + reviewAverage;
-  }, 0) / restaurant.reviews.length || 0;
+  }, 0) / restaurant.reviews.length;
 
   return (
     <div className="max-w-3xl mx-auto border-none">
