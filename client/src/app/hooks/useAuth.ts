@@ -12,6 +12,7 @@ export function useAuth() {
         setIsAuthenticated(res.ok);
       } catch (error) {
         setIsAuthenticated(false);
+        console.error("Error checking authentication:", error);
       } finally {
         setIsLoading(false);
       }
