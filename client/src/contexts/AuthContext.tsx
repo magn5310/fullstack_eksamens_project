@@ -147,31 +147,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-
-    const data = await response.json();
-    setUser(data.user);
-  };
-
-  useEffect(() => {
-    // Check for existing session
-    const checkSession = async () => {
-      try {
-        const response = await fetch("/api/auth/session");
-        if (response.ok) {
-          const data = await response.json();
-          setUser(data.user);
-        }
-      } catch (error) {
-        console.error("Session check failed:", error);
-      } finally {
-        isLoading(false);
-      }
-    };
-
-    checkSession();
-  }, []);
-
-  return <AuthContext.Provider value={{ user, loading, login, register }}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {

@@ -6,22 +6,22 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function CreateRestaurantPage() {
-  const { user, loading } = useAuth();
+  const { user, isLoading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    console.log("🔍 Auth Debug:", { user, loading });
+    console.log("🔍 Auth Debug:", { user, isLoading });
     console.log("🍪 Auth Token:", localStorage.getItem("authToken"));
-  }, [user, loading]);
+  }, [user, isLoading]);
 
   useEffect(() => {
-    if (!loading && !user) {
+    if (!isLoading && !user) {
       console.log(user);
       router.push("/login");
     }
-  }, [user, loading, router]);
+  }, [user, isLoading, router]);
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
