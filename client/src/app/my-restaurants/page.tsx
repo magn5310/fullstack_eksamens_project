@@ -274,7 +274,7 @@ export default function MyRestaurantsPage() {
                           <Link href={`/products/${selectedRestaurant.slug}`}>View Public Page</Link>
                         </Button>
                         <Button className="bg-lilla hover:bg-lilla/90" asChild>
-                          <Link href="/edit-restaurant" className="flex items-center">
+                          <Link href={`my-restaurants/edit/${selectedRestaurant.id}`} className="flex items-center">
                             <FontAwesomeIcon icon={faEdit} className="w-4 h-4 mr-2" />
                             Edit Restaurant
                           </Link>

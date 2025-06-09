@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Hent statistikker parallelt for bedre performance
-    const [totalUsers, activeUsers, totalReviews, pendingReviews, approvedReviews, rejectedReviews, totalRestaurants] = await Promise.all([
+    const [totalUsers, activeUsers, totalReviews, pendingReviewsCount, pendingReviewsData, approvedReviews, approvedReviewsData, rejectedReviews, rejectedReviewsData, totalRestaurants, totalRestaurantsData] = await Promise.all([
       prisma.user.count(),
 
       // Aktive brugere (har skrevet mindst 1 review i de sidste 30 dage)
@@ -47,34 +47,106 @@ export async function GET(request: NextRequest) {
 
       prisma.review.count({
         where: {
-            status: "PENDING",
-            reported: true
+          status: "PENDING",
+          reported: true,
+        },
+      }),
+
+      prisma.review.findMany({
+        where: {
+          status: "PENDING",
+          reported: true,
+        },
+        include: {
+          author: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+              email: true,
+            },
+          },
         },
       }),
 
       prisma.review.count({
         where: {
-           status: "APPROVED" 
+          status: "APPROVED",
+          reported: true,
+        },
+      }),
+
+      prisma.review.findMany({
+        where: {
+          status: "APPROVED",
+          reported: true,
+        },
+        include: {
+          author: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+              email: true,
+            },
+          },
         },
       }),
 
       prisma.review.count({
         where: {
-           status: "REJECTED"
+          status: "REJECTED",
+          reported: true,
+        },
+      }),
+
+      prisma.review.findMany({
+        where: {
+          status: "REJECTED",
+          reported: true,
+        },
+        include: {
+          author: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+              email: true,
+            },
+          },
         },
       }),
 
       prisma.restaurant.count(),
+
+      prisma.restaurant.findMany({
+        include: {
+          reviews: {
+            select: {
+              id: true,
+              title: true,
+              status: true,
+              createdAt: true,
+            },
+          },
+        }
+      })
+       
+
     ]);
 
 
     const stats = {
       totalUsers,
       activeUsers,
-      pendingReviews, 
+      pendingReviews: pendingReviewsCount,
+      pendingReviewsData, 
       approvedReviews, 
-      rejectedReviews, 
+      approvedReviewsData,
+      rejectedReviews,
+      rejectedReviewsData, 
       totalRestaurants,
+      totalRestaurantsData,
       totalReviews,
     };
 
