@@ -3,7 +3,7 @@ import ReviewSection from '@/components/ReviewSection';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import ShopRating from '@/components/ui/shopRating';
 import { prisma } from '@/lib/prisma'; // Prisma client
-import { faLocationDot, faLocationPin, faLocationPinLock, faMapLocation, faMapLocationDot, faPhone } from '@fortawesome/free-solid-svg-icons';
+import { faLocationDot, faPhone } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 
