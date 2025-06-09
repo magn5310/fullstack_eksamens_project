@@ -65,7 +65,6 @@ console.log(user);
               <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" className="bi bi-person-fill" viewBox="0 0 16 16">
                 <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
               </svg>
-              
             </Link>
           ) : (
             <Link href="/login" className="text-[#fffffe] font-bold">
@@ -81,10 +80,8 @@ console.log(user);
         </div>
       </nav>
 
-      {/* Overlay */}
       <div className={`fixed inset-0 bg-black/50 z-50 transition-opacity duration-300 ${menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`} onClick={closeMenu} />
 
-      {/* Side Menu */}
       <div className={`fixed top-0 right-0 h-full w-80 bg-black/90 backdrop-blur-xl border-l border-white/10 z-50 transform transition-transform duration-300 ease-in-out ${menuOpen ? "translate-x-0" : "translate-x-full"}`}>
         <div className="p-6 pt-20">
           <nav className="space-y-6">
@@ -92,10 +89,9 @@ console.log(user);
               Home
             </Link>
             <Link href="/restaurants" className="block text-white text-xl hover:text-white/70 transition-colors" onClick={closeMenu}>
-              Restaurants
+              See Restaurants
             </Link>
 
-            {/* Login/Profile section */}
             <div className="pt-6 border-t border-white/20">
               {isLoggedIn ? (
                 <div className="space-y-4">
@@ -107,6 +103,19 @@ console.log(user);
                   <Link href="/profile" className="block text-white text-xl hover:text-white/70 transition-colors" onClick={closeMenu}>
                     Profile
                   </Link>
+
+                  {user?.restaurants?.length ? 
+                    <Link href="/my-restaurants" className="block text-white text-xl hover:text-white/70 transition-colors" onClick={closeMenu}>
+                      My Restaurants
+                    </Link>
+                   : null}
+
+                  {user?.role === "Admin" && (
+                    <Link href="/admin-dashboard" className="block text-white text-xl hover:text-white/70 transition-colors" onClick={closeMenu}>
+                      Admin
+                    </Link>
+                  )}
+
                   <button className="block text-white text-xl hover:text-white/70 transition-colors" onClick={handleLogout}>
                     Logout
                   </button>

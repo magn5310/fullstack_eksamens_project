@@ -19,7 +19,6 @@ interface Review {
   };
   comment: string | null;
   createdAt: string;
-  // Fjern updatedAt - det findes ikke i dit Review model
   tasteScore: number;
   serviceScore: number;
   priceScore: number;

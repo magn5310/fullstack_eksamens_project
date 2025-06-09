@@ -27,6 +27,39 @@ export async function POST(request: NextRequest) {
             },
           },
         },
+        restaurants: {
+          orderBy: { createdAt: "desc" },
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            address: true,
+            createdAt: true,
+            description: true,
+            phone: true,
+            website: true,
+            openHours: true,
+            reviews: {
+              select: {
+                id: true,
+                tasteScore: true,
+                serviceScore: true,
+                priceScore: true,
+                comment: true,
+                title: true,
+                createdAt: true,
+                restaurantId: true,
+                author: {
+                  select: {
+                    id: true,
+                    firstName: true,
+                    lastName: true,
+                  },
+                },
+              },
+            },
+          },
+        },
       },
     });
 
@@ -61,6 +94,28 @@ export async function POST(request: NextRequest) {
           serviceScore: review.serviceScore,
           priceScore: review.priceScore,
           title: review.title,
+        })),
+        restaurants: user.restaurants.map((restaurant) => ({
+          id: restaurant.id,
+          name: restaurant.name,
+          slug: restaurant.slug,
+          description: restaurant.description,
+          address: restaurant.address,
+          phone: restaurant.phone,
+          website: restaurant.website,
+          openHours: restaurant.openHours,
+          createdAt: restaurant.createdAt.toISOString(),
+          reviews: restaurant.reviews.map((review) => ({
+            id: review.id,
+            restaurantId: review.restaurantId,
+            comment: review.comment,
+            createdAt: review.createdAt.toISOString(),
+            tasteScore: review.tasteScore,
+            serviceScore: review.serviceScore,
+            priceScore: review.priceScore,
+            title: review.title,
+            author: review.author,
+          })),
         })),
       },
     });
