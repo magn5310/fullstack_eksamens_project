@@ -2,9 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
-// Fix the parameter typing
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+// Fix the parameter typing for App Router
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await params; // Await params first
+
     const token = request.cookies.get("auth-token")?.value;
     if (!token) {
       return NextResponse.json({ error: "No token found" }, { status: 401 });
@@ -26,12 +28,12 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
 
     // Delete associated reviews first (to avoid foreign key constraints)
     await prisma.review.deleteMany({
-      where: { restaurantId: params.id },
+      where: { restaurantId: id }, // Use the awaited id
     });
 
     // Then delete the restaurant
     await prisma.restaurant.delete({
-      where: { id: params.id },
+      where: { id }, // Use the awaited id
     });
 
     return NextResponse.json({ success: true, message: "Restaurant deleted successfully" });
