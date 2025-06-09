@@ -78,15 +78,37 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "User does not exist" }, { status: 404 });
     }
 
+    const existingRestaurant = await prisma.restaurant.findFirst({
+      where: {
+        name: {
+          equals: validatedData.name,
+        },
+      },
+    });
+
+    if (existingRestaurant) {
+      return NextResponse.json({ error: "A restaurant with this name already exists" }, { status: 409 });
+    }
+
+    const fullAddress = `${validatedData.addressLine}, ${validatedData.postalCode} ${validatedData.city}`;
+
+    const formatTime = (hour: number, minute: number) => {
+      return `${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`;
+    };
+
+    const openingTime = formatTime(validatedData.openingHour, validatedData.openingMinute);
+    const closingTime = formatTime(validatedData.closingHour, validatedData.closingMinute);
+    const openHours = `${openingTime}-${closingTime}`;
+
     const slug = await generateUniqueSlug(validatedData.name);
 
     const restaurant = await prisma.restaurant.create({
       data: {
         name: validatedData.name,
-        address: validatedData.address,
+        address: fullAddress,
         slug: slug,
         description: validatedData.description,
-        openHours: validatedData.openHours,
+        openHours: openHours,
         phone: validatedData.phone,
         website: validatedData.website,
         ownerId: user.id,

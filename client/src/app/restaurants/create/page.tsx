@@ -10,11 +10,6 @@ export default function CreateRestaurantPage() {
   const router = useRouter();
 
   useEffect(() => {
-    console.log("🔍 Auth Debug:", { user, isLoading });
-    console.log("🍪 Auth Token:", localStorage.getItem("authToken"));
-  }, [user, isLoading]);
-
-  useEffect(() => {
     if (!isLoading && !user) {
       console.log(user);
       router.push("/login");
