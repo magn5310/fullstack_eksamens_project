@@ -14,7 +14,7 @@ const reviewSchema = z.object({
     comment: z.string().max(500).optional(),
   });
 
-export default function ReviewForm({ restaurantId }: { restaurantId: string }) {
+export default function ReviewForm({restaurantId}: { restaurantId: string }) {
     const [submitted, setSubmitted] = useState(false)
     const { register, handleSubmit, formState: { errors } } = useForm({
       resolver: zodResolver(reviewSchema),
@@ -22,12 +22,15 @@ export default function ReviewForm({ restaurantId }: { restaurantId: string }) {
 
     const onsubmit = async (data: z.infer<typeof reviewSchema>) => {
         try {
-            const response = await fetch(`/api/reviews/${restaurantId}`, {
+            const response = await fetch(`/api/reviews/`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(data),
+                body: JSON.stringify({
+                    ...data,
+                    restaurantId,
+                }),
             });
 
             if (!response.ok) {

@@ -1,16 +1,12 @@
-// /app/api/reviews/[restaurantId]/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { verifyToken } from "@/lib/auth";
 
-export async function POST(request: NextRequest, context: { params: { restaurantId: string } }) {
-  const { restaurantId } = context.params;
-
+export async function POST(request: NextRequest) {
   const token = request.cookies.get("auth-token")?.value;
   if (!token) {
     return NextResponse.json({ success: false, message: "Unauthorized" }, { status: 401 });
   }
-
 
   const decoded = verifyToken(token);
   if (!decoded) {
@@ -19,17 +15,22 @@ export async function POST(request: NextRequest, context: { params: { restaurant
 
   const userId = decoded.userId;
   const body = await request.json();
+  const { restaurantId, tasteScore, serviceScore, priceScore, comment, title } = body;
+
+  if (!restaurantId) {
+    return NextResponse.json({ success: false, message: "Missing restaurant ID" }, { status: 400 });
+  }
 
   try {
     const review = await prisma.review.create({
       data: {
-        restaurantId: restaurantId,
+        restaurantId,
         authorId: userId,
-        tasteScore: body.tasteScore,
-        serviceScore: body.serviceScore,
-        priceScore: body.priceScore,
-        comment: body.comment || "",
-        title: body.title || "",
+        tasteScore,
+        serviceScore,
+        priceScore,
+        comment: comment || "",
+        title: title || "",
       },
     });
 
