@@ -17,7 +17,7 @@ export default function ReviewSection({ restaurantId }: { restaurantId: string }
     if (!isAuthenticated) {
     return (
       <div className="flex flex-col items-center mt-4">
-        <p className="text-gray-500">Du skal være logget ind for at skrive en anmeldelse.</p>
+        <p className="text-gray-500">You have to be logged in to write a review.</p>
       </div>
     );
     }
@@ -27,7 +27,7 @@ export default function ReviewSection({ restaurantId }: { restaurantId: string }
   return (
     <div className="flex flex-col items-center mt-4">
       <Button onClick={() => setShowForm(!showForm)} className="my-4">
-        {showForm ? "Skjul anmeldelsesformular" : "Skriv en anmeldelse"}
+        {showForm ? "Hide form" : "Write a review"}
       </Button>
       {showForm && <ReviewForm restaurantId={restaurantId} />}
     </div>

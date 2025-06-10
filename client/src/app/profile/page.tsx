@@ -77,11 +77,11 @@ export default function ProfilePage() {
               <div className="flex gap-8 text-center">
                 <div>
                   <div className="text-2xl font-bold text-black">{user?.reviews?.length}</div>
-                  <div className="text-sm text-gray-600">Anmeldelser</div>
+                  <div className="text-sm text-gray-600">Reviews</div>
                 </div>
                 <div>
                   <div className="text-2xl font-bold text-black">{mockFavorites.length}</div>
-                  <div className="text-sm text-gray-600">Favoritter</div>
+                  <div className="text-sm text-gray-600">Favourites</div>
                 </div>
               </div>
             </div>
@@ -101,14 +101,14 @@ export default function ProfilePage() {
 
         {activeTab === "reviews" && (
           <div className="space-y-4">
-            <h2 className="text-2xl font-bold mb-6">Mine anmeldelser</h2>
+            <h2 className="text-2xl font-bold mb-6">My reviews</h2>
 
             {user?.reviews?.length === 0 ? (
               <Card>
                 <CardContent className="text-center py-12">
-                  <p className="text-gray-600 mb-4">Du har ikke skrevet nogen anmeldelser endnu.</p>
+                  <p className="text-gray-600 mb-4">You have not made any reviews yet.</p>
                   <Button asChild className="bg-lilla">
-                    <Link href="/restaurants">Find restauranter</Link>
+                    <Link href="/restaurants">Find restaurants</Link>
                   </Button>
                 </CardContent>
               </Card>
@@ -133,9 +133,9 @@ export default function ProfilePage() {
                         <p className="text-gray-700 mb-4">{review.comment}</p>
 
                         <div className="flex gap-4 text-sm text-gray-600">
-                          <span>Smag: {review.tasteScore}/5</span>
+                          <span>Taste: {review.tasteScore}/5</span>
                           <span>Service: {review.serviceScore}/5</span>
-                          <span>Pris: {review.priceScore}/5</span>
+                          <span>Price: {review.priceScore}/5</span>
                         </div>
                       </CardContent>
                     </Card>
@@ -148,14 +148,14 @@ export default function ProfilePage() {
 
         {activeTab === "favorites" && (
           <div className="space-y-4">
-            <h2 className="text-2xl font-bold mb-6">Favoritter</h2>
+            <h2 className="text-2xl font-bold mb-6">Favourites</h2>
 
             {mockFavorites.length === 0 ? (
               <Card>
                 <CardContent className="text-center py-12">
-                  <p className="text-gray-600 mb-4">Du har ikke tilføjet nogen favoritter endnu.</p>
+                  <p className="text-gray-600 mb-4">You have not added any favourites yet.</p>
                   <Button asChild className="bg-lilla">
-                    <Link href="/restaurants">Find restauranter</Link>
+                    <Link href="/restaurants">Find restaurants</Link>
                   </Button>
                 </CardContent>
               </Card>
@@ -171,7 +171,7 @@ export default function ProfilePage() {
                       </div>
                       <p className="text-sm text-gray-600 mb-4">📍 {restaurant.address}</p>
                       <Button asChild variant="outline" className="w-full">
-                        <Link href={`/products/${restaurant.slug}`}>Se restaurant</Link>
+                        <Link href={`/products/${restaurant.slug}`}>See restaurant</Link>
                       </Button>
                     </CardContent>
                   </Card>

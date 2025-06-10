@@ -14,11 +14,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 
 const restaurantSchema = z.object({
-  name: z.string().min(1, "Restaurant navn er påkrævet"),
-  description: z.string().min(1, "Beskrivelse er påkrævet"),
+  name: z.string().min(1, "Restaurant name is required"),
+  description: z.string().min(1, "Description is required"),
   address: z.string().optional(),
   phone: z.string().optional(),
-  website: z.string().url("Ugyldig website URL").optional().or(z.literal("")),
+  website: z.string().url("Invalid URL").optional().or(z.literal("")),
   openHours: z.string().optional(),
 });
 
@@ -62,15 +62,15 @@ export default function EditRestaurantForm({ restaurant }: EditRestaurantFormPro
       const result = await res.json();
 
       if (result.success) {
-        toast.success("Restaurant opdateret succesfuldt");
+        toast.success("Restaurant updated successfully");
         router.push("/my-restaurants");
         router.refresh(); // Refresh server components
       } else {
-        toast.error(result.message || "Der opstod en fejl under opdatering");
+        toast.error(result.message || "Failed to update restaurant");
       }
     } catch (err) {
       console.error("Error submitting form", err);
-      toast.error("Der opstod en fejl under opdatering af restauranten");
+      toast.error("An error occurred while updating the restaurant. Please try again.");
     } finally {
       setSaving(false);
     }
@@ -98,7 +98,7 @@ export default function EditRestaurantForm({ restaurant }: EditRestaurantFormPro
                   <FormItem>
                     <FormLabel>Restaurant Navn</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Indtast restaurant navn" disabled={saving} />
+                      <Input {...field} placeholder="Restaurant name" disabled={saving} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -112,7 +112,7 @@ export default function EditRestaurantForm({ restaurant }: EditRestaurantFormPro
                   <FormItem>
                     <FormLabel>Beskrivelse</FormLabel>
                     <FormControl>
-                      <Textarea {...field} placeholder="Beskriv din restaurant..." rows={4} disabled={saving} />
+                      <Textarea {...field} placeholder="Descripe your restaurant..." rows={4} disabled={saving} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -124,9 +124,9 @@ export default function EditRestaurantForm({ restaurant }: EditRestaurantFormPro
                 name="address"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Adresse (valgfri)</FormLabel>
+                    <FormLabel>Address (Optional)</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Indtast adresse" disabled={saving} />
+                      <Input {...field} placeholder="Type address" disabled={saving} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -138,9 +138,9 @@ export default function EditRestaurantForm({ restaurant }: EditRestaurantFormPro
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Telefon (valgfri)</FormLabel>
+                    <FormLabel>Phone (Optional)</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Indtast telefonnummer" disabled={saving} />
+                      <Input {...field} placeholder="Type Phonenumber" disabled={saving} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -152,7 +152,7 @@ export default function EditRestaurantForm({ restaurant }: EditRestaurantFormPro
                 name="website"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Website (valgfri)</FormLabel>
+                    <FormLabel>Website (optional)</FormLabel>
                     <FormControl>
                       <Input {...field} placeholder="https://example.com" disabled={saving} />
                     </FormControl>
@@ -166,11 +166,11 @@ export default function EditRestaurantForm({ restaurant }: EditRestaurantFormPro
                 name="openHours"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Åbningstider (valgfri)</FormLabel>
+                    <FormLabel>Opening hours (optional)</FormLabel>
                     <FormControl>
                       <Textarea
                         {...field}
-                        placeholder="Man-Fre: 10:00-22:00&#10;Lør-Søn: 12:00-20:00"
+                        placeholder="Man-Fri: 10:00-22:00&#10;Sat-Sun: 12:00-20:00"
                         rows={3}
                         disabled={saving}
                       />
@@ -182,10 +182,10 @@ export default function EditRestaurantForm({ restaurant }: EditRestaurantFormPro
 
               <div className="flex gap-4 pt-4">
                 <Button type="button" variant="outline" className="flex-1" onClick={() => router.push("/my-restaurants")} disabled={saving}>
-                  Annuller
+                  Cancel
                 </Button>
                 <Button type="submit" className="flex-1 bg-lilla hover:bg-lilla/90" disabled={saving}>
-                  {saving ? "Gemmer..." : "Gem Ændringer"}
+                  {saving ? "Saving..." : "Save Changes"}
                 </Button>
               </div>
             </form>

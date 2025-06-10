@@ -19,13 +19,13 @@ import { useRouter } from "next/navigation"
 
 
 const formSchema = z.object({
-    firstName: z.string().min(1, "Fornavn er påkrævet"),
-    lastName: z.string().min(1, "Efternavn er påkrævet"),
-    email: z.string().email("Ugyldig email").min(1, "Email er påkrævet"),
-    password: z.string().min(6, "Adgangskode skal være mindst 6 tegn").optional(),
+    firstName: z.string().min(1, "First name is required"),
+    lastName: z.string().min(1, "Last name is required"),
+    email: z.string().email("Invalid email").min(1, "Email is required"),
+    password: z.string().min(6, "Password must be at least 6 characters").optional(),
     confirmPassword: z.string().optional(),
 }).refine((data) => data.password === data.confirmPassword, {
-    message: "Adgangskoderne skal matche",
+    message: "Passwords must match",
     path: ["confirmPassword"],
 })
 
@@ -100,7 +100,7 @@ export default function UpdateProfile() {
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100">
             <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
-                <h2 className="text-2xl font-bold mb-6 text-center">Opdater Profil</h2>
+                <h2 className="text-2xl font-bold mb-6 text-center">Update Profile</h2>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
                         <FormField
@@ -108,12 +108,12 @@ export default function UpdateProfile() {
                             name="firstName"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-gray-700">Fornavn</FormLabel>
+                                    <FormLabel className="text-gray-700">First Name</FormLabel>
                                     <FormControl>
                                         <input
                                             {...field}
                                             type="text"
-                                            placeholder="Indtast dit fornavn"
+                                            placeholder="Enter your first name"
                                             className="input input-bordered w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         />
                                     </FormControl>
@@ -126,12 +126,12 @@ export default function UpdateProfile() {
                             name="lastName"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-gray-700">Efternavn</FormLabel>
+                                    <FormLabel className="text-gray-700">Last Name</FormLabel>
                                     <FormControl>
                                         <input
                                             {...field}
                                             type="text"
-                                            placeholder="Indtast dit efternavn"
+                                            placeholder="Enter your last name"
                                             className="input input-bordered w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         />
                                     </FormControl>
@@ -149,7 +149,7 @@ export default function UpdateProfile() {
                                         <input
                                             {...field}
                                             type="email"
-                                            placeholder="Indtast din email"
+                                            placeholder="Enter your email"
                                             className="input input-bordered w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         />
                                     </FormControl>
@@ -162,12 +162,12 @@ export default function UpdateProfile() {
                             name="password"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-gray-700">Adgangskode</FormLabel>
+                                    <FormLabel className="text-gray-700">Password</FormLabel>
                                     <FormControl>
                                         <input
                                             {...field}
                                             type="password"
-                                            placeholder="Ny adgangskode (valgfri)"
+                                            placeholder="New password (optional)"
                                             className="input input-bordered w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         />
                                     </FormControl>
@@ -180,12 +180,12 @@ export default function UpdateProfile() {
                             name="confirmPassword"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="text-gray-700">Bekræft adgangskode</FormLabel>
+                                    <FormLabel className="text-gray-700">Confirm Password</FormLabel>
                                     <FormControl>
                                         <input
                                             {...field}
                                             type="password"
-                                            placeholder="Gentag adgangskode"
+                                            placeholder="Repeat password"
                                             className="input input-bordered w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                                         />
                                     </FormControl>
@@ -194,7 +194,7 @@ export default function UpdateProfile() {
                             )}
                         />
                         <Button type="submit" className="btn btn-primary w-full mt-2">
-                            Opdater Profil
+                            Update Profile
                         </Button>
                     </form>
                 </Form>
