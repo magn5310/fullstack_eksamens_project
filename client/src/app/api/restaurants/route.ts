@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
 
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
-      include: { role: true },
+      include: { role: true, restaurants: true },
     });
 
     if (!user) {
@@ -90,6 +90,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "A restaurant with this name already exists" }, { status: 409 });
     }
 
+    const isFirstRestaurant = user.restaurants.length === 0;
+
     const fullAddress = `${validatedData.addressLine}, ${validatedData.postalCode} ${validatedData.city}`;
 
     const formatTime = (hour: number, minute: number) => {
@@ -102,32 +104,60 @@ export async function POST(request: NextRequest) {
 
     const slug = await generateUniqueSlug(validatedData.name);
 
-    const restaurant = await prisma.restaurant.create({
-      data: {
-        name: validatedData.name,
-        address: fullAddress,
-        slug: slug,
-        description: validatedData.description,
-        openHours: openHours,
-        phone: validatedData.phone,
-        website: validatedData.website,
-        ownerId: user.id,
-      },
-      include: {
-        owner: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-            email: true,
+    let restaurantOwnerRole = null;
+    if (isFirstRestaurant && user.role.name !== "Restaurant owner") {
+      restaurantOwnerRole = await prisma.role.findUnique({
+        where: { name: "restaurant owner" },
+      });
+
+      if (!restaurantOwnerRole) {
+        return NextResponse.json({ error: "Restaurant owner role not found is system" }, { status: 500 });
+      }
+    }
+
+    const result = await prisma.$transaction(async (tx) => {
+      const restaurant = await prisma.restaurant.create({
+        data: {
+          name: validatedData.name,
+          address: fullAddress,
+          slug: slug,
+          description: validatedData.description,
+          openHours: openHours,
+          phone: validatedData.phone,
+          website: validatedData.website,
+          ownerId: user.id,
+        },
+        include: {
+          owner: {
+            select: {
+              id: true,
+              firstName: true,
+              lastName: true,
+              email: true,
+              role: true,
+            },
           },
         },
-      },
+      });
+      if (isFirstRestaurant && restaurantOwnerRole && user.role.name !== "restaurant owner") {
+        await tx.user.update({
+          where: { id: user.id },
+          data: { roleId: restaurantOwnerRole.id },
+        });
+
+        restaurant.owner.role = {
+          id: restaurantOwnerRole.id,
+          name: restaurantOwnerRole.name,
+        };
+      }
+      return restaurant;
     });
+
     return NextResponse.json(
       {
         message: "Restaurant created",
-        restaurant,
+        restaurant: result,
+        roleUpdated: isFirstRestaurant && user.role.name !== "restaurant owner",
       },
       { status: 201 }
     );
