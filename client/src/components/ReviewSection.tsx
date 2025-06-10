@@ -25,7 +25,7 @@ export default function ReviewSection({ restaurantId }: { restaurantId: string }
 
 
   return (
-    <div className="flex flex-col items-center mt-4">
+    <div className="grid grid-cols-1 w-full align-content-center">
       <Button onClick={() => setShowForm(!showForm)} className="my-4">
         {showForm ? "Hide form" : "Write a review"}
       </Button>
