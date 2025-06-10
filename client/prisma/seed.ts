@@ -3,8 +3,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY;
-const DEFAULT_IMAGE = "/images/kebab.jpg"
+
 
 
 
@@ -13,13 +12,13 @@ const DEFAULT_IMAGE = "/images/kebab.jpg"
     "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
     "https://images.unsplash.com/photo-1600891964599-f61ba0e24092?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
     "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
-    "https://images.unsplash.com/photo-1523986371872-9d3ba2e2f642?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
-    "https://images.unsplash.com/photo-1625941443837-252fc5e4bdf3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+    "https://images.unsplash.com/photo-1684864115205-242c064363e6?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "https://images.unsplash.com/photo-1583060095186-852adde6b819?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
     "https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
-    "https://images.unsplash.com/photo-1612874747564-d1e87b94cf41?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
-    "https://images.unsplash.com/photo-1604908177225-c5f84c904491?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
-    "https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+    "https://images.unsplash.com/photo-1638537125835-82acb38d3531?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzB8fGtlYmFifGVufDB8fDB8fHww",
+    "https://images.unsplash.com/photo-1633436375795-12b3b339712f?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   ];
   
 let imageIndex = 0;
