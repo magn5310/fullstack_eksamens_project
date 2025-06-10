@@ -1,17 +1,108 @@
+version: '3.8'
+
 services:
+  # MySQL Database
   mysql:
     image: mysql:8.0
+    container_name: kebab-mysql-dev
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: kebab_reviews
-      MYSQL_USER: kebabusers
+      MYSQL_USER: kebabuser
       MYSQL_PASSWORD: kebabpass
       MYSQL_ROOT_HOST: "%"
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d
     command: --bind-address=0.0.0.0 --default-authentication-plugin=mysql_native_password
+    networks:
+      - kebab-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # Next.js Client Application (Optimeret)
+  client-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      target: dev
+    container_name: kebab-client-dev
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=mysql://kebabuser:kebabpass@mysql:3306/kebab_reviews
+      - JWT_SECRET=your-super-secret-jwt-key-here-change-in-production
+      - JWT_EXPIRES_IN=7d
+      - NEXT_TELEMETRY_DISABLED=1
+      # Performance optimizations
+      - NODE_OPTIONS=--max-old-space-size=4096
+      - WATCHPACK_POLLING=false
+      - CHOKIDAR_USEPOLLING=false
+      # Sentry configuration
+      - SENTRY_DSN=https://6be44b2896284732acf18127d9a5f6c0@o4509465126174720.ingest.de.sentry.io/4509465132269648
+      - SENTRY_ORG=mmfkea
+      - SENTRY_PROJECT=fullstack-dev-eksamen
+    ports:
+      - "3000:3000"
+    volumes:
+      # Mount source code for hot reload (optimeret)
+      - ./client:/app
+      - /app/node_modules
+      - /app/.next
+      # Cache volumes for better performance
+      - nextjs_cache:/app/.next/cache
+      - node_modules_cache:/app/node_modules/.cache
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - kebab-network
+    stdin_open: true
+    tty: true
+    # Restart policy for stability
+    restart: unless-stopped
+    # Resource limits for better performance
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+        reservations:
+          memory: 1G
+
+  # Prisma Studio (Database GUI) - Optional
+  prisma-studio:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      target: dev
+    container_name: kebab-prisma-studio
+    environment:
+      - DATABASE_URL=mysql://kebabuser:kebabpass@mysql:3306/kebab_reviews
+    ports:
+      - "5555:5555"
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - kebab-network
+    command: npx prisma studio --hostname 0.0.0.0
+    profiles:
+      - tools
 
 volumes:
   mysql_data:
+    driver: local
+  nextjs_cache:
+    driver: local
+  node_modules_cache:
+    driver: local
+
+networks:
+  kebab-network:
+    driver: bridge

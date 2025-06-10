@@ -1,0 +1,57 @@
+# Optimeret Development Dockerfile
+FROM node:20-alpine AS base
+
+# Install dependencies
+FROM base AS deps
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+
+# Copy package files
+COPY client/package*.json ./
+RUN npm ci
+
+# Development stage
+FROM base AS dev
+WORKDIR /app
+
+# Install additional development tools
+RUN apk add --no-cache curl
+
+# Copy dependencies
+COPY --from=deps /app/node_modules ./node_modules
+
+# Copy source code
+COPY client/ .
+
+# Create nextjs user
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+# Give nextjs user ownership of app directory
+RUN chown -R nextjs:nodejs /app
+
+# Switch to nextjs user
+USER nextjs
+
+# Pre-generate Prisma client
+RUN npx prisma generate
+
+# Pre-build critical pages to warm up cache
+RUN npm run build || true
+
+# Expose port
+EXPOSE 3000
+
+# Set environment variables for better performance
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
+ENV NODE_ENV=development
+ENV NEXT_TELEMETRY_DISABLED=1
+
+# Performance optimizations
+ENV NODE_OPTIONS="--max-old-space-size=4096"
+ENV WATCHPACK_POLLING=false
+ENV CHOKIDAR_USEPOLLING=false
+
+# Start development server with optimizations
+CMD ["npm", "run", "dev"]
