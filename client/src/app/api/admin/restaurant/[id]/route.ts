@@ -23,6 +23,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
       include: { role: true },
     });
     if (!user || user.role.name !== "Admin") {
+      console.log("Unauthorized access attempt by user:", user?.id);
       return NextResponse.json({ error: "Unauthorized - Admin access required" }, { status: 403 });
     }
 
