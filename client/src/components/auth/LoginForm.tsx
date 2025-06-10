@@ -57,7 +57,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
         <CardDescription className="text-center">Log in to your account</CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mb-4">
           <FormField<LoginFormData> label="Email" name="email" type="email" register={register} error={errors.email} placeholder="your@email.com" />
 
           <FormField<LoginFormData> label="Password" name="password" type="password" register={register} error={errors.password} placeholder="Your password" />
