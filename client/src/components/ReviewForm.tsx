@@ -1,11 +1,12 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { sub } from "date-fns";
 
 
 const reviewSchema = z.object({
@@ -21,6 +22,12 @@ const reviewSchema = z.object({
     const { register, handleSubmit, watch, formState: { errors } } = useForm({
       resolver: zodResolver(reviewSchema),
     })
+
+    useEffect(() => {
+        if (submitted) {
+            toast.success("Review submitted successfully!");
+        }
+    }, [submitted]);
 
     // Watch values for live display
     const tasteScore = watch("tasteScore", 3)
@@ -54,9 +61,7 @@ const reviewSchema = z.object({
     }
 
     if (submitted) {
-        return (
-            toast.success("Review submitted successfully! Thank you for your feedback.")
-        )
+        return null; // Optionally return null or a success message
     }
 
     return (
