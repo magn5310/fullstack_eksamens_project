@@ -4,16 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { RegisterForm } from "@/components/auth/Registerform";
-import * as Sentry from "@sentry/nextjs";
-// Import Sentry for error tracking
-
-try {
-  // something that fails
-  throw new Error("This is a test error for Sentry");
-} catch (error) {
-  Sentry.captureException(error);
-  console.error("Sentry error captured:", error);
-}
 
 type AuthMode = "login" | "register";
 
