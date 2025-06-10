@@ -11,6 +11,7 @@ import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 // Brug types fra AuthContext i stedet for at definere dem igen
 type Restaurant = NonNullable<NonNullable<ReturnType<typeof useAuth>["user"]>["restaurants"]>[0];
@@ -68,7 +69,47 @@ function RestaurantStats({ restaurant }: { restaurant: Restaurant }) {
 
 // Recent Reviews Component
 function RecentReviews({ reviews }: { reviews: Review[] }) {
-  const recentReviews = reviews.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 5);
+  // Add state to track reviews locally
+  const [reviewsList, setReviewsList] = useState<Review[]>(reviews);
+  
+  // Sort on the state list
+  const recentReviews = reviewsList
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .slice(0, 5);
+  
+  const handleReport = async (reviewId: string) => {
+    const review = reviewsList.find((r) => r.id === reviewId);
+    if (!review) return;
+      
+   
+      try {
+        const res = await fetch(`/api/restaurant/report/${reviewId}`, {
+          method: "PUT",
+          credentials: "include",
+        });
+
+        if (!res.ok) throw new Error("Failed to update review");
+        
+        const data = await res.json();
+        
+        // Update local state optimistically
+        setReviewsList(prev => 
+          prev.map(r => 
+            r.id === reviewId 
+              ? { ...r, reported: !r.reported } 
+              : r
+          )
+        );
+        
+        // Show success message
+        toast.success(data.message);
+        
+      } catch (err) {
+        console.error("Error updating review:", err);
+        toast.error("Failed to update review status");
+      }
+    
+  };
 
   return (
     <Card>
@@ -84,7 +125,7 @@ function RecentReviews({ reviews }: { reviews: Review[] }) {
         ) : (
           <div className="space-y-4">
             {recentReviews.map((review) => {
-              const averageRating = (review.tasteScore + review.serviceScore + review.priceScore) / 3;
+            const averageRating = Math.round(((review.tasteScore + review.serviceScore + review.priceScore) / 3) * 10) / 10;
               return (
                 <div key={review.id} className="border-b border-gray-200 pb-4 last:border-b-0">
                   <div className="flex justify-between items-start mb-2">
@@ -94,9 +135,19 @@ function RecentReviews({ reviews }: { reviews: Review[] }) {
                       </p>
                       <div className="flex items-center gap-2">
                         <StarRating rating={averageRating} />
+                        <p className="text-gray-500">{averageRating}</p>
                         <span className="text-sm text-gray-600">{new Date(review.createdAt).toLocaleDateString("da-DK")}</span>
                       </div>
                     </div>
+                    {!review.reported ? (
+                      <Button size="sm" onClick={() => handleReport(review.id)} className="cursor-pointer bg-red-500 hover:bg-red-600 text-white">
+                        Report
+                      </Button>
+                    ) : (
+                      <Button size="sm" onClick={() => handleReport(review.id)} className="cursor-pointer bg-red-500 hover:bg-red-600 text-white">
+                        Unreport
+                      </Button>
+                    )}
                   </div>
                   {review.comment && <p className="text-gray-700 text-sm">{review.comment}</p>}
                   <div className="flex gap-4 text-xs text-gray-500 mt-2">
@@ -118,7 +169,7 @@ export default function MyRestaurantsPage() {
   const { user, isLoading } = useAuth();
   const router = useRouter();
   const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
-
+  
   // Redirect hvis ikke logget ind
   useEffect(() => {
     if (!isLoading && !user) {
