@@ -38,7 +38,7 @@ export default function AuthPage() {
         <div className="text-center">
           <div className="flex justify-center mb-8">
             <div className="flex bg-gray-200 rounded-lg p-1">
-              <button onClick={() => setMode("login")} className={`px-6 py-2 rounded-md font-medium transition-colors ${mode === "login" ? "bg-white text-blue-600 shadow-sm" : "text-gray-600 hover:text-gray-800"}`}>
+              <button onClick={() => setMode("login")} className={`px-6 py-2 rounded-md font-medium transition-colors ${mode === "login" ? "bg-white text-lilla shadow-sm" : "text-gray-600 hover:text-gray-800"}`}>
                 Log ind
               </button>
               <button onClick={() => setMode("register")} className={`px-6 py-2 rounded-md font-medium transition-colors ${mode === "register" ? "bg-white text-green-600 shadow-sm" : "text-gray-600 hover:text-gray-800"}`}>

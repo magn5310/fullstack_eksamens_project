@@ -50,8 +50,8 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
   return (
     <Card>
       <CardHeader>
-        <Image src={"/logo_transparant.svg"} alt="Kebabadvisor logo" height={300} width={300} className="m-auto"></Image>
-        <CardTitle className="text-center">Kebabadvisor</CardTitle>
+        <Image src={"/logo_transparant.svg"} alt="Kebabadvisor logo" height={100} width={100} className="m-auto"></Image>
+        <CardTitle className="text-center text-3xl">Kebabadvisor</CardTitle>
         <CardDescription className="text-center">Sign up to start reviewing!</CardDescription>
       </CardHeader>
       <CardContent>
