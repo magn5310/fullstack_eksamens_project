@@ -64,8 +64,9 @@ model Review {
   priceScore   Int        @map("price_score")
   title        String
   comment      String?    @map("review_comment")
-  
+  reported      Boolean    @default(false) @map("review_reported")
   createdAt    DateTime   @default(now()) @map("created_at")
+  status       String     @default("NONE") @map("review_status")
   
   restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
   author       User       @relation(fields: [authorId], references: [id])

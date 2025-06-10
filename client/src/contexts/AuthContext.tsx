@@ -1,7 +1,37 @@
 "use client";
 
-import { Review } from "@prisma/client";
 import { createContext, useContext, ReactNode, useState, useEffect } from "react";
+
+interface Restaurant {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  address?: string;
+  phone?: string;
+  website?: string;
+  openHours?: string;
+  createdAt: string;
+  reviews: Review[];
+}
+
+interface Review {
+  id: string;
+  restaurantId: string;
+  comment: string | null;
+  createdAt: string;
+  tasteScore: number;
+  serviceScore: number;
+  priceScore: number;
+  title: string;
+  author?: {
+    id: string;
+    firstName: string;
+    lastName: string;
+  };
+  status: "PENDING" | "APPROVED" | "REJECTED";
+  reported?: boolean;
+}
 
 interface User {
   id: string;
@@ -9,7 +39,9 @@ interface User {
   firstName: string;
   lastName: string;
   role: string;
-  reviews: Review[];
+  createdAt: string;
+  reviews?: Review[];
+  restaurants?: Restaurant[];
 }
 
 interface AuthContextType {

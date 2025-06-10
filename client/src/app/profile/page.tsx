@@ -11,28 +11,6 @@ import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
 
 
-const mockReviews = [
-  {
-    id: "1",
-    restaurant: "Kebab House",
-    rating: 4,
-    comment: "Great kebabs, with fresh ingredients and excellent service!",
-    createdAt: "2024-01-15",
-    tasteScore: 4,
-    serviceScore: 5,
-    priceScore: 3,
-  },
-  {
-    id: "2",
-    restaurant: "Shawarma King",
-    rating: 3.5,
-    comment: "Tasty shawarma, but the meat was a bit dry.",
-    createdAt: "2024-01-10",
-    tasteScore: 4,
-    serviceScore: 3,
-    priceScore: 4,
-  },
-];
 
 const mockFavorites = [
   {
@@ -98,7 +76,7 @@ export default function ProfilePage() {
 
               <div className="flex gap-8 text-center">
                 <div>
-                  <div className="text-2xl font-bold text-black">{user?.reviews.length}</div>
+                  <div className="text-2xl font-bold text-black">{user?.reviews?.length}</div>
                   <div className="text-sm text-gray-600">Anmeldelser</div>
                 </div>
                 <div>
@@ -125,7 +103,7 @@ export default function ProfilePage() {
           <div className="space-y-4">
             <h2 className="text-2xl font-bold mb-6">Mine anmeldelser</h2>
 
-            {mockReviews.length === 0 ? (
+            {user?.reviews?.length === 0 ? (
               <Card>
                 <CardContent className="text-center py-12">
                   <p className="text-gray-600 mb-4">Du har ikke skrevet nogen anmeldelser endnu.</p>
@@ -136,7 +114,7 @@ export default function ProfilePage() {
               </Card>
             ) : (
               <div className="space-y-4">
-                {user?.reviews.map((review) => {
+                {user?.reviews?.map((review) => {
                   const averageRating =
                     (review.tasteScore + review.serviceScore + review.priceScore) / 3;
                   return (

@@ -40,3 +40,53 @@ export const registerSchema = z
   });
 
 export type registerFormData = z.infer<typeof registerSchema>;
+
+export const createRestaurantSchema = z
+  .object({
+    name: z.string().min(1, "Restaurant name is required").min(2, "Name must be at least 2 characters").max(100, "Name cannot be longer than 100 characters"),
+
+    addressLine: z.string().min(1, "Address line is required").min(3, "Address line must be at least 3 characters").max(100, "Address line cannot be longer than 100 characters"),
+
+    postalCode: z
+      .string()
+      .min(1, "Postal code is required")
+      .regex(/^\d{4}$/, "Postal code must be 4 digits"),
+
+    city: z.string().min(1, "City is required").min(2, "City must be at least 2 characters").max(50, "City cannot be longer than 50 characters"),
+
+    description: z.string().min(1, "Description is required").min(10, "Description must be at least 10 characters").max(1000, "Description cannot be longer than 1000 characters"),
+
+    openingHour: z.number().min(0, "Opening hour must be between 0-23").max(23, "Opening hour must be between 0-23"),
+
+    openingMinute: z.number().min(0, "Opening minute must be between 0-59").max(59, "Opening minute must be between 0-59"),
+
+    closingHour: z.number().min(0, "Closing hour must be between 0-23").max(23, "Closing hour must be between 0-23"),
+
+    closingMinute: z.number().min(0, "Closing minute must be between 0-59").max(59, "Closing minute must be between 0-59"),
+
+    phone: z
+      .string()
+      .min(1, "Phone number is required")
+      .regex(/^[\+]?[\d\s\-\(\)]{8,15}$/, "Invalid phone number format"),
+
+    website: z
+      .string()
+      .min(1, "Website is required")
+      .url("Invalid website URL")
+      .refine((url) => url.startsWith("http://") || url.startsWith("https://"), {
+        message: "URL must start with http:// or https://",
+      }),
+  })
+  .refine(
+    (data) => {
+      const openingMinutes = data.openingHour * 60 + data.openingMinute;
+      const closingMinutes = data.closingHour * 60 + data.closingMinute;
+      return closingMinutes > openingMinutes;
+    },
+    {
+      message: "Closing time must be after opening time",
+      path: ["closingHour"],
+    }
+  );
+
+export type CreateRestaurantData = z.infer<typeof createRestaurantSchema>;
