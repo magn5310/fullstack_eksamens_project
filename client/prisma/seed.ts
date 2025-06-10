@@ -3,6 +3,29 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY;
+const DEFAULT_IMAGE = "/images/kebab.jpg"
+
+
+
+  const unsplashImages = [
+    "https://images.unsplash.com/photo-1633321702518-7feccafb94d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+    "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+    "https://images.unsplash.com/photo-1600891964599-f61ba0e24092?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+    "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+    "https://images.unsplash.com/photo-1523986371872-9d3ba2e2f642?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+    "https://images.unsplash.com/photo-1625941443837-252fc5e4bdf3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+    "https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+    "https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+    "https://images.unsplash.com/photo-1612874747564-d1e87b94cf41?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+    "https://images.unsplash.com/photo-1604908177225-c5f84c904491?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+    "https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
+  ];
+  
+let imageIndex = 0;
+const getNextImage = () => unsplashImages[imageIndex++ % unsplashImages.length];
+
+
 async function main() {
   console.log("🌱 Starting database seed...");
 
@@ -160,6 +183,7 @@ async function main() {
   console.log("👤 Created users");
 
   // Opret restauranter - nu med ownerId påkrævet
+
   const torvets = await prisma.restaurant.create({
     data: {
       name: "Torvets Kebab",
@@ -170,6 +194,7 @@ async function main() {
       phone: "+45 33 12 34 56",
       website: "https://torvets-kebab.dk",
       ownerId: sofie.id, // Tilføjet påkrævet ownerId
+      imageUrl: getNextImage(), // Tilføjet billede
     },
   });
 
@@ -183,6 +208,7 @@ async function main() {
       phone: "+45 35 87 65 43",
       website: "https://norrebro-shawarma.dk",
       ownerId: lise.id, // Tilføjet påkrævet ownerId
+      imageUrl: getNextImage(),
     },
   });
 
@@ -196,6 +222,7 @@ async function main() {
       phone: "+45 33 45 67 89",
       website: "https://istanbul-grill.dk",
       ownerId: admin.id,
+      imageUrl: getNextImage(),
     },
   });
 
@@ -209,6 +236,7 @@ async function main() {
       phone: "+45 32 98 76 54",
       website: "https://aleppo-kitchen.dk",
       ownerId: sofie.id,
+      imageUrl: getNextImage(),
     },
   });
 
@@ -222,6 +250,7 @@ async function main() {
       phone: "+45 38 12 34 67",
       website: "https://beirut-express.dk",
       ownerId: lise.id,
+      imageUrl: getNextImage(),
     },
   });
 
@@ -235,6 +264,7 @@ async function main() {
       phone: "+45 33 91 23 45",
       website: "https://sultan-kebab.dk",
       ownerId: admin.id,
+      imageUrl: getNextImage(),
     },
   });
 
@@ -248,6 +278,7 @@ async function main() {
       phone: "+45 33 22 66 88",
       website: "https://babylon-shawarma.dk",
       ownerId: sofie.id,
+      imageUrl: getNextImage(),
     },
   });
 
@@ -261,6 +292,7 @@ async function main() {
       phone: "+45 35 36 74 12",
       website: "https://damascus-grill.dk",
       ownerId: lise.id,
+      imageUrl: getNextImage(),
     },
   });
 
@@ -274,6 +306,7 @@ async function main() {
       phone: "+45 32 54 87 96",
       website: "https://antalya-kitchen.dk",
       ownerId: admin.id,
+      imageUrl: getNextImage(),
     },
   });
 
@@ -287,6 +320,7 @@ async function main() {
       phone: "+45 35 37 19 28",
       website: "https://palmyra-palace.dk",
       ownerId: sofie.id,
+      imageUrl: getNextImage(),
     },
   });
 
@@ -300,6 +334,7 @@ async function main() {
       phone: "+45 33 14 56 78",
       website: "https://marrakech-grill.dk",
       ownerId: lise.id,
+      imageUrl: getNextImage(),
     },
   });
 
@@ -594,12 +629,21 @@ async function main() {
   const userCount = await prisma.user.count();
   const restaurantCount = await prisma.restaurant.count();
   const reviewCount = await prisma.review.count();
+  const imageCount = await prisma.restaurant.count({
+    where: {
+      imageUrl: {
+        not: null,
+      },
+    },
+  });
 
   console.log("\n✅ Database seed completed!");
   console.log(`📊 Created:`);
   console.log(`   👥 ${userCount} users`);
   console.log(`   🏪 ${restaurantCount} restaurants`);
   console.log(`   ⭐ ${reviewCount} reviews`);
+  console.log(`   🖼️ ${imageCount} restaurants with images`);
+
 }
 
 main()
