@@ -29,6 +29,8 @@ interface Review {
     firstName: string;
     lastName: string;
   };
+  status: "PENDING" | "APPROVED" | "REJECTED";
+  reported?: boolean;
 }
 
 interface User {
