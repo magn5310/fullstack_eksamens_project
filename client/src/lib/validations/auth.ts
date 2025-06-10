@@ -88,3 +88,5 @@ export const createRestaurantSchema = z
       path: ["closingHour"],
     }
   );
+
+export type CreateRestaurantData = z.infer<typeof createRestaurantSchema>;

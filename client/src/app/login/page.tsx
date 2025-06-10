@@ -10,8 +10,7 @@ import * as Sentry from "@sentry/nextjs";
 try {
   // something that fails
   throw new Error("This is a test error for Sentry");
-}
-catch (error) {
+} catch (error) {
   Sentry.captureException(error);
   console.error("Sentry error captured:", error);
 }
@@ -30,10 +29,6 @@ export default function AuthPage() {
   const handleRegisterSuccess = () => {
     // Skift til login form efter succesfuld registrering
     setMode("login");
-  };
-
-  const switchMode = () => {
-    setMode(mode === "login" ? "register" : "login");
   };
 
   return (

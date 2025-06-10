@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createRestaurantSchema, CreateRestaurantData } from "@/lib/validations/auth";
 import { FormField } from "./ui/FormField";
-import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface CreateRestaurantFormProps {
   onSuccess?: (restaurant: CreateRestaurantData) => void;
@@ -19,12 +19,12 @@ interface ErrorDetail {
 export function CreateRestaurantForm({ onSuccess }: CreateRestaurantFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
+  // const [success, setSuccess] = useState(false);
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
     reset,
   } = useForm<CreateRestaurantData>({
     resolver: zodResolver(createRestaurantSchema),
@@ -54,7 +54,7 @@ export function CreateRestaurantForm({ onSuccess }: CreateRestaurantFormProps) {
 
       const result = await response.json();
 
-      setSuccess(true);
+      // setSuccess(true);
       reset();
 
       if (onSuccess) {

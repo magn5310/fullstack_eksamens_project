@@ -7,7 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { loginSchema, LoginFormData } from "@/lib/validations/auth";
 import { FormField } from "@/components/ui/FormField";
 import { toast } from "sonner";
-import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
 
 interface LoginFormProps {
@@ -22,7 +22,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     mode: "onChange",
