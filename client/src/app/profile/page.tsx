@@ -5,12 +5,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faStarHalfStroke } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faStar, faStarHalfStroke } from "@fortawesome/free-solid-svg-icons";
 import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
-
-
 
 const mockFavorites = [
   {
@@ -42,7 +40,7 @@ function StarRating({ rating }: { rating: number }) {
     if (rating >= starNumber) {
       return <FontAwesomeIcon key={starNumber} icon={faStar} className="text-black-400 w-4 h-4" />;
     } else if (rating >= starNumber - 0.5) {
-      return <FontAwesomeIcon key={starNumber} icon={faStarHalfStroke} className="text-black-400 w-4 h-4"  />;
+      return <FontAwesomeIcon key={starNumber} icon={faStarHalfStroke} className="text-black-400 w-4 h-4" />;
     } else {
       return <FontAwesomeIcon key={starNumber} icon={faStarRegular} className="text-black-400 w-4 h-4" />;
     }
@@ -91,7 +89,7 @@ export default function ProfilePage() {
         <div className="flex justify-center mb-8">
           <div className="flex bg-white rounded-lg p-1 shadow-sm border">
             <button onClick={() => setActiveTab("reviews")} className={`px-6 py-2 rounded-md font-medium transition-colors ${activeTab === "reviews" ? "bg-lilla text-white" : "text-gray-600 hover:text-gray-900"}`}>
-              Mine anmeldelser
+              My Reviews
             </button>
             <button onClick={() => setActiveTab("favorites")} className={`px-6 py-2 rounded-md font-medium transition-colors ${activeTab === "favorites" ? "bg-lilla text-white" : "text-gray-600 hover:text-gray-900"}`}>
               Favoritter
@@ -115,8 +113,7 @@ export default function ProfilePage() {
             ) : (
               <div className="space-y-4">
                 {user?.reviews?.map((review) => {
-                  const averageRating =
-                    (review.tasteScore + review.serviceScore + review.priceScore) / 3;
+                  const averageRating = (review.tasteScore + review.serviceScore + review.priceScore) / 3;
                   return (
                     <Card key={review.id} className="hover:shadow-md transition-shadow">
                       <CardContent className="p-6">
@@ -183,7 +180,15 @@ export default function ProfilePage() {
 
         <div className="mt-12 text-center">
           <Button asChild className="bg-lilla hover:bg-lilla/90 px-8">
-            <Link href="/profile/update">Opdater profil</Link>
+            <Link href="/profile/update">Update profile</Link>
+          </Button>
+        </div>
+        <div className="mt-12 flex justify-center gap-4">
+          <Button variant="outline" className="px-8">
+            <Link href={"restaurants/create"}>
+              <FontAwesomeIcon icon={faPlus} className="w-4 h-4 mr-2" />
+              Add New Restaurant
+            </Link>
           </Button>
         </div>
       </div>

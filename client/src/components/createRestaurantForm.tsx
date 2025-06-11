@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createRestaurantSchema, CreateRestaurantData } from "@/lib/validations/auth";
 import { FormField } from "./ui/FormField";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
 
 interface CreateRestaurantFormProps {
   onSuccess?: (restaurant: CreateRestaurantData) => void;
@@ -29,6 +30,8 @@ export function CreateRestaurantForm({ onSuccess }: CreateRestaurantFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
   // const [success, setSuccess] = useState(false);
+
+  const router = useRouter();
 
   const {
     register,
@@ -58,7 +61,7 @@ export function CreateRestaurantForm({ onSuccess }: CreateRestaurantFormProps) {
 
       // Convert to base64 and set it
       const base64 = await fileToBase64(file);
-      setValue("image", base64); // ✅ Set base64 string, not FileList
+      setValue("image", base64);
     }
   };
   const onSubmit = async (data: CreateRestaurantData) => {
@@ -66,14 +69,9 @@ export function CreateRestaurantForm({ onSuccess }: CreateRestaurantFormProps) {
       setIsLoading(true);
       setServerError(null);
 
-      console.log("Form data received:", data); // ← Add this debug line
-      console.log("Image data:", data.image); // ← Add this debug line
-
       const restaurantData = {
         ...data,
       };
-
-      console.log("Sending to API:", restaurantData); // ← Add this debug line
 
       const response = await fetch("/api/restaurants", {
         method: "POST",
@@ -96,7 +94,10 @@ export function CreateRestaurantForm({ onSuccess }: CreateRestaurantFormProps) {
       // setSuccess(true);
       reset();
 
+      router.push(`/products/${result.restaurant.slug}`);
+
       if (onSuccess) {
+        console.log("Calling onSuccess with:", result.restaurant);
         onSuccess(result.restaurant);
       }
     } catch (error) {
@@ -134,57 +135,57 @@ export function CreateRestaurantForm({ onSuccess }: CreateRestaurantFormProps) {
               {errors.description && <p className="text-sm text-red-600 mt-1">{errors.description.message}</p>}
             </div>
             <div className="space-y-4">
-              <h3 className="text-lg font-medium text-gray-900">Opening Hours</h3>
-
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 items-end">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Opening Hour</label>
-                  <select {...register("openingHour", { valueAsNumber: true })} className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.openingHour ? "border-red-500" : "border-gray-300"}`}>
-                    {Array.from({ length: 24 }, (_, i) => (
-                      <option key={i} value={i}>
-                        {i.toString().padStart(2, "0")}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.openingHour && <p className="text-sm text-red-600 mt-1">{errors.openingHour.message}</p>}
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Opening Minute</label>
-                  <select {...register("openingMinute", { valueAsNumber: true })} className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.openingMinute ? "border-red-500" : "border-gray-300"}`}>
-                    {[0, 15, 30, 45].map((minute) => (
-                      <option key={minute} value={minute}>
-                        {minute.toString().padStart(2, "0")}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.openingMinute && <p className="text-sm text-red-600 mt-1">{errors.openingMinute.message}</p>}
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Closing Hour</label>
-                  <select {...register("closingHour", { valueAsNumber: true })} className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.closingHour ? "border-red-500" : "border-gray-300"}`}>
-                    {Array.from({ length: 24 }, (_, i) => (
-                      <option key={i} value={i}>
-                        {i.toString().padStart(2, "0")}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.closingHour && <p className="text-sm text-red-600 mt-1">{errors.closingHour.message}</p>}
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Closing Minute</label>
-                  <select {...register("closingMinute", { valueAsNumber: true })} className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.closingMinute ? "border-red-500" : "border-gray-300"}`}>
-                    {[0, 15, 30, 45].map((minute) => (
-                      <option key={minute} value={minute}>
-                        {minute.toString().padStart(2, "0")}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.closingMinute && <p className="text-sm text-red-600 mt-1">{errors.closingMinute.message}</p>}
-                </div>
+              <h3 className="text-lg font-medium text-gray-900">Opening Hours</h3>            <div className="grid grid-cols-4 gap-4 items-end">
+              <div>
+                <label htmlFor="openingHour" className="block text-sm font-medium text-gray-700 mb-1">Opening Hour</label>
+                <select id="openingHour" {...register("openingHour", { valueAsNumber: true })} className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.openingHour ? "border-red-500" : "border-gray-300"}`}>
+                  {Array.from({ length: 24 }, (_, i) => (
+                    <option key={i} value={i}>
+                      {i.toString().padStart(2, "0")}
+                    </option>
+                  ))}
+                </select>
+                {errors.openingHour && <p className="text-sm text-red-600 mt-1">{errors.openingHour.message}</p>}
               </div>
+
+              <div>
+                <label htmlFor="openingMinute" className="block text-sm font-medium text-gray-700 mb-1">Opening Minute</label>
+                <select id="openingMinute" {...register("openingMinute", { valueAsNumber: true })} className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.openingMinute ? "border-red-500" : "border-gray-300"}`}>
+                  {[0, 15, 30, 45].map((minute) => (
+                    <option key={minute} value={minute}>
+                      {minute.toString().padStart(2, "0")}
+                    </option>
+                  ))}
+                </select>
+                {errors.openingMinute && <p className="text-sm text-red-600 mt-1">{errors.openingMinute.message}</p>}
+              </div>
+
+              <div>
+                <label htmlFor="closingHour" className="block text-sm font-medium text-gray-700 mb-1">Closing Hour</label>
+                <select id="closingHour" {...register("closingHour", { valueAsNumber: true })} className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.closingHour ? "border-red-500" : "border-gray-300"}`}>
+                  {Array.from({ length: 24 }, (_, i) => (
+                    <option key={i} value={i}>
+                      {i.toString().padStart(2, "0")}
+                    </option>
+                  ))}
+                </select>
+                {errors.closingHour && <p className="text-sm text-red-600 mt-1">{errors.closingHour.message}</p>}
+              </div>
+
+              <div>
+                <label htmlFor="closingMinute" className="block text-sm font-medium text-gray-700 mb-1">Closing Minute</label>
+                <select id="closingMinute" {...register("closingMinute", { valueAsNumber: true })} className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.closingMinute ? "border-red-500" : "border-gray-300"}`}>
+                  {[0, 15, 30, 45].map((minute) => (
+                    <option key={minute} value={minute}>
+                      {minute.toString().padStart(2, "0")}
+                    </option>
+                  ))}
+                </select>
+                {errors.closingMinute && <p className="text-sm text-red-600 mt-1">{errors.closingMinute.message}</p>}              </div>
+            </div>
             </div>
             <FormField<CreateRestaurantData> label="Phone" name="phone" type="tel" register={register} error={errors.phone} placeholder="12345678" />
-            <FormField<CreateRestaurantData> label="Website" name="website" register={register} error={errors.website} placeholder="example.com" />
+            <FormField<CreateRestaurantData> label="Website (optional)" name="website" register={register} error={errors.website} placeholder="example.com" />
 
             <label className="block text-sm font-medium text-gray-700">Restaurant Image</label>
             <input type="file" accept="image/*" onChange={handleFileChange} className="mt-1 block w-full rounded-sm border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2" />
@@ -195,9 +196,8 @@ export function CreateRestaurantForm({ onSuccess }: CreateRestaurantFormProps) {
                 <div className="font-medium">Error:</div>
                 <pre className="whitespace-pre-wrap text-sm mt-1">{serverError}</pre>
               </div>
-            )}
-            <button type="submit" className="w-full cursor-pointer py-3 px-4 border border-transparent rounded-sm shadow-sm text-lg font-medium text-white bg-blue-600">
-              {isLoading ? "Creating reataurant" : "Create restaurant"}
+            )}            <button type="submit" className="w-full cursor-pointer py-3 px-4 border border-transparent rounded-sm shadow-sm text-lg font-medium text-white bg-blue-600">
+              {isLoading ? "Creating restaurant" : "Create restaurant"}
             </button>
           </form>
         </CardContent>
