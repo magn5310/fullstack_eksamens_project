@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, ReactNode, useState, useEffect } from "react";
+import {useRouter} from "next/navigation"
 
 interface Restaurant {
   id: string;
@@ -62,6 +63,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const Router = useRouter();
 
   // Check hvis bruger allerede er logget ind når appen loader
   useEffect(() => {
@@ -146,6 +148,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       console.error("Logout error:", error);
     } finally {
       setUser(null);
+
+      Router.push("/login"); // Redirect to login page after logout
+
     }
   };
 
