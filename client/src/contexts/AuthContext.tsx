@@ -49,7 +49,7 @@ interface AuthContextType {
   isLoading: boolean;
   isLoggedIn: boolean;
   login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string, firstName: string, lastName: string) => Promise<void>;
+  register: (email: string, password: string, firstName: string, lastName: string, confirmPassword: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -101,29 +101,39 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const data = await response.json();
     setUser(data.user);
   };
+  const register = async (email: string, password: string, firstName: string, lastName: string, confirmPassword: string) => {
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, firstName, lastName, confirmPassword }),
+      });
 
-  const register = async (email: string, password: string, firstName: string, lastName: string) => {
-    const response = await fetch("/api/auth/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password, firstName, lastName, confirmPassword: password }),
-      credentials: "include", // Inkluder cookies
-    });
+      if (!response.ok) {
+        const error = await response.json();
+        console.error("API Error:", error);
 
-    if (!response.ok) {
-      const error = await response.json();
-      console.error("API Error:", error);
+        // Handle specific error cases
+        if (error.code === "USER_EXISTS" || error.code === "DUPLICATE_EMAIL") {
+          throw new Error("A user with this email already exists. Please try logging in instead.");
+        }
 
-      if (error.details) {
-        const errorMessages = error.details.map((detail: ValidationErrorDetail) => detail.message).join(", ");
-        throw new Error(errorMessages);
+        // Handle validation errors
+        if (error.details) {
+          const errorMessages = error.details.map((detail: ValidationErrorDetail) => detail.message).join(", ");
+          throw new Error(errorMessages);
+        }
+
+        // Handle general errors
+        throw new Error(error.message || "Registration failed");
       }
 
-      throw new Error(error.error || "Registration failed");
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Registration error:", error);
+      throw error;
     }
-
-    const data = await response.json();
-    setUser(data.user);
   };
 
   const logout = async () => {
