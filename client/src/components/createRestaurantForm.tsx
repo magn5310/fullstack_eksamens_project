@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createRestaurantSchema, CreateRestaurantData } from "@/lib/validations/auth";
 import { FormField } from "./ui/FormField";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
 
 interface CreateRestaurantFormProps {
   onSuccess?: (restaurant: CreateRestaurantData) => void;
@@ -29,6 +30,8 @@ export function CreateRestaurantForm({ onSuccess }: CreateRestaurantFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
   // const [success, setSuccess] = useState(false);
+
+  const router = useRouter();
 
   const {
     register,
@@ -58,7 +61,7 @@ export function CreateRestaurantForm({ onSuccess }: CreateRestaurantFormProps) {
 
       // Convert to base64 and set it
       const base64 = await fileToBase64(file);
-      setValue("image", base64); // ✅ Set base64 string, not FileList
+      setValue("image", base64);
     }
   };
   const onSubmit = async (data: CreateRestaurantData) => {
@@ -66,14 +69,9 @@ export function CreateRestaurantForm({ onSuccess }: CreateRestaurantFormProps) {
       setIsLoading(true);
       setServerError(null);
 
-      console.log("Form data received:", data); // ← Add this debug line
-      console.log("Image data:", data.image); // ← Add this debug line
-
       const restaurantData = {
         ...data,
       };
-
-      console.log("Sending to API:", restaurantData); // ← Add this debug line
 
       const response = await fetch("/api/restaurants", {
         method: "POST",
@@ -95,6 +93,8 @@ export function CreateRestaurantForm({ onSuccess }: CreateRestaurantFormProps) {
 
       // setSuccess(true);
       reset();
+
+      router.push(`/products/${result.restaurant.slug}`);
 
       if (onSuccess) {
         onSuccess(result.restaurant);
@@ -184,7 +184,7 @@ export function CreateRestaurantForm({ onSuccess }: CreateRestaurantFormProps) {
               </div>
             </div>
             <FormField<CreateRestaurantData> label="Phone" name="phone" type="tel" register={register} error={errors.phone} placeholder="12345678" />
-            <FormField<CreateRestaurantData> label="Website" name="website" register={register} error={errors.website} placeholder="example.com" />
+            <FormField<CreateRestaurantData> label="Website (optional)" name="website" register={register} error={errors.website} placeholder="example.com" />
 
             <label className="block text-sm font-medium text-gray-700">Restaurant Image</label>
             <input type="file" accept="image/*" onChange={handleFileChange} className="mt-1 block w-full rounded-sm border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2" />
