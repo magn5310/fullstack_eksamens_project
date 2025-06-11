@@ -4,16 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { RegisterForm } from "@/components/auth/Registerform";
-import * as Sentry from "@sentry/nextjs";
-// Import Sentry for error tracking
-
-try {
-  // something that fails
-  throw new Error("This is a test error for Sentry");
-} catch (error) {
-  Sentry.captureException(error);
-  console.error("Sentry error captured:", error);
-}
 
 type AuthMode = "login" | "register";
 
@@ -32,13 +22,12 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen  flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
-        {/* Header med tabs */}
         <div className="text-center">
           <div className="flex justify-center mb-8">
             <div className="flex bg-gray-200 rounded-lg p-1">
-              <button onClick={() => setMode("login")} className={`px-6 py-2 rounded-md font-medium transition-colors ${mode === "login" ? "bg-white text-blue-600 shadow-sm" : "text-gray-600 hover:text-gray-800"}`}>
+              <button onClick={() => setMode("login")} className={`px-6 py-2 rounded-md font-medium transition-colors ${mode === "login" ? "bg-white text-lilla shadow-sm" : "text-gray-600 hover:text-gray-800"}`}>
                 Log ind
               </button>
               <button onClick={() => setMode("register")} className={`px-6 py-2 rounded-md font-medium transition-colors ${mode === "register" ? "bg-white text-green-600 shadow-sm" : "text-gray-600 hover:text-gray-800"}`}>
@@ -49,7 +38,7 @@ export default function AuthPage() {
         </div>
 
         {/* Form container */}
-        <div className="bg-white py-8 px-6 shadow-lg rounded-lg">{mode === "login" ? <LoginForm onSuccess={handleLoginSuccess} /> : <RegisterForm onSuccess={handleRegisterSuccess} />}</div>
+        <div className="">{mode === "login" ? <LoginForm onSuccess={handleLoginSuccess} /> : <RegisterForm onSuccess={handleRegisterSuccess} />}</div>
       </div>
     </div>
   );

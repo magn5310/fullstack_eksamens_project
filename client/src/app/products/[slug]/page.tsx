@@ -60,10 +60,8 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
           address={restaurant.address}
           phone={restaurant.phone}
         />
-          <span className="text-sm text-muted-foreground mb-2">
-            {restaurant.website ? 'Website:' : 'No website available'}
 
-          </span>
+          
           {restaurant.website && (
             <a
               href={restaurant.website}

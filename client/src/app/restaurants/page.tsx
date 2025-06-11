@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar, faStarHalfAlt } from "@fortawesome/free-solid-svg-icons";
+import { faLocationDot, faStar, faStarHalfAlt } from "@fortawesome/free-solid-svg-icons";
 import { faStar as faStarRegular } from "@fortawesome/free-regular-svg-icons";
 import Image from "next/image";
 
@@ -33,6 +33,7 @@ interface Restaurant {
   slug: string;
   reviews: Review[];
   createdAt?: string;
+  imageUrl: string;
 }
 
 interface Filters {
@@ -227,7 +228,7 @@ function RestaurantsList() {
               return (
                 <Card key={restaurant.id} className="rounded-md max-w-120 justify-between pt-0 shadow hover:shadow-lg transition-shadow">
                   <CardHeader className="relative h-48">
-                    <Image className="align-center mx-auto rounded-t-md mb-2" src={`/images/kebab.jpg`} alt={restaurant.name} fill={true} style={{ objectFit: "cover" }} />
+                    <Image className="align-center mx-auto rounded-t-md mb-2" src={restaurant.imageUrl} alt={restaurant.name} fill={true} style={{ objectFit: "cover" }} />
                   </CardHeader>
 
                   <CardContent className="flex flex-col gap-3">
@@ -241,7 +242,12 @@ function RestaurantsList() {
                     </div>
 
                     <p className="text-sm text-muted-foreground">{restaurant.description}</p>
-                    {restaurant.address && <p className="text-xs mt-2 text-foreground">📍 {restaurant.address}</p>}
+                    {restaurant.address && 
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <FontAwesomeIcon icon={faLocationDot} style={{ color: "#000000" }} />
+                        <span className="text-xs text-muted-foreground">{restaurant.address}</span>
+                      </div>
+                    }
                   </CardContent>
 
                   <CardFooter>

@@ -7,6 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { registerSchema, registerFormData } from "@/lib/validations/auth";
 import { FormField } from "@/components/ui/FormField";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { toast } from "sonner";
 import Image from "next/image";
 
 interface RegisterFormProps {
@@ -15,7 +16,7 @@ interface RegisterFormProps {
 
 export function RegisterForm({ onSuccess }: RegisterFormProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const [serverError, setServerError] = useState<string | null>(null);
+  // const [serverError, setServerError] = useState<string | null>(null);
   const { register: registerUser } = useAuth();
 
   const {
@@ -30,18 +31,21 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
   const onSubmit = async (data: registerFormData) => {
     try {
       setIsLoading(true);
-      setServerError(null);
+      // setServerError(null);
 
-      await registerUser(data.email, data.password, data.firstName, data.lastName);
+      await registerUser(data.email, data.password, data.firstName, data.lastName, data.confirmPassword);
 
       console.log("Registration successful!");
+      toast.success("Registration successful");
 
-      // Kald onSuccess callback hvis den er givet
+      // Call onSuccess callback if provided
       if (onSuccess) {
         onSuccess();
       }
     } catch (error) {
-      setServerError(error instanceof Error ? error.message : "Registration failed");
+      const errorMessage = error instanceof Error ? error.message : "Registration failed";
+      // setServerError(errorMessage);
+      toast.error(errorMessage); // Fix: Use the errorMessage, not serverError
     } finally {
       setIsLoading(false);
     }
@@ -50,33 +54,26 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
   return (
     <Card>
       <CardHeader>
-        <Image src={"/logo_transparant.svg"} alt="Kebabadvisor logo" height={300} width={300} className="m-auto"></Image>
-        <CardTitle className="text-center">Kebabadvisor</CardTitle>
+        <Image src={"/logo_transparant.svg"} alt="Kebabadvisor logo" height={100} width={100} className="m-auto"></Image>
+        <CardTitle className="text-center text-3xl">Kebabadvisor</CardTitle>
         <CardDescription className="text-center">Sign up to start reviewing!</CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mb-4">
           <div className="grid grid-cols-2 gap-4">
-            <FormField<registerFormData> label="Fornavn" name="firstName" type="text" register={register} error={errors.firstName} placeholder="Lars" />
+            <FormField<registerFormData> label="First Name" name="firstName" type="text" register={register} error={errors.firstName} placeholder="Lars" />
 
-            <FormField<registerFormData> label="Efternavn" name="lastName" type="text" register={register} error={errors.lastName} placeholder="Nielsen" />
+            <FormField<registerFormData> label="Last Name" name="lastName" type="text" register={register} error={errors.lastName} placeholder="Nielsen" />
           </div>
 
-          <FormField<registerFormData> label="Email" name="email" type="email" register={register} error={errors.email} placeholder="din@email.dk" />
+          <FormField<registerFormData> label="Email" name="email" type="email" register={register} error={errors.email} placeholder="your@email.com" />
 
-          <FormField<registerFormData> label="Password" name="password" type="password" register={register} error={errors.password} placeholder="Minimum 6 characters" />
+          <FormField<registerFormData> label="Password" name="password" type="password" register={register} error={errors.password} placeholder="Minimum 8 characters" />
 
-          <FormField<registerFormData> label="Bekræft password" name="confirmPassword" type="password" register={register} error={errors.confirmPassword} placeholder="Repeat your password" />
-
-          {serverError && (
-            <div className="p-3 bg-red-100 border border-red-400 text-red-700 rounded">
-              <div className="font-medium">Registration failed:</div>
-              <pre className="whitespace-pre-wrap text-sm mt-1">{serverError}</pre>
-            </div>
-          )}
+          <FormField<registerFormData> label="Confirm password" name="confirmPassword" type="password" register={register} error={errors.confirmPassword} placeholder="Repeat your password" />
 
           <button type="submit" className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed">
-            {isLoading ? "Creating account..." : "creat account"}
+            {isLoading ? "Creating account..." : "Create account"}
           </button>
         </form>
       </CardContent>
