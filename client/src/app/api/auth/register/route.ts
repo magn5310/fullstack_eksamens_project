@@ -9,6 +9,25 @@ const prisma = new PrismaClient();
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    console.log("=== API Debug ===");
+    console.log("Raw body received:", body);
+    console.log("Body keys:", Object.keys(body));
+    console.log("Body values:", Object.values(body));
+
+    // Try Zod validation with detailed error logging
+    const validationResult = registerSchema.safeParse(body);
+
+    if (!validationResult.success) {
+      console.log("=== ZOD VALIDATION FAILED ===");
+      validationResult.error.errors.forEach((err) => {
+        console.log(`❌ Field: ${err.path.join(".")}`);
+        console.log(`❌ Message: ${err.message}`);
+        console.log(`❌ Received value:`, body[err.path[0]]);
+      });
+      console.log("=== END VALIDATION ERRORS ===");
+    } else {
+      console.log("✅ Zod validation passed");
+    }
 
     //zod validation
     const validatedData = registerSchema.parse(body);
@@ -20,7 +39,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (existingUser) {
-      return NextResponse.json({ error: "User already exist" }, { status: 409 });
+      return NextResponse.json({ error: "User already exist", message: "A user with this email already exists", code: "USER_EXISTS" }, { status: 400 });
     }
 
     //hash password
@@ -91,19 +110,15 @@ export async function POST(request: NextRequest) {
     //prisma errors
     if (error && typeof error === "object" && "code" in error && error.code === "P2002") {
       return NextResponse.json(
-        { error: "A user with that email already exist" },
+        { error: "A user with that email already exist", code: "DUPLICATE_EMAIL", message: "A user with that email already exists" },
         {
           status: 409,
         }
       );
-
     }
 
     console.log("Registration error:", error);
-    return NextResponse.json(
-      { error: "An unexpected error occurred" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "An unexpected error occurred" }, { status: 500 });
   } finally {
     prisma.$disconnect();
   }

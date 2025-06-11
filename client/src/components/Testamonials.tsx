@@ -13,15 +13,12 @@ function Testimonials() {
         </CardHeader>
         <CardContent>
           <Image src="/images/kebab.jpg" alt="Torvets" width={300} height={200} />
+
+          <p className="text-center">Torvets kebab er noget af det bedste jeg nogen sinde har smagt. Det er som om at de har revolutioneret en durum!</p>
         </CardContent>
         <CardFooter>
           <Button className="w-full">See more</Button>
         </CardFooter>
-      </Card>
-      <Card>
-        <CardContent>
-          <p className="text-center">Torvets kebab er noget af det bedste jeg nogen sinde har smagt. Det er som om at de har revolutioneret en durum!</p>
-        </CardContent>
       </Card>
     </>
   );

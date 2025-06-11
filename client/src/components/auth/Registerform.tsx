@@ -7,6 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { registerSchema, registerFormData } from "@/lib/validations/auth";
 import { FormField } from "@/components/ui/FormField";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { toast } from "sonner";
 import Image from "next/image";
 
 interface RegisterFormProps {
@@ -15,7 +16,7 @@ interface RegisterFormProps {
 
 export function RegisterForm({ onSuccess }: RegisterFormProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const [serverError, setServerError] = useState<string | null>(null);
+  // const [serverError, setServerError] = useState<string | null>(null);
   const { register: registerUser } = useAuth();
 
   const {
@@ -30,18 +31,21 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
   const onSubmit = async (data: registerFormData) => {
     try {
       setIsLoading(true);
-      setServerError(null);
+      // setServerError(null);
 
-      await registerUser(data.email, data.password, data.firstName, data.lastName);
+      await registerUser(data.email, data.password, data.firstName, data.lastName, data.confirmPassword);
 
       console.log("Registration successful!");
+      toast.success("Registration successful");
 
       // Kald onSuccess callback hvis den er givet
       if (onSuccess) {
         onSuccess();
       }
     } catch (error) {
-      setServerError(error instanceof Error ? error.message : "Registration failed");
+      const errorMessage = error instanceof Error ? error.message : "Registration failed";
+      // setServerError(errorMessage);
+      toast.error(errorMessage); // Fix: Use the errorMessage, not serverError
     } finally {
       setIsLoading(false);
     }
@@ -67,13 +71,6 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           <FormField<registerFormData> label="Password" name="password" type="password" register={register} error={errors.password} placeholder="Minimum 6 characters" />
 
           <FormField<registerFormData> label="Confirm password" name="confirmPassword" type="password" register={register} error={errors.confirmPassword} placeholder="Repeat your password" />
-
-          {serverError && (
-            <div className="p-3 bg-red-100 border border-red-400 text-red-700 rounded">
-              <div className="font-medium">Registration failed:</div>
-              <pre className="whitespace-pre-wrap text-sm mt-1">{serverError}</pre>
-            </div>
-          )}
 
           <button type="submit" className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed">
             {isLoading ? "Creating account..." : "Create account"}
