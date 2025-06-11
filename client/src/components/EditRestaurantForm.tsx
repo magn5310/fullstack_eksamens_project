@@ -16,10 +16,10 @@ import Link from "next/link";
 const restaurantSchema = z.object({
   name: z.string().min(1, "Restaurant name is required"),
   description: z.string().min(1, "Description is required"),
-  address: z.string().optional(),
-  phone: z.string().optional(),
-  website: z.string().url("Invalid URL").optional().or(z.literal("")),
-  openHours: z.string().optional(),
+  address: z.string().min(1, "Address is required"),
+  phone: z.string().min(1, "Phone number is required"),
+  website: z.string().url("Invalid website URL").optional().or(z.literal("")),
+  openHours: z.string().min(1, "Open hours are required"),
 });
 
 type RestaurantFormData = z.infer<typeof restaurantSchema>;
@@ -124,7 +124,7 @@ export default function EditRestaurantForm({ restaurant }: EditRestaurantFormPro
                 name="address"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Address (Optional)</FormLabel>
+                    <FormLabel>Address</FormLabel>
                     <FormControl>
                       <Input {...field} placeholder="Type address" disabled={saving} />
                     </FormControl>
@@ -138,7 +138,7 @@ export default function EditRestaurantForm({ restaurant }: EditRestaurantFormPro
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Phone (Optional)</FormLabel>
+                    <FormLabel>Phone</FormLabel>
                     <FormControl>
                       <Input {...field} placeholder="Type Phonenumber" disabled={saving} />
                     </FormControl>
@@ -152,7 +152,7 @@ export default function EditRestaurantForm({ restaurant }: EditRestaurantFormPro
                 name="website"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Website (optional)</FormLabel>
+                    <FormLabel>Website</FormLabel>
                     <FormControl>
                       <Input {...field} placeholder="https://example.com" disabled={saving} />
                     </FormControl>
@@ -166,7 +166,7 @@ export default function EditRestaurantForm({ restaurant }: EditRestaurantFormPro
                 name="openHours"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Opening hours (optional)</FormLabel>
+                    <FormLabel>Opening hours</FormLabel>
                     <FormControl>
                       <Textarea
                         {...field}
