@@ -73,15 +73,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const checkAuthStatus = async () => {
     try {
       const response = await fetch("/api/auth/me", {
-        credentials: "include", // Inkluder cookies
+        credentials: "include",
       });
 
       if (response.ok) {
         const userData = await response.json();
         setUser(userData.user);
+      } else {
+        // Handle unauthenticated state properly
+        setUser(null);
       }
     } catch (error) {
       console.error("Error checking auth status:", error);
+      setUser(null); // Ensure user is set to null on error
     } finally {
       setIsLoading(false);
     }

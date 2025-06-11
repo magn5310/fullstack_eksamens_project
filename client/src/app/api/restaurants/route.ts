@@ -67,7 +67,14 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
+
+    console.log("API received body:", body); // ← Add this
+    console.log("Image in body:", body.image); // ← Add this
+
     const validatedData = createRestaurantSchema.parse(body);
+
+    console.log("Validated data:", validatedData); // ← Add this
+    console.log("Validated image:", validatedData.image); // ← Add this
 
     const user = await prisma.user.findUnique({
       where: { id: decoded.userId },
@@ -125,6 +132,7 @@ export async function POST(request: NextRequest) {
           openHours: openHours,
           phone: validatedData.phone,
           website: validatedData.website,
+          imageUrl: validatedData.image,
           ownerId: user.id,
         },
         include: {

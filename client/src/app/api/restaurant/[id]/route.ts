@@ -6,10 +6,10 @@ import { z } from "zod";
 const updateRestaurantSchema = z.object({
   name: z.string().min(1, "Restaurant name is required"),
   description: z.string().min(1, "Description is required"),
-  address: z.string().optional(),
-  phone: z.string().optional(),
+  address: z.string().min(1, "Address is required"),
+  phone: z.string().min(1, "Phone number is required"),
   website: z.string().url("Invalid website URL").optional().or(z.literal("")),
-  openHours: z.string().optional(),
+  openHours: z.string().min(1, "Open hours are required"),
 });
 
 // PUT - Opdater restaurant data
