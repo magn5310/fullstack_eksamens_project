@@ -58,6 +58,7 @@ export function CreateRestaurantForm({ onSuccess }: CreateRestaurantFormProps) {
       reset();
 
       if (onSuccess) {
+        console.log("Calling onSuccess with:", result.restaurant);
         onSuccess(result.restaurant);
       }
     } catch (error) {
@@ -98,8 +99,8 @@ export function CreateRestaurantForm({ onSuccess }: CreateRestaurantFormProps) {
 
             <div className="grid grid-cols-4 gap-4 items-end">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Opening Hour</label>
-                <select {...register("openingHour", { valueAsNumber: true })} className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.openingHour ? "border-red-500" : "border-gray-300"}`}>
+                <label htmlFor="openingHour" className="block text-sm font-medium text-gray-700 mb-1">Opening Hour</label>
+                <select id="openingHour" {...register("openingHour", { valueAsNumber: true })} className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.openingHour ? "border-red-500" : "border-gray-300"}`}>
                   {Array.from({ length: 24 }, (_, i) => (
                     <option key={i} value={i}>
                       {i.toString().padStart(2, "0")}
@@ -110,8 +111,8 @@ export function CreateRestaurantForm({ onSuccess }: CreateRestaurantFormProps) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Opening Minute</label>
-                <select {...register("openingMinute", { valueAsNumber: true })} className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.openingMinute ? "border-red-500" : "border-gray-300"}`}>
+                <label htmlFor="openingMinute" className="block text-sm font-medium text-gray-700 mb-1">Opening Minute</label>
+                <select id="openingMinute" {...register("openingMinute", { valueAsNumber: true })} className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.openingMinute ? "border-red-500" : "border-gray-300"}`}>
                   {[0, 15, 30, 45].map((minute) => (
                     <option key={minute} value={minute}>
                       {minute.toString().padStart(2, "0")}
@@ -122,8 +123,8 @@ export function CreateRestaurantForm({ onSuccess }: CreateRestaurantFormProps) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Closing Hour</label>
-                <select {...register("closingHour", { valueAsNumber: true })} className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.closingHour ? "border-red-500" : "border-gray-300"}`}>
+                <label htmlFor="closingHour" className="block text-sm font-medium text-gray-700 mb-1">Closing Hour</label>
+                <select id="closingHour" {...register("closingHour", { valueAsNumber: true })} className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.closingHour ? "border-red-500" : "border-gray-300"}`}>
                   {Array.from({ length: 24 }, (_, i) => (
                     <option key={i} value={i}>
                       {i.toString().padStart(2, "0")}
@@ -134,8 +135,8 @@ export function CreateRestaurantForm({ onSuccess }: CreateRestaurantFormProps) {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Closing Minute</label>
-                <select {...register("closingMinute", { valueAsNumber: true })} className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.closingMinute ? "border-red-500" : "border-gray-300"}`}>
+                <label htmlFor="closingMinute" className="block text-sm font-medium text-gray-700 mb-1">Closing Minute</label>
+                <select id="closingMinute" {...register("closingMinute", { valueAsNumber: true })} className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.closingMinute ? "border-red-500" : "border-gray-300"}`}>
                   {[0, 15, 30, 45].map((minute) => (
                     <option key={minute} value={minute}>
                       {minute.toString().padStart(2, "0")}
