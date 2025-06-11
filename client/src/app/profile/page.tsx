@@ -89,7 +89,7 @@ export default function ProfilePage() {
         <div className="flex justify-center mb-8">
           <div className="flex bg-white rounded-lg p-1 shadow-sm border">
             <button onClick={() => setActiveTab("reviews")} className={`px-6 py-2 rounded-md font-medium transition-colors ${activeTab === "reviews" ? "bg-lilla text-white" : "text-gray-600 hover:text-gray-900"}`}>
-              Mine anmeldelser
+              My Reviews
             </button>
             <button onClick={() => setActiveTab("favorites")} className={`px-6 py-2 rounded-md font-medium transition-colors ${activeTab === "favorites" ? "bg-lilla text-white" : "text-gray-600 hover:text-gray-900"}`}>
               Favoritter
@@ -180,7 +180,7 @@ export default function ProfilePage() {
 
         <div className="mt-12 text-center">
           <Button asChild className="bg-lilla hover:bg-lilla/90 px-8">
-            <Link href="/profile/update">Opdater profil</Link>
+            <Link href="/profile/update">Update profile</Link>
           </Button>
         </div>
         <div className="mt-12 flex justify-center gap-4">
