@@ -76,6 +76,8 @@ export const createRestaurantSchema = z
       .refine((url) => url.startsWith("http://") || url.startsWith("https://"), {
         message: "URL must start with http:// or https://",
       }),
+
+    image: z.string().min(1, "Restaurant image is required"),
   })
   .refine(
     (data) => {
