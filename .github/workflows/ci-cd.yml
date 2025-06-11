@@ -3,7 +3,7 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main, magnus-docker ]
+    branches: [ magnus-docker ]
   pull_request:
     branches: [ main ]
 

@@ -27,7 +27,8 @@ model User {
   reviews   Review[]
   restaurants Restaurant[]
   
-
+  @@index([email])
+  @@index([roleId])
   @@map("users")  
 }
 
@@ -53,6 +54,11 @@ model Restaurant {
   ownerId   String   @map("owner_id")
   owner     User     @relation(fields: [ownerId], references: [id])
   reviews   Review[]
+
+  @@index([name])
+  @@index([address])
+  @@index([ownerId])
+  @@index([createdAt])
   @@map("restaurants")
 }
 
@@ -72,6 +78,14 @@ model Review {
   restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
   author       User       @relation(fields: [authorId], references: [id])
   
+  @@index([restaurantId])
+  @@index([authorId])
+  @@index([createdAt])
+  @@index([status])
+  @@index([reported])
+  @@index([restaurantId, createdAt])
+  @@index([authorId, createdAt])
+  @@index([status, reported])
 
   @@map("reviews")
 }
