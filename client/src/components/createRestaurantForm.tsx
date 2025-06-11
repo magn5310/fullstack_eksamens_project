@@ -135,9 +135,7 @@ export function CreateRestaurantForm({ onSuccess }: CreateRestaurantFormProps) {
               {errors.description && <p className="text-sm text-red-600 mt-1">{errors.description.message}</p>}
             </div>
             <div className="space-y-4">
-              <h3 className="text-lg font-medium text-gray-900">Opening Hours</h3>
-
-            <div className="grid grid-cols-4 gap-4 items-end">
+              <h3 className="text-lg font-medium text-gray-900">Opening Hours</h3>            <div className="grid grid-cols-4 gap-4 items-end">
               <div>
                 <label htmlFor="openingHour" className="block text-sm font-medium text-gray-700 mb-1">Opening Hour</label>
                 <select id="openingHour" {...register("openingHour", { valueAsNumber: true })} className={`w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${errors.openingHour ? "border-red-500" : "border-gray-300"}`}>
@@ -183,26 +181,9 @@ export function CreateRestaurantForm({ onSuccess }: CreateRestaurantFormProps) {
                     </option>
                   ))}
                 </select>
-                {errors.closingMinute && <p className="text-sm text-red-600 mt-1">{errors.closingMinute.message}</p>}
-              </div>
+                {errors.closingMinute && <p className="text-sm text-red-600 mt-1">{errors.closingMinute.message}</p>}              </div>
             </div>
-<<<<<<< HEAD
-          </div>{" "}
-          <FormField<CreateRestaurantData> label="Phone" name="phone" type="tel" register={register} error={errors.phone} placeholder="12345678" />
-          <FormField<CreateRestaurantData> label="Website" name="website" register={register} error={errors.website} placeholder="example.com" />
-          {serverError && (
-            <div className="p-4 bg-red-100 border border-red-400 text-red-700 rounded-md">
-              <div className="font-medium">Error:</div>
-              <pre className="whitespace-pre-wrap text-sm mt-1">{serverError}</pre>
             </div>
-          )}
-          <button type="submit" className="w-full cursor-pointer py-3 px-4 border border-transparent rounded-sm shadow-sm text-lg font-medium text-white bg-blue-600">
-            {isLoading ? "Creating reataurant" : "Create restaurant"}
-          </button>
-        </form>
-      </CardContent>
-    </Card>
-=======
             <FormField<CreateRestaurantData> label="Phone" name="phone" type="tel" register={register} error={errors.phone} placeholder="12345678" />
             <FormField<CreateRestaurantData> label="Website (optional)" name="website" register={register} error={errors.website} placeholder="example.com" />
 
@@ -215,14 +196,12 @@ export function CreateRestaurantForm({ onSuccess }: CreateRestaurantFormProps) {
                 <div className="font-medium">Error:</div>
                 <pre className="whitespace-pre-wrap text-sm mt-1">{serverError}</pre>
               </div>
-            )}
-            <button type="submit" className="w-full cursor-pointer py-3 px-4 border border-transparent rounded-sm shadow-sm text-lg font-medium text-white bg-blue-600">
-              {isLoading ? "Creating reataurant" : "Create restaurant"}
+            )}            <button type="submit" className="w-full cursor-pointer py-3 px-4 border border-transparent rounded-sm shadow-sm text-lg font-medium text-white bg-blue-600">
+              {isLoading ? "Creating restaurant" : "Create restaurant"}
             </button>
           </form>
         </CardContent>
       </Card>
     </section>
->>>>>>> main
   );
 }

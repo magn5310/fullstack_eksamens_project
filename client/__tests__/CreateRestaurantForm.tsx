@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { CreateRestaurantForm } from "@/components/CreateRestaurantForm";
+import { CreateRestaurantForm } from "@/components/createRestaurantForm";
 
 // Mock fetch globally
 global.fetch = jest.fn();

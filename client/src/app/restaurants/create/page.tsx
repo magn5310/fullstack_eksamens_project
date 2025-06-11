@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/contexts/AuthContext";
-import { CreateRestaurantForm } from "@/components/CreateRestaurantForm";
+import { CreateRestaurantForm } from "@/components/createRestaurantForm";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
