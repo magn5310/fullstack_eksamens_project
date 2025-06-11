@@ -47,7 +47,7 @@ model Restaurant {
   openHours   String   @map("restaurant_open_hours")
   phone     String   @map("restaurant_phone")
   website   String   @map("restaurant_website")
-  imageUrl String?  @map("restaurant_photo_url")
+  imageUrl String? @db.LongText @map("restaurant_photo_url")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   ownerId   String   @map("owner_id")
