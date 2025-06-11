@@ -9,25 +9,6 @@ const prisma = new PrismaClient();
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    console.log("=== API Debug ===");
-    console.log("Raw body received:", body);
-    console.log("Body keys:", Object.keys(body));
-    console.log("Body values:", Object.values(body));
-
-    // Try Zod validation with detailed error logging
-    const validationResult = registerSchema.safeParse(body);
-
-    if (!validationResult.success) {
-      console.log("=== ZOD VALIDATION FAILED ===");
-      validationResult.error.errors.forEach((err) => {
-        console.log(`❌ Field: ${err.path.join(".")}`);
-        console.log(`❌ Message: ${err.message}`);
-        console.log(`❌ Received value:`, body[err.path[0]]);
-      });
-      console.log("=== END VALIDATION ERRORS ===");
-    } else {
-      console.log("✅ Zod validation passed");
-    }
 
     //zod validation
     const validatedData = registerSchema.parse(body);
