@@ -1,4 +1,4 @@
-# Optimeret Development Dockerfile
+# Development Dockerfile
 FROM node:20-alpine AS base
 
 # Install dependencies
@@ -33,25 +33,13 @@ RUN chown -R nextjs:nodejs /app
 # Switch to nextjs user
 USER nextjs
 
-# Pre-generate Prisma client
-RUN npx prisma generate
-
-# Pre-build critical pages to warm up cache
-RUN npm run build || true
-
 # Expose port
 EXPOSE 3000
 
-# Set environment variables for better performance
+# Set environment variables
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 ENV NODE_ENV=development
-ENV NEXT_TELEMETRY_DISABLED=1
 
-# Performance optimizations
-ENV NODE_OPTIONS="--max-old-space-size=4096"
-ENV WATCHPACK_POLLING=false
-ENV CHOKIDAR_USEPOLLING=false
-
-# Start development server with optimizations
-CMD ["npm", "run", "dev"]
+# Generate Prisma client and run dev server
+CMD ["sh", "-c", "npx prisma generate && npm run dev && npm run db:seed"]

@@ -24,7 +24,7 @@ services:
       timeout: 20s
       retries: 10
 
-  # Next.js Client Application (Optimeret)
+  # Next.js Client Application
   client-dev:
     build:
       context: .
@@ -37,10 +37,6 @@ services:
       - JWT_SECRET=your-super-secret-jwt-key-here-change-in-production
       - JWT_EXPIRES_IN=7d
       - NEXT_TELEMETRY_DISABLED=1
-      # Performance optimizations
-      - NODE_OPTIONS=--max-old-space-size=4096
-      - WATCHPACK_POLLING=false
-      - CHOKIDAR_USEPOLLING=false
       # Sentry configuration
       - SENTRY_DSN=https://6be44b2896284732acf18127d9a5f6c0@o4509465126174720.ingest.de.sentry.io/4509465132269648
       - SENTRY_ORG=mmfkea
@@ -48,13 +44,10 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      # Mount source code for hot reload (optimeret)
+      # Mount source code for hot reload
       - ./client:/app
       - /app/node_modules
       - /app/.next
-      # Cache volumes for better performance
-      - nextjs_cache:/app/.next/cache
-      - node_modules_cache:/app/node_modules/.cache
     depends_on:
       mysql:
         condition: service_healthy
@@ -62,15 +55,6 @@ services:
       - kebab-network
     stdin_open: true
     tty: true
-    # Restart policy for stability
-    restart: unless-stopped
-    # Resource limits for better performance
-    deploy:
-      resources:
-        limits:
-          memory: 2G
-        reservations:
-          memory: 1G
 
   # Prisma Studio (Database GUI) - Optional
   prisma-studio:
@@ -97,10 +81,6 @@ services:
 
 volumes:
   mysql_data:
-    driver: local
-  nextjs_cache:
-    driver: local
-  node_modules_cache:
     driver: local
 
 networks:
