@@ -61,13 +61,7 @@ function Testimonials() {
             <CardContent className="flex-grow">
               {restaurant.imageUrl ? (
                 <div className="relative h-48 w-full mb-4">
-                  <Image 
-                    src={restaurant.imageUrl} 
-                    alt={restaurant.name} 
-                    fill
-                    style={{ objectFit: 'cover' }}
-                    className="rounded-md"
-                  />
+                  <Image src={restaurant.imageUrl} alt={restaurant.name} fill style={{ objectFit: "cover" }} className="rounded-md" />
                 </div>
               ) : (
                 <div className="h-48 bg-gray-200 rounded-md flex items-center justify-center mb-4">
@@ -77,15 +71,19 @@ function Testimonials() {
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <span className="font-medium">Rating:</span>
-                  <span>{restaurant.averageRating}  ({restaurant.reviewCount} {restaurant.reviewCount === 1 ? 'review' : 'reviews'})</span>
+                  <span>
+                    {restaurant.averageRating} ({restaurant.reviewCount} {restaurant.reviewCount === 1 ? "review" : "reviews"})
+                  </span>
                 </div>
                 <p className="text-gray-600">{restaurant.address}</p>
               </div>
             </CardContent>
             <CardFooter>
-              <Link href={`/products/${restaurant.slug}`} className="w-full">
-                <Button className="w-full">See more</Button>
-              </Link>
+              <Button className="w-full" asChild>
+                <Link href={`/products/${restaurant.slug}`} className="w-full">
+                  See more
+                </Link>
+              </Button>
             </CardFooter>
           </Card>
         ))}
@@ -104,13 +102,7 @@ function Testimonials() {
                   <CardContent className="flex-grow">
                     {restaurant.imageUrl ? (
                       <div className="relative h-48 w-full mb-4">
-                        <Image 
-                          src={restaurant.imageUrl} 
-                          alt={restaurant.name} 
-                          fill
-                          style={{ objectFit: 'cover' }}
-                          className="rounded-md"
-                        />
+                        <Image src={restaurant.imageUrl} alt={restaurant.name} fill style={{ objectFit: "cover" }} className="rounded-md" />
                       </div>
                     ) : (
                       <div className="h-48 bg-gray-200 rounded-md flex items-center justify-center mb-4">
@@ -120,7 +112,9 @@ function Testimonials() {
                     <div className="space-y-2">
                       <div className="flex justify-between">
                         <span className="font-medium">Rating:</span>
-                        <span>{restaurant.averageRating}  ({restaurant.reviewCount} {restaurant.reviewCount === 1 ? 'review' : 'reviews'})</span>
+                        <span>
+                          {restaurant.averageRating} ({restaurant.reviewCount} {restaurant.reviewCount === 1 ? "review" : "reviews"})
+                        </span>
                       </div>
                       <p className="text-gray-600">{restaurant.address}</p>
                     </div>
