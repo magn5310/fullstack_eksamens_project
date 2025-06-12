@@ -41,14 +41,13 @@ async function main() {
 
   console.log("👥 Created roles");
 
-  const adminpass = await hashPassword("password");
   // Opret brugere
   const admin = await prisma.user.create({
     data: {
       email: "admin@kebab.dk",
       firstName: "Admin",
       lastName: "Andersen",
-      password: adminpass,
+      password: await hashPassword("Password_1"),
       roleId: adminRole.id,
     },
   });
@@ -58,7 +57,7 @@ async function main() {
       email: "lars@example.dk",
       firstName: "Lars",
       lastName: "Nielsen",
-      password: "$2b$10$exampleHashedPassword456",
+      password: await hashPassword("Password_1"),
       roleId: userRole.id,
     },
   });
@@ -68,7 +67,7 @@ async function main() {
       email: "maria@example.dk",
       firstName: "Maria",
       lastName: "Andersen",
-      password: "$2b$10$exampleHashedPassword789",
+      password: await hashPassword("Password_1"),
       roleId: userRole.id,
     },
   });
@@ -78,7 +77,7 @@ async function main() {
       email: "ahmed@example.dk",
       firstName: "Ahmed",
       lastName: "Hassan",
-      password: "$2b$10$exampleHashedPassword101",
+      password: await hashPassword("Password_1"),
       roleId: userRole.id,
     },
   });
@@ -89,7 +88,7 @@ async function main() {
       email: "sofie@example.dk",
       firstName: "Sofie",
       lastName: "Larsen",
-      password: "$2b$10$exampleHashedPassword112",
+      password: await hashPassword("Password_1"),
       roleId: ownerRole.id, // Rettet fra moderatorRole til ownerRole
     },
   });
@@ -99,7 +98,7 @@ async function main() {
       email: "mikkel@example.dk",
       firstName: "Mikkel",
       lastName: "Jensen",
-      password: "$2b$10$exampleHashedPassword113",
+      password: await hashPassword("Password_1"),
       roleId: userRole.id,
     },
   });
@@ -109,7 +108,7 @@ async function main() {
       email: "anna@example.dk",
       firstName: "Anna",
       lastName: "Christensen",
-      password: "$2b$10$exampleHashedPassword114",
+      password: await hashPassword("Password_1"),
       roleId: userRole.id,
     },
   });
@@ -119,7 +118,7 @@ async function main() {
       email: "peter@example.dk",
       firstName: "Peter",
       lastName: "Rasmussen",
-      password: "$2b$10$exampleHashedPassword115",
+      password: await hashPassword("Password_1"),
       roleId: userRole.id,
     },
   });
@@ -129,7 +128,7 @@ async function main() {
       email: "mette@example.dk",
       firstName: "Mette",
       lastName: "Sørensen",
-      password: "$2b$10$exampleHashedPassword116",
+      password: await hashPassword("Password_1"),
       roleId: userRole.id,
     },
   });
@@ -139,7 +138,7 @@ async function main() {
       email: "kasper@example.dk",
       firstName: "Kasper",
       lastName: "Pedersen",
-      password: "$2b$10$exampleHashedPassword117",
+      password: await hashPassword("Password_1"),
       roleId: userRole.id,
     },
   });
@@ -149,7 +148,7 @@ async function main() {
       email: "lise@example.dk",
       firstName: "Lise",
       lastName: "Hansen",
-      password: "$2b$10$exampleHashedPassword118",
+      password: await hashPassword("Password_1"),
       roleId: ownerRole.id, // Rettet fra moderatorRole til ownerRole
     },
   });
@@ -159,7 +158,7 @@ async function main() {
       email: "thomas@example.dk",
       firstName: "Thomas",
       lastName: "Mortensen",
-      password: "$2b$10$exampleHashedPassword119",
+      password: await hashPassword("Password_1"),
       roleId: userRole.id,
     },
   });
