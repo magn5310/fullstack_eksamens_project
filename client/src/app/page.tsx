@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div data-homepage>
+    <div data-homepage className="mb-12">
 
       <main className="bg-[#fffffe]">
         <div className="w-full h-[100vh] flex items-center justify-center relative bg-black before:absolute before:inset-0 before:bg-black/30 before:z-10">
