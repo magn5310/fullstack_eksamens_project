@@ -53,6 +53,7 @@ export async function GET(request: NextRequest) {
                 createdAt: true,
                 restaurantId: true,
                 reported:true,
+                status: true,
                 author: {
                   select: {
                     id: true,
@@ -112,6 +113,7 @@ export async function GET(request: NextRequest) {
             title: review.title,
             author: review.author,
             reported: review.reported,
+            status: review.status,
           })),
         })),
       },

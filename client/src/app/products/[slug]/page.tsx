@@ -17,6 +17,7 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
     where: { slug },
     include: {
       reviews: {
+        where: { status: {not: "APPROVED"} }, 
         orderBy: { createdAt: "desc" },
         include: {
           author: true,

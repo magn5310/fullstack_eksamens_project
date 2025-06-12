@@ -71,10 +71,10 @@ function RestaurantStats({ restaurant }: { restaurant: Restaurant }) {
 function RecentReviews({ reviews }: { reviews: Review[] }) {
   // Add state to track reviews locally
   const [reviewsList, setReviewsList] = useState<Review[]>(reviews);
-
+  console.log("RecentReviews", reviewsList);
   // Sort on the state list
-  const recentReviews = reviewsList.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 5);
-
+  const recentReviews = reviewsList.filter(review => review.status !== "APPROVED").sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 5);
+  
   const handleReport = async (reviewId: string) => {
     const review = reviewsList.find((r) => r.id === reviewId);
     if (!review) return;
@@ -115,6 +115,7 @@ function RecentReviews({ reviews }: { reviews: Review[] }) {
           <div className="space-y-4">
             {recentReviews.map((review) => {
               const averageRating = Math.round(((review.tasteScore + review.serviceScore + review.priceScore) / 3) * 10) / 10;
+              
               return (
                 <div key={review.id} className="border-b border-gray-200 pb-4 last:border-b-0">
                   <div className="flex justify-between items-start mb-2">
@@ -128,15 +129,17 @@ function RecentReviews({ reviews }: { reviews: Review[] }) {
                         <span className="text-sm text-gray-600">{new Date(review.createdAt).toLocaleDateString("da-DK")}</span>
                       </div>
                     </div>
-                    {!review.reported ? (
+
+                    {(!review.reported && review.status !== "REJECTED") && 
                       <Button size="sm" onClick={() => handleReport(review.id)} className="bg-red-500 hover:bg-red-600 text-white">
                         Report
                       </Button>
-                    ) : (
+            }
+                    { (review.reported && review.status !== "REJECTED") &&
                       <Button size="sm" onClick={() => handleReport(review.id)} className="bg-red-500 hover:bg-red-600 text-white">
                         Unreport
                       </Button>
-                    )}
+                    }
                   </div>
                   {review.comment && <p className="text-gray-700 text-sm">{review.comment}</p>}
                   <div className="flex gap-4 text-xs text-gray-500 mt-2">
