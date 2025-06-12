@@ -71,9 +71,22 @@ function RestaurantStats({ restaurant }: { restaurant: Restaurant }) {
 function RecentReviews({ reviews }: { reviews: Review[] }) {
   // Add state to track reviews locally
   const [reviewsList, setReviewsList] = useState<Review[]>(reviews);
+  // Add pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const reviewsPerPage = 5;
+  
   console.log("RecentReviews", reviewsList);
-  // Sort on the state list
-  const recentReviews = reviewsList.filter(review => review.status !== "APPROVED").sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 5);
+  // Sort all reviews, but don't slice yet
+  const filteredReviews = reviewsList
+    .filter(review => review.status !== "APPROVED")
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  
+  // Calculate pagination
+  const totalPages = Math.ceil(filteredReviews.length / reviewsPerPage);
+  const indexOfLastReview = currentPage * reviewsPerPage;
+  const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
+  // Get current page's reviews
+  const currentReviews = filteredReviews.slice(indexOfFirstReview, indexOfLastReview);
   
   const handleReport = async (reviewId: string) => {
     const review = reviewsList.find((r) => r.id === reviewId);
@@ -109,48 +122,75 @@ function RecentReviews({ reviews }: { reviews: Review[] }) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        {recentReviews.length === 0 ? (
+        {filteredReviews.length === 0 ? (
           <p className="text-gray-600 text-center py-8">No reviews yet</p>
         ) : (
-          <div className="space-y-4">
-            {recentReviews.map((review) => {
-              const averageRating = Math.round(((review.tasteScore + review.serviceScore + review.priceScore) / 3) * 10) / 10;
-              
-              return (
-                <div key={review.id} className="border-b border-gray-200 pb-4 last:border-b-0">
-                  <div className="flex justify-between items-start mb-2">
-                    <div>
-                      <p className="font-medium text-gray-900">
-                        {review.author?.firstName} {review.author?.lastName}
-                      </p>
-                      <div className="flex items-center gap-2">
-                        <StarRating rating={averageRating} />
-                        <p className="text-gray-500">{averageRating}</p>
-                        <span className="text-sm text-gray-600">{new Date(review.createdAt).toLocaleDateString("da-DK")}</span>
+          <>
+            <div className="space-y-4">
+              {currentReviews.map((review) => {
+                const averageRating = Math.round(((review.tasteScore + review.serviceScore + review.priceScore) / 3) * 10) / 10;
+                
+                return (
+                  <div key={review.id} className="border-b border-gray-200 pb-4 last:border-b-0">
+                    <div className="flex justify-between items-start mb-2">
+                      <div>
+                        <p className="font-medium text-gray-900">
+                          {review.author?.firstName} {review.author?.lastName}
+                        </p>
+                        <div className="flex items-center gap-2">
+                          <StarRating rating={averageRating} />
+                          <p className="text-gray-500">{averageRating}</p>
+                          <span className="text-sm text-gray-600">{new Date(review.createdAt).toLocaleDateString("da-DK")}</span>
+                        </div>
                       </div>
-                    </div>
 
-                    {(!review.reported && review.status !== "REJECTED") && 
-                      <Button size="sm" onClick={() => handleReport(review.id)} className="bg-red-500 hover:bg-red-600 text-white">
-                        Report
-                      </Button>
-            }
-                    { (review.reported && review.status !== "REJECTED") &&
-                      <Button size="sm" onClick={() => handleReport(review.id)} className="bg-red-500 hover:bg-red-600 text-white">
-                        Unreport
-                      </Button>
-                    }
+                      {(!review.reported && review.status !== "REJECTED") && 
+                        <Button size="sm" onClick={() => handleReport(review.id)} className="bg-red-500 hover:bg-red-600 text-white">
+                          Report
+                        </Button>
+              }
+                      { (review.reported && review.status !== "REJECTED") &&
+                        <Button size="sm" onClick={() => handleReport(review.id)} className="bg-red-500 hover:bg-red-600 text-white">
+                          Unreport
+                        </Button>
+                      }
+                    </div>
+                    {review.comment && <p className="text-gray-700 text-sm">{review.comment}</p>}
+                    <div className="flex gap-4 text-xs text-gray-500 mt-2">
+                      <span>Taste: {review.tasteScore}/5</span>
+                      <span>Service: {review.serviceScore}/5</span>
+                      <span>Price: {review.priceScore}/5</span>
+                    </div>
                   </div>
-                  {review.comment && <p className="text-gray-700 text-sm">{review.comment}</p>}
-                  <div className="flex gap-4 text-xs text-gray-500 mt-2">
-                    <span>Taste: {review.tasteScore}/5</span>
-                    <span>Service: {review.serviceScore}/5</span>
-                    <span>Price: {review.priceScore}/5</span>
-                  </div>
+                );
+              })}
+            </div>
+            
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="flex justify-between items-center mt-6 pt-4 border-t border-gray-200">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                >
+                  Previous
+                </Button>
+                <div className="text-sm text-gray-500">
+                  Page {currentPage} of {totalPages}
                 </div>
-              );
-            })}
-          </div>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                </Button>
+              </div>
+            )}
+          </>
         )}
       </CardContent>
     </Card>
