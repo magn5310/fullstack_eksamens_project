@@ -52,7 +52,7 @@ function Testimonials() {
   return (
     <div className="w-full">
       {/* Desktop: Grid layout */}
-      <div className="hidden md:grid md:grid-cols-3 gap-6">
+      <div className="hidden md:grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
         {restaurants.map((restaurant) => (
           <Card key={restaurant.id} className="flex flex-col">
             <CardHeader>
@@ -92,8 +92,8 @@ function Testimonials() {
       </div>
 
       {/* Mobile: Carousel */}
-      <div className="md:hidden">
-        <Carousel className="w-full m-auto">
+      <div className="md:hidden max-w-sm mx-auto">
+        <Carousel className="w-full">
           <CarouselContent>
             {restaurants.map((restaurant) => (
               <CarouselItem key={restaurant.id}>
@@ -134,8 +134,10 @@ function Testimonials() {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
+          <div className="flex justify-center mt-6">
+            <CarouselPrevious className="static transform-none mx-2" />
+            <CarouselNext className="static transform-none mx-2" />
+          </div>
         </Carousel>
       </div>
     </div>
