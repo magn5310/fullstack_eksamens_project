@@ -41,7 +41,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 
       return NextResponse.json({
         success: true,
-        message: "Review unreported successfully",
+        message: "Review reported successfully",
         review: updatedReview,
       });
     } else {
@@ -52,7 +52,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 
       return NextResponse.json({
         success: true,
-        message: "Review reported successfully",
+        message: "Review unreported successfully",
         review: updatedReview,
       });
     }

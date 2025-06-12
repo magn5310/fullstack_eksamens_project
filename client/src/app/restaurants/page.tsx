@@ -64,61 +64,164 @@ function StarRating({ rating }: { rating: number }) {
 
 // Filter Sidebar Component
 function FilterSidebar({ filters, setFilters, onClearFilters }: { filters: Filters; setFilters: (filters: Filters) => void; onClearFilters: () => void }) {
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
   return (
-    <div className="w-80 bg-card border-r border-border p-6 h-screen overflow-y-auto">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-bold">Filters</h2>
-        <Button variant="outline" size="sm" onClick={onClearFilters}>
-          Clear All
+    <>
+      <div className="lg:hidden w-full border-b border-border my-4 py-4">
+        <Button 
+          variant="outline" 
+          onClick={() => setIsFilterOpen(!isFilterOpen)} 
+          className="w-full flex justify-between items-center"
+        >
+          <span>Filters</span>
+          <span>{isFilterOpen ? '-' : '+'}</span>
         </Button>
-      </div>
+        
+        {isFilterOpen && (
+          <div className="mt-4 space-y-6 bg-card p-4 rounded-md shadow-sm">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold">Filters</h2>
+              <Button variant="outline" size="sm" onClick={onClearFilters}>
+                Clear All
+              </Button>
+            </div>
 
-      <div className="space-y-2 mb-6">
-        <Label htmlFor="search">Search Restaurants</Label>
-        <Input id="search" placeholder="Search by name..." value={filters.searchTerm} onChange={(e) => setFilters({ ...filters, searchTerm: e.target.value })} />
-      </div>
+            <div className="space-y-2">
+              <Label htmlFor="mobile-search">Search Restaurants</Label>
+              <Input 
+                id="mobile-search" 
+                placeholder="Search by name..." 
+                value={filters.searchTerm} 
+                onChange={(e) => setFilters({ ...filters, searchTerm: e.target.value })} 
+              />
+            </div>
 
-      <div className="space-y-2 mb-6">
-        <Label>Sort By</Label>
-        <Select value={filters.sortBy} onValueChange={(value) => setFilters({ ...filters, sortBy: value as Filters["sortBy"] })}>
-          <SelectTrigger>
-            <SelectValue placeholder="Select sorting..." />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="name">Name (A-Z)</SelectItem>
-            <SelectItem value="rating-high">Highest Rating</SelectItem>
-            <SelectItem value="rating-low">Lowest Rating</SelectItem>
-            <SelectItem value="reviews-most">Most Reviews</SelectItem>
-            <SelectItem value="reviews-least">Fewest Reviews</SelectItem>
-            <SelectItem value="newest">Newest First</SelectItem>
-            <SelectItem value="oldest">Oldest First</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+            <div className="space-y-2">
+              <Label>Sort By</Label>
+              <Select 
+                value={filters.sortBy} 
+                onValueChange={(value) => setFilters({ ...filters, sortBy: value as Filters["sortBy"] })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select sorting..." />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="name">Name (A-Z)</SelectItem>
+                  <SelectItem value="rating-high">Highest Rating</SelectItem>
+                  <SelectItem value="rating-low">Lowest Rating</SelectItem>
+                  <SelectItem value="reviews-most">Most Reviews</SelectItem>
+                  <SelectItem value="reviews-least">Fewest Reviews</SelectItem>
+                  <SelectItem value="newest">Newest First</SelectItem>
+                  <SelectItem value="oldest">Oldest First</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
-      <div className="space-y-2 mb-6">
-        <Label>Rating Range</Label>
-        <div className="flex gap-2">
-          <div className="flex-1">
-            <Label htmlFor="minRating" className="text-xs">
-              Min
-            </Label>
-            <Input id="minRating" type="number" min="0" max="5" step="0.1" value={filters.minRating} onChange={(e) => setFilters({ ...filters, minRating: parseFloat(e.target.value) || 0 })} />
+            <div className="space-y-2">
+              <Label>Rating Range</Label>
+              <div className="flex gap-2">
+                <div className="flex-1">
+                  <Label htmlFor="mobile-minRating" className="text-xs">
+                    Min
+                  </Label>
+                  <Input 
+                    id="mobile-minRating" 
+                    type="number" 
+                    min="0" 
+                    max="5" 
+                    step="0.1" 
+                    value={filters.minRating} 
+                    onChange={(e) => setFilters({ ...filters, minRating: parseFloat(e.target.value) || 0 })} 
+                  />
+                </div>
+                <div className="flex-1">
+                  <Label htmlFor="mobile-maxRating" className="text-xs">
+                    Max
+                  </Label>
+                  <Input 
+                    id="mobile-maxRating" 
+                    type="number" 
+                    min="0" 
+                    max="5" 
+                    step="0.1" 
+                    value={filters.maxRating} 
+                    onChange={(e) => setFilters({ ...filters, maxRating: parseFloat(e.target.value) || 5 })} 
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="mobile-minReviews">Minimum Reviews</Label>
+              <Input 
+                id="mobile-minReviews" 
+                type="number" 
+                min="0" 
+                value={filters.minReviews} 
+                onChange={(e) => setFilters({ ...filters, minReviews: parseInt(e.target.value) || 0 })} 
+              />
+            </div>
           </div>
-          <div className="flex-1">
-            <Label htmlFor="maxRating" className="text-xs">
-              Max
-            </Label>
-            <Input id="maxRating" type="number" min="0" max="5" step="0.1" value={filters.maxRating} onChange={(e) => setFilters({ ...filters, maxRating: parseFloat(e.target.value) || 5 })} />
+        )}
+      </div>
+
+      {/* Desktop Sidebar */}
+      <div className="hidden lg:block w-80 bg-card border-r border-border p-6 h-screen overflow-y-auto">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl font-bold">Filters</h2>
+          <Button variant="outline" size="sm" onClick={onClearFilters}>
+            Clear All
+          </Button>
+        </div>
+
+        <div className="space-y-2 mb-6">
+          <Label htmlFor="search">Search Restaurants</Label>
+          <Input id="search" placeholder="Search by name..." value={filters.searchTerm} onChange={(e) => setFilters({ ...filters, searchTerm: e.target.value })} />
+        </div>
+
+        <div className="space-y-2 mb-6">
+          <Label>Sort By</Label>
+          <Select value={filters.sortBy} onValueChange={(value) => setFilters({ ...filters, sortBy: value as Filters["sortBy"] })}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select sorting..." />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="name">Name (A-Z)</SelectItem>
+              <SelectItem value="rating-high">Highest Rating</SelectItem>
+              <SelectItem value="rating-low">Lowest Rating</SelectItem>
+              <SelectItem value="reviews-most">Most Reviews</SelectItem>
+              <SelectItem value="reviews-least">Fewest Reviews</SelectItem>
+              <SelectItem value="newest">Newest First</SelectItem>
+              <SelectItem value="oldest">Oldest First</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-2 mb-6">
+          <Label>Rating Range</Label>
+          <div className="flex gap-2">
+            <div className="flex-1">
+              <Label htmlFor="minRating" className="text-xs">
+                Min
+              </Label>
+              <Input id="minRating" type="number" min="0" max="5" step="0.1" value={filters.minRating} onChange={(e) => setFilters({ ...filters, minRating: parseFloat(e.target.value) || 0 })} />
+            </div>
+            <div className="flex-1">
+              <Label htmlFor="maxRating" className="text-xs">
+                Max
+              </Label>
+              <Input id="maxRating" type="number" min="0" max="5" step="0.1" value={filters.maxRating} onChange={(e) => setFilters({ ...filters, maxRating: parseFloat(e.target.value) || 5 })} />
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="space-y-2 mb-6">
-        <Label htmlFor="minReviews">Minimum Reviews</Label>
-        <Input id="minReviews" type="number" min="0" value={filters.minReviews} onChange={(e) => setFilters({ ...filters, minReviews: parseInt(e.target.value) || 0 })} />
+        <div className="space-y-2 mb-6">
+          <Label htmlFor="minReviews">Minimum Reviews</Label>
+          <Input id="minReviews" type="number" min="0" value={filters.minReviews} onChange={(e) => setFilters({ ...filters, minReviews: parseInt(e.target.value) || 0 })} />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
@@ -200,14 +303,14 @@ function RestaurantsList() {
   };
 
   return (
-    <div className="flex">
+    <div className="flex flex-col lg:flex-row">
       {/* Sidebar */}
       <FilterSidebar filters={filters} setFilters={setFilters} onClearFilters={clearFilters} />
 
       {/* Main Content */}
-      <div className="flex-1 px-10 py-6">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-4xl font-bold">Restaurants</h1>
+      <div className="flex-1 px-4 lg:px-10 py-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
+          <h1 className="text-3xl lg:text-4xl font-bold mb-2 sm:mb-0">Restaurants</h1>
           <p className="text-muted-foreground">
             Showing {filteredRestaurants.length} of {restaurants.length} restaurants
           </p>
@@ -221,12 +324,12 @@ function RestaurantsList() {
             </Button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
             {filteredRestaurants.map((restaurant) => {
               const averageRating = calculateAverageRating(restaurant.reviews);
 
               return (
-                <Card key={restaurant.id} className="rounded-md max-w-120 justify-between pt-0 shadow hover:shadow-lg transition-shadow">
+                <Card key={restaurant.id} className="rounded-md justify-between pt-0 shadow hover:shadow-lg transition-shadow">
                   <CardHeader className="relative h-48">
                     <Image className="align-center mx-auto rounded-t-md mb-2" src={restaurant.imageUrl} alt={restaurant.name} fill={true} style={{ objectFit: "cover" }} />
                   </CardHeader>
@@ -268,8 +371,14 @@ function RestaurantsList() {
 // Loading component
 function RestaurantsLoading() {
   return (
-    <div className="flex">
-      <div className="w-80 bg-card border-r border-border p-6 h-screen">
+    <div className="flex flex-col lg:flex-row">
+      {/* Mobile filter placeholder */}
+      <div className="lg:hidden w-full border-b border-border mb-4 pb-4">
+        <div className="h-10 bg-gray-200 rounded animate-pulse"></div>
+      </div>
+      
+      {/* Desktop sidebar placeholder */}
+      <div className="hidden lg:block w-80 bg-card border-r border-border p-6 h-screen">
         <div className="animate-pulse">
           <div className="h-6 bg-gray-200 rounded mb-4"></div>
           <div className="space-y-2">
@@ -279,10 +388,11 @@ function RestaurantsLoading() {
           </div>
         </div>
       </div>
-      <div className="flex-1 px-10 py-6">
+      
+      <div className="flex-1 px-4 lg:px-10 py-6">
         <div className="animate-pulse">
           <div className="h-8 bg-gray-200 rounded mb-8 w-48"></div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {[...Array(6)].map((_, i) => (
               <div key={i} className="bg-white rounded-lg shadow p-4">
                 <div className="h-48 bg-gray-200 rounded mb-4"></div>
