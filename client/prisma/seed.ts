@@ -1,29 +1,13 @@
 // prisma/seed.ts
 import { PrismaClient } from "@prisma/client";
+import { hashPassword } from "@/lib/auth";
 
 const prisma = new PrismaClient();
 
+const unsplashImages = ["https://images.unsplash.com/photo-1633321702518-7feccafb94d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80", "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80", "https://images.unsplash.com/photo-1600891964599-f61ba0e24092?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80", "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80", "https://images.unsplash.com/photo-1684864115205-242c064363e6?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", "https://images.unsplash.com/photo-1583060095186-852adde6b819?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", "https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80", "https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80", "https://images.unsplash.com/photo-1638537125835-82acb38d3531?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzB8fGtlYmFifGVufDB8fDB8fHww", "https://images.unsplash.com/photo-1633436375795-12b3b339712f?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"];
 
-
-
-
-  const unsplashImages = [
-    "https://images.unsplash.com/photo-1633321702518-7feccafb94d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
-    "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
-    "https://images.unsplash.com/photo-1600891964599-f61ba0e24092?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
-    "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
-    "https://images.unsplash.com/photo-1684864115205-242c064363e6?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1583060095186-852adde6b819?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
-    "https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-4.0.3&auto=format&fit=crop&w=1080&q=80",
-    "https://images.unsplash.com/photo-1638537125835-82acb38d3531?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzB8fGtlYmFifGVufDB8fDB8fHww",
-    "https://images.unsplash.com/photo-1633436375795-12b3b339712f?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  ];
-  
 let imageIndex = 0;
 const getNextImage = () => unsplashImages[imageIndex++ % unsplashImages.length];
-
 
 async function main() {
   console.log("🌱 Starting database seed...");
@@ -57,13 +41,14 @@ async function main() {
 
   console.log("👥 Created roles");
 
+  const adminpass = await hashPassword("password");
   // Opret brugere
   const admin = await prisma.user.create({
     data: {
       email: "admin@kebab.dk",
       firstName: "Admin",
       lastName: "Andersen",
-      password: "password",
+      password: adminpass,
       roleId: adminRole.id,
     },
   });
@@ -393,7 +378,7 @@ async function main() {
         serviceScore: 3,
         priceScore: 3,
         title: "Okay mad",
-        comment: "Maden var gennemsnitlig. Ikke noget særlig"
+        comment: "Maden var gennemsnitlig. Ikke noget særlig",
       },
     })
   );
@@ -463,7 +448,7 @@ async function main() {
         serviceScore: 4,
         priceScore: 3,
         title: "Excellent lammekebab",
-        comment: "Lammekebab'en var virkelig lækker"
+        comment: "Lammekebab'en var virkelig lækker",
       },
     })
   );
@@ -575,7 +560,7 @@ async function main() {
         serviceScore: 4,
         priceScore: 2,
         title: "Fin mad, men lidt dyrt",
-        comment: "Maden var i orden morten skrrt brr brr patapim"
+        comment: "Maden var i orden morten skrrt brr brr patapim",
       },
     })
   );
@@ -642,7 +627,6 @@ async function main() {
   console.log(`   🏪 ${restaurantCount} restaurants`);
   console.log(`   ⭐ ${reviewCount} reviews`);
   console.log(`   🖼️ ${imageCount} restaurants with images`);
-
 }
 
 main()

@@ -69,13 +69,7 @@ export const createRestaurantSchema = z
       .min(1, "Phone number is required")
       .regex(/^[\+]?[\d\s\-\(\)]{8,15}$/, "Invalid phone number format"),
 
-    website: z
-      .string()
-      .min(1, "Website is required")
-      .url("Invalid website URL")
-      .refine((url) => url.startsWith("http://") || url.startsWith("https://"), {
-        message: "URL must start with http:// or https://",
-      }),
+    website: z.string().url("Invalid website URL").optional().or(z.literal("")),
 
     image: z.string().min(1, "Restaurant image is required"),
   })
