@@ -221,14 +221,7 @@ export default function AdminDashboard() {
             <h1 className="text-2xl font-bold text-gray-900">Kebabadvisor</h1>
             <p className="text-sm text-gray-600">Admin Panel</p>
           </div>
-          {/* Mobile menu toggle - could be expanded to show/hide menu */}
-          <button className="md:hidden rounded-md p-2 text-gray-500 hover:bg-gray-100">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="3" y1="12" x2="21" y2="12"></line>
-              <line x1="3" y1="6" x2="21" y2="6"></line>
-              <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
-          </button>
+          
         </div>
 
         <nav className="flex md:block space-x-2 md:space-x-0 md:space-y-4 overflow-x-auto md:overflow-x-visible pb-3 md:pb-0">
@@ -262,7 +255,7 @@ export default function AdminDashboard() {
                 <CardHeader className="pb-2 md:pb-4">
                   <CardTitle className="text-lg md:text-xl font-semibold text-gray-900">User Activity</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4 md:space-y-6">
+                <CardContent className="space-y-4 flex justify-between md:space-y-6">
                   <div>
                     <div className="text-3xl md:text-4xl font-bold text-gray-900 mb-1">{stats.totalUsers.toLocaleString()}</div>
                     <div className="text-sm md:text-base text-gray-600">Total Users</div>
@@ -302,7 +295,7 @@ export default function AdminDashboard() {
                 <CardTitle className="text-lg md:text-xl font-semibold text-gray-900">Statistics</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
                   <div>
                     <div className="text-3xl md:text-4xl font-bold text-gray-900 mb-1">{stats.totalRestaurants}</div>
                     <div className="text-sm md:text-base text-gray-600">Restaurants</div>
@@ -323,7 +316,7 @@ export default function AdminDashboard() {
             <Card className="p-4 md:p-6 bg-blue-50 border-blue-200">
               <CardContent>
                 <h3 className="text-base md:text-lg font-semibold text-blue-900 mb-2">Quick Summary</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs md:text-sm">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs md:text-sm">
                   <div>
                     <span className="text-blue-600 font-medium">User Engagement:</span>
                     <div className="text-blue-900">{stats.totalUsers > 0 ? Math.round((stats.activeUsers / stats.totalUsers) * 100) : 0}% active</div>
