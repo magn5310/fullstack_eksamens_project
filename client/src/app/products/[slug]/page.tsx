@@ -52,13 +52,13 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
           </div>
         </CardHeader>
 
-        <CardContent>
+        <CardContent className="grid gap-3">
           <ShopRating rating={averageRating} openHours={restaurant.openHours} address={restaurant.address} phone={restaurant.phone} />
-
+          
           {restaurant.website && <a href={restaurant.website} rel="noopener noreferrer" className="text-blue-500 hover:underline block mb-2"></a>}
 
           <p className="text-gray-700 text-lg mb-4">{restaurant.description}</p>
-          <div className="flex flex-row items-start mb-4 justify-evenly">
+          <div className="md:flex flex-row items-start mb-4 justify-evenly">
             {restaurant.address && (
               <>
                 <div className="flex items-center mb-2">
@@ -71,7 +71,7 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
               <>
                 <div className="flex items-center mb-2">
                   <FontAwesomeIcon icon={faPhone} className="w-4 mr-2" style={{ color: "#000000" }} />
-                  <p className="text-sm text-muted-foreground"> {restaurant.phone}</p>
+                  <p className="text-sm text-muted-foreground">{restaurant.phone}</p>
                 </div>
               </>
             )}
