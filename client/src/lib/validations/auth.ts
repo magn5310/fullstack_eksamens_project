@@ -71,11 +71,8 @@ export const createRestaurantSchema = z
 
     website: z
       .string()
-      .min(1, "Website is required")
-      .url("Invalid website URL")
-      .refine((url) => url.startsWith("http://") || url.startsWith("https://"), {
-        message: "URL must start with http:// or https://",
-      }),
+      .regex(/^(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}$/, "Invalid website url")
+      .optional(),
 
     image: z.string().min(1, "Restaurant image is required"),
   })
