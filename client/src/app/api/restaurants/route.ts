@@ -125,7 +125,7 @@ export async function POST(request: NextRequest) {
           description: validatedData.description,
           openHours: openHours,
           phone: validatedData.phone,
-          website: validatedData.website,
+          website: validatedData.website ?? "",
           imageUrl: validatedData.image,
           ownerId: user.id,
         },
