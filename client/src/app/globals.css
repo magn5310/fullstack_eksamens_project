@@ -122,6 +122,10 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+button{
+  cursor: pointer;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

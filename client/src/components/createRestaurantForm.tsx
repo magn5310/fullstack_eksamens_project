@@ -196,7 +196,7 @@ export function CreateRestaurantForm({ onSuccess }: CreateRestaurantFormProps) {
                 <div className="font-medium">Error:</div>
                 <pre className="whitespace-pre-wrap text-sm mt-1">{serverError}</pre>
               </div>
-            )}            <button type="submit" className="w-full cursor-pointer py-3 px-4 border border-transparent rounded-sm shadow-sm text-lg font-medium text-white bg-blue-600">
+            )}            <button type="submit" className="w-full py-3 px-4 border border-transparent rounded-sm shadow-sm text-lg font-medium text-white bg-blue-600">
               {isLoading ? "Creating restaurant" : "Create restaurant"}
             </button>
           </form>

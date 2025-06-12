@@ -417,10 +417,10 @@ export default function AdminDashboard() {
                               </div>
                             </div>
                             <div className="flex gap-2 w-full sm:w-auto sm:ml-4">
-                              <Button size="sm" className="flex-1 sm:flex-none bg-green-600 hover:bg-green-700 text-white text-xs md:text-sm cursor-pointer" onClick={() => handleReviewAction(review.id, "APPROVED")}>
+                              <Button size="sm" className="flex-1 sm:flex-none bg-green-600 hover:bg-green-700 text-white text-xs md:text-sm" onClick={() => handleReviewAction(review.id, "APPROVED")}>
                                 Approve
                               </Button>
-                              <Button size="sm" variant="outline" className="flex-1 sm:flex-none border-red-300 text-red-600 hover:bg-red-50 text-xs md:text-sm cursor-pointer" onClick={() => handleReviewAction(review.id, "REJECTED")}>
+                              <Button size="sm" variant="outline" className="flex-1 sm:flex-none border-red-300 text-red-600 hover:bg-red-50 text-xs md:text-sm" onClick={() => handleReviewAction(review.id, "REJECTED")}>
                                 Reject
                               </Button>
                             </div>

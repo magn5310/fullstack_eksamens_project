@@ -74,7 +74,7 @@ const Endpoint = ({ path, method, endpoint }: EndpointProps) => {
 
   return (
     <div className="border border-gray-200 rounded-lg mb-4">
-      <div className="p-4 cursor-pointer hover:bg-gray-50 flex items-center justify-between" onClick={() => setIsExpanded(!isExpanded)}>
+      <div className="p-4 hover:bg-gray-50 flex items-center justify-between" onClick={() => setIsExpanded(!isExpanded)}>
         <div className="flex items-center gap-3">
           <MethodBadge method={method} />
           <code className="text-sm font-mono">{path}</code>

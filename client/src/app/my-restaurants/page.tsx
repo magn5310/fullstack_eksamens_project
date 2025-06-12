@@ -129,11 +129,11 @@ function RecentReviews({ reviews }: { reviews: Review[] }) {
                       </div>
                     </div>
                     {!review.reported ? (
-                      <Button size="sm" onClick={() => handleReport(review.id)} className="cursor-pointer bg-red-500 hover:bg-red-600 text-white">
+                      <Button size="sm" onClick={() => handleReport(review.id)} className="bg-red-500 hover:bg-red-600 text-white">
                         Report
                       </Button>
                     ) : (
-                      <Button size="sm" onClick={() => handleReport(review.id)} className="cursor-pointer bg-red-500 hover:bg-red-600 text-white">
+                      <Button size="sm" onClick={() => handleReport(review.id)} className="bg-red-500 hover:bg-red-600 text-white">
                         Unreport
                       </Button>
                     )}

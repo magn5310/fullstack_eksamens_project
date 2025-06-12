@@ -130,7 +130,7 @@ const reviewSchema = z.object({
                 {errors.comment && <p className="text-red-500 text-sm">{errors.comment.message}</p>}
             </div>
 
-            <Button type="submit" disabled={isSubmitting} className="cursor-pointer">
+            <Button type="submit" disabled={isSubmitting}>
                 {isSubmitting ? "Submitting..." : "Submit Review"}
             </Button>
         </form>
