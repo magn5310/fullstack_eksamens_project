@@ -35,16 +35,17 @@ interface AdminStats {
 
 function StarRating({ rating }: { rating: number }) {
   const renderStar = (starNumber: number) => {
+    const iconClass = "w-3 h-3 md:w-4 md:h-4 text-black-500";
     if (rating >= starNumber) {
-      return <FontAwesomeIcon key={starNumber} icon={faStar} className="text-black-500 w-4 h-4" />;
+      return <FontAwesomeIcon key={starNumber} icon={faStar} className={iconClass} />;
     } else if (rating >= starNumber - 0.5) {
-      return <FontAwesomeIcon key={starNumber} icon={faStarHalfStroke} className="text-black-500 w-4 h-4" />;
+      return <FontAwesomeIcon key={starNumber} icon={faStarHalfStroke} className={iconClass} />;
     } else {
-      return <FontAwesomeIcon key={starNumber} icon={faStarRegular} className="text-black-500 w-4 h-4" />;
+      return <FontAwesomeIcon key={starNumber} icon={faStarRegular} className={iconClass} />;
     }
   };
 
-  return <div className="flex items-center gap-1">{[1, 2, 3, 4, 5].map((starNumber) => renderStar(starNumber))}</div>;
+  return <div className="flex items-center gap-0.5 md:gap-1">{[1, 2, 3, 4, 5].map((starNumber) => renderStar(starNumber))}</div>;
 }
 
 export default function AdminDashboard() {
@@ -178,9 +179,9 @@ export default function AdminDashboard() {
   // Loading state
   if (isLoading || loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-lilla mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-16 w-16 md:h-32 md:w-32 border-b-2 border-lilla mx-auto mb-4"></div>
           <p className="text-gray-600">Loading admin dashboard...</p>
         </div>
       </div>
@@ -190,8 +191,8 @@ export default function AdminDashboard() {
   // Error state
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div className="text-center max-w-md">
           <p className="text-red-600 mb-4">Error: {error}</p>
           <Button onClick={() => window.location.reload()}>Retry</Button>
         </div>
@@ -212,107 +213,117 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      {/* Sidebar */}
-      <div className="w-64 bg-white border-r border-gray-200 p-6">
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">Kebabadvisor</h1>
-          <p className="text-sm text-gray-600">Admin Panel</p>
+    <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row">
+      {/* Sidebar - collapsible on mobile */}
+      <div className="w-full md:w-64 bg-white border-b md:border-r md:border-b-0 border-gray-200 p-4 md:p-6">
+        <div className="flex justify-between items-center mb-6 md:mb-8">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">Kebabadvisor</h1>
+            <p className="text-sm text-gray-600">Admin Panel</p>
+          </div>
+          {/* Mobile menu toggle - could be expanded to show/hide menu */}
+          <button className="md:hidden rounded-md p-2 text-gray-500 hover:bg-gray-100">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
         </div>
 
-        <nav className="space-y-4">
-          <button onClick={() => setActiveTab("dashboard")} className={`w-full text-left px-4 py-3 rounded-lg font-medium transition-colors ${activeTab === "dashboard" ? "bg-lilla text-white" : "text-gray-700 hover:bg-gray-100"}`}>
+        <nav className="flex md:block space-x-2 md:space-x-0 md:space-y-4 overflow-x-auto md:overflow-x-visible pb-3 md:pb-0">
+          <button onClick={() => setActiveTab("dashboard")} className={`whitespace-nowrap md:w-full text-center md:text-left px-3 md:px-4 py-2 md:py-3 rounded-lg font-medium transition-colors ${activeTab === "dashboard" ? "bg-lilla text-white" : "text-gray-700 hover:bg-gray-100"}`}>
             Dashboard
           </button>
 
-          <button onClick={() => setActiveTab("restaurants")} className={`w-full text-left px-4 py-3 rounded-lg font-medium transition-colors ${activeTab === "restaurants" ? "bg-lilla text-white" : "text-gray-700 hover:bg-gray-100"}`}>
+          <button onClick={() => setActiveTab("restaurants")} className={`whitespace-nowrap md:w-full text-center md:text-left px-3 md:px-4 py-2 md:py-3 rounded-lg font-medium transition-colors ${activeTab === "restaurants" ? "bg-lilla text-white" : "text-gray-700 hover:bg-gray-100"}`}>
             Restaurants
           </button>
 
-          <button onClick={() => setActiveTab("reviews")} className={`w-full text-left px-4 py-3 rounded-lg font-medium transition-colors ${activeTab === "reviews" ? "bg-lilla text-white" : "text-gray-700 hover:bg-gray-100"}`}>
+          <button onClick={() => setActiveTab("reviews")} className={`whitespace-nowrap md:w-full text-center md:text-left px-3 md:px-4 py-2 md:py-3 rounded-lg font-medium transition-colors ${activeTab === "reviews" ? "bg-lilla text-white" : "text-gray-700 hover:bg-gray-100"}`}>
             Reviews
           </button>
         </nav>
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-8">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900">Admin Dashboard</h1>
-          <p className="text-gray-600 mt-2">Velkommen tilbage, {user.firstName}!</p>
+      <div className="flex-1 p-4 md:p-8">
+        <div className="mb-6 md:mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900">Admin Dashboard</h1>
+          <p className="text-gray-600 mt-1 md:mt-2">Velkommen tilbage, {user.firstName}!</p>
         </div>
-
+        
         {activeTab === "dashboard" && stats && (
-          <div className="space-y-8">
-            {/* Top Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-6 md:space-y-8">
+            {/* Top Stats Cards - stack on mobile */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               {/* User Activity Card */}
-              <Card className="p-6">
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-xl font-semibold text-gray-900">User Activity</CardTitle>
+              <Card className="p-4 md:p-6">
+                <CardHeader className="pb-2 md:pb-4">
+                  <CardTitle className="text-lg md:text-xl font-semibold text-gray-900">User Activity</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-6">
+                <CardContent className="space-y-4 md:space-y-6">
                   <div>
-                    <div className="text-4xl font-bold text-gray-900 mb-1">{stats.totalUsers.toLocaleString()}</div>
-                    <div className="text-gray-600">Total Users</div>
+                    <div className="text-3xl md:text-4xl font-bold text-gray-900 mb-1">{stats.totalUsers.toLocaleString()}</div>
+                    <div className="text-sm md:text-base text-gray-600">Total Users</div>
                   </div>
                   <div>
-                    <div className="text-4xl font-bold text-green-600 mb-1">{stats.activeUsers.toLocaleString()}</div>
-                    <div className="text-gray-600">Active Users (30 days)</div>
+                    <div className="text-3xl md:text-4xl font-bold text-green-600 mb-1">{stats.activeUsers.toLocaleString()}</div>
+                    <div className="text-sm md:text-base text-gray-600">Active Users (30 days)</div>
                   </div>
                 </CardContent>
               </Card>
 
               {/* Reviews Card */}
-              <Card className="p-6">
-                <CardHeader className="pb-4">
-                  <CardTitle className="text-xl font-semibold text-gray-900">Reported Reviews</CardTitle>
+              <Card className="p-4 md:p-6">
+                <CardHeader className="pb-2 md:pb-4">
+                  <CardTitle className="text-lg md:text-xl font-semibold text-gray-900">Reported Reviews</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-6 flex justify-between">
+                <CardContent className="space-y-4 md:space-y-6 flex justify-between">
                   <div>
-                    <div className="text-4xl font-bold text-orange-600 mb-1">{stats.pendingReviews}</div>
-                    <div className="text-gray-600">Pending</div>
+                    <div className="text-3xl md:text-4xl font-bold text-orange-600 mb-1">{stats.pendingReviews}</div>
+                    <div className="text-sm md:text-base text-gray-600">Pending</div>
                   </div>
                   <div>
-                    <div className="text-4xl font-bold text-green-600 mb-1">{stats.approvedReviews.toLocaleString()}</div>
-                    <div className="text-gray-600">Approved</div>
+                    <div className="text-3xl md:text-4xl font-bold text-green-600 mb-1">{stats.approvedReviews.toLocaleString()}</div>
+                    <div className="text-sm md:text-base text-gray-600">Approved</div>
                   </div>
                   <div>
-                    <div className="text-4xl font-bold text-red-600 mb-1">{stats.rejectedReviews.toLocaleString()}</div>
-                    <div className="text-gray-600">Rejected</div>
+                    <div className="text-3xl md:text-4xl font-bold text-red-600 mb-1">{stats.rejectedReviews.toLocaleString()}</div>
+                    <div className="text-sm md:text-base text-gray-600">Rejected</div>
                   </div>
                 </CardContent>
               </Card>
             </div>
 
             {/* Statistics Card */}
-            <Card className="p-6">
-              <CardHeader className="pb-4">
-                <CardTitle className="text-xl font-semibold text-gray-900">Statistics</CardTitle>
+            <Card className="p-4 md:p-6">
+              <CardHeader className="pb-2 md:pb-4">
+                <CardTitle className="text-lg md:text-xl font-semibold text-gray-900">Statistics</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-8">
                   <div>
-                    <div className="text-4xl font-bold text-gray-900 mb-1">{stats.totalRestaurants}</div>
-                    <div className="text-gray-600">Restaurants</div>
+                    <div className="text-3xl md:text-4xl font-bold text-gray-900 mb-1">{stats.totalRestaurants}</div>
+                    <div className="text-sm md:text-base text-gray-600">Restaurants</div>
                   </div>
                   <div>
-                    <div className="text-4xl font-bold text-gray-900 mb-1">{stats.totalReviews.toLocaleString()}</div>
-                    <div className="text-gray-600">Total Reviews</div>
+                    <div className="text-3xl md:text-4xl font-bold text-gray-900 mb-1">{stats.totalReviews.toLocaleString()}</div>
+                    <div className="text-sm md:text-base text-gray-600">Total Reviews</div>
                   </div>
                   <div>
-                    <div className="text-4xl font-bold text-red-600 mb-1">{stats.rejectedReviews}</div>
-                    <div className="text-gray-600">Rejected Reviews</div>
+                    <div className="text-3xl md:text-4xl font-bold text-red-600 mb-1">{stats.rejectedReviews}</div>
+                    <div className="text-sm md:text-base text-gray-600">Rejected Reviews</div>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Quick Stats Summary */}
-            <Card className="p-6 bg-blue-50 border-blue-200">
+            {/* Quick Stats Summary - adjust for mobile */}
+            <Card className="p-4 md:p-6 bg-blue-50 border-blue-200">
               <CardContent>
-                <h3 className="text-lg font-semibold text-blue-900 mb-2">Quick Summary</h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                <h3 className="text-base md:text-lg font-semibold text-blue-900 mb-2">Quick Summary</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-xs md:text-sm">
                   <div>
                     <span className="text-blue-600 font-medium">User Engagement:</span>
                     <div className="text-blue-900">{stats.totalUsers > 0 ? Math.round((stats.activeUsers / stats.totalUsers) * 100) : 0}% active</div>
@@ -336,29 +347,30 @@ export default function AdminDashboard() {
         )}
 
         {activeTab === "restaurants" && (
-          <div className="space-y-6">
+          <div className="space-y-4 md:space-y-6">
             <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-bold text-gray-900">Restaurant Management</h2>
+              <h2 className="text-xl md:text-2xl font-bold text-gray-900">Restaurant Management</h2>
             </div>
 
             <Card>
-              <CardContent className="p-6">
+              <CardContent className="p-4 md:p-6">
                 {stats?.totalRestaurantsData.length === 0 ? (
-                  <div className="text-center py-12">
+                  <div className="text-center py-8 md:py-12">
                     <p className="text-gray-600">No restaurants found.</p>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                     {stats?.totalRestaurantsData.map((restaurant) => (
-                      <Card key={restaurant.id} className="p-4">
-                        <CardHeader className="pb-2 flex justify-between items-start">
-                          <CardTitle className="text-lg font-semibold text-gray-900">{restaurant.name}</CardTitle>
-                          <Button  size="sm" onClick={() => handleRemoveRestaurant(restaurant.id)}>
+                      <Card key={restaurant.id} className="p-3 md:p-4">
+                        <CardHeader className="pb-2 flex flex-col sm:flex-row justify-between items-start gap-2">
+                          <CardTitle className="text-base md:text-lg font-semibold text-gray-900">{restaurant.name}</CardTitle>
+                          <Button size="sm" onClick={() => handleRemoveRestaurant(restaurant.id)} 
+                            className="text-xs md:text-sm">
                             Remove
                           </Button>
                         </CardHeader>
                         <CardContent className="space-y-2">
-                          <div className="text-gray-700 text-sm">{restaurant.address}</div>
+                          <div className="text-xs md:text-sm text-gray-700">{restaurant.address}</div>
                         </CardContent>
                       </Card>
                     ))}
@@ -370,26 +382,28 @@ export default function AdminDashboard() {
         )}
 
         {activeTab === "reviews" && stats && (
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-              <Card className="p-4">
-                <div className="text-2xl font-bold text-orange-600">{stats.pendingReviews}</div>
-                <div className="text-sm text-gray-600">Pending Approval</div>
+          <div className="space-y-4 md:space-y-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 mb-4 md:mb-6">
+              {/* Review status cards - adjusted for mobile */}
+              <Card className="p-3 md:p-4">
+                <div className="text-xl md:text-2xl font-bold text-orange-600">{stats.pendingReviews}</div>
+                <div className="text-xs md:text-sm text-gray-600">Pending Approval</div>
               </Card>
-              <Card className="p-4">
-                <div className="text-2xl font-bold text-green-600">{stats.approvedReviews.toLocaleString()}</div>
-                <div className="text-sm text-gray-600">Approved</div>
+              <Card className="p-3 md:p-4">
+                <div className="text-xl md:text-2xl font-bold text-green-600">{stats.approvedReviews.toLocaleString()}</div>
+                <div className="text-xs md:text-sm text-gray-600">Approved</div>
               </Card>
-              <Card className="p-4">
-                <div className="text-2xl font-bold text-red-600">{stats.rejectedReviews}</div>
-                <div className="text-sm text-gray-600">Rejected</div>
+              <Card className="p-3 md:p-4">
+                <div className="text-xl md:text-2xl font-bold text-red-600">{stats.rejectedReviews}</div>
+                <div className="text-xs md:text-sm text-gray-600">Rejected</div>
               </Card>
             </div>
 
+            {/* Review cards */}
             <Card>
-              <CardContent className="p-6">
+              <CardContent className="p-4 md:p-6">
                 {stats.pendingReviews === 0 ? (
-                  <div className="text-center py-12">
+                  <div className="text-center py-8 md:py-12">
                     <p className="text-gray-600">No pending reviews</p>
                   </div>
                 ) : (
@@ -398,30 +412,39 @@ export default function AdminDashboard() {
                       const averageRating = (review.tasteScore + review.serviceScore + review.priceScore) / 3;
                       return (
                         <div key={review.id} className="border-b border-gray-200 pb-4 last:border-b-0">
-                          <div className="flex justify-between items-start mb-2">
+                          <div className="flex flex-col sm:flex-row justify-between items-start gap-3 mb-2">
                             <div className="flex-1">
-                              <h3 className="text-lg font-semibold text-gray-900 mb-1">{review.title}</h3>
-                              <p className="text-sm font-medium text-gray-700">
+                              <h3 className="text-base md:text-lg font-semibold text-gray-900 mb-1">{review.title}</h3>
+                              <p className="text-xs md:text-sm font-medium text-gray-700">
                                 {review.author.firstName} {review.author.lastName}
                               </p>
                               <StarRating rating={averageRating} />
                               <div className="flex items-center gap-2 mt-1">
-                                <span className="text-sm text-gray-600">{new Date(review.createdAt).toLocaleDateString("da-DK")}</span>
+                                <span className="text-xs md:text-sm text-gray-600">
+                                  {new Date(review.createdAt).toLocaleDateString("da-DK")}
+                                </span>
                               </div>
                             </div>
-                            <div className="flex gap-2 ml-4">
-                              <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white" onClick={() => handleReviewAction(review.id, "APPROVED")}>
+                            <div className="flex gap-2 w-full sm:w-auto sm:ml-4">
+                              <Button 
+                                size="sm" 
+                                className="flex-1 sm:flex-none bg-green-600 hover:bg-green-700 text-white text-xs md:text-sm" 
+                                onClick={() => handleReviewAction(review.id, "APPROVED")}>
                                 Approve
                               </Button>
-                              <Button size="sm" variant="outline" className="border-red-300 text-red-600 hover:bg-red-50" onClick={() => handleReviewAction(review.id, "REJECTED")}>
+                              <Button 
+                                size="sm" 
+                                variant="outline" 
+                                className="flex-1 sm:flex-none border-red-300 text-red-600 hover:bg-red-50 text-xs md:text-sm" 
+                                onClick={() => handleReviewAction(review.id, "REJECTED")}>
                                 Reject
                               </Button>
                             </div>
                           </div>
 
-                          {review.comment && <p className="text-gray-700 text-sm mb-3">{review.comment}</p>}
+                          {review.comment && <p className="text-xs md:text-sm text-gray-700 mb-3">{review.comment}</p>}
 
-                          <div className="flex gap-4 text-xs text-gray-500">
+                          <div className="flex flex-wrap gap-2 md:gap-4 text-xs text-gray-500">
                             <span>Taste: {review.tasteScore}/5</span>
                             <span>Service: {review.serviceScore}/5</span>
                             <span>Price: {review.priceScore}/5</span>
@@ -433,6 +456,8 @@ export default function AdminDashboard() {
                 )}
               </CardContent>
             </Card>
+            
+            {/* Similar adjustments for approved and rejected reviews cards */}
             <Card>
               <CardContent className="p-6">
                 {stats.approvedReviews === 0 ? (

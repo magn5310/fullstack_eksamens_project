@@ -35,6 +35,7 @@ console.log(user);
     e.preventDefault();
     if (searchQuery.trim()) {
       router.push(`/restaurants?search=${encodeURIComponent(searchQuery.trim())}`);
+      closeMenu();
     }
   };
 
@@ -52,7 +53,7 @@ console.log(user);
           <p>Kebabadvisor</p>
         </Link>
 
-        <form onSubmit={handleSearch} className="flex-1 max-w-md mx-4">
+        <form onSubmit={handleSearch} className="flex-1 max-[600px]:hidden max-w-md mx-4">
           <Input className="placeholder:text-white bg-[#fffffe]/20 rounded-2xl w-full" type="text" placeholder="Search..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} onKeyPress={handleKeyPress} />
         </form>
 
@@ -85,6 +86,10 @@ console.log(user);
       <div className={`fixed top-0 right-0 h-full w-80 bg-black/90 backdrop-blur-xl border-l border-white/10 z-50 transform transition-transform duration-300 ease-in-out ${menuOpen ? "translate-x-0" : "translate-x-full"}`}>
         <div className="p-6 pt-20">
           <nav className="space-y-6">
+
+            <form onSubmit={handleSearch} className="flex-1 min-[600px]:hidden max-w-md">
+              <Input className="placeholder:text-white text-white bg-[#fffffe]/20 rounded-2xl w-full" type="text" placeholder="Search..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} onKeyPress={handleKeyPress} />
+            </form>
             <Link href="/" className="block text-white text-xl hover:text-white/70 transition-colors" onClick={closeMenu}>
               Home
             </Link>
@@ -104,11 +109,11 @@ console.log(user);
                     Profile
                   </Link>
 
-                  {user?.restaurants?.length ? 
+                  {user?.restaurants?.length ? (
                     <Link href="/my-restaurants" className="block text-white text-xl hover:text-white/70 transition-colors" onClick={closeMenu}>
                       My Restaurants
                     </Link>
-                   : null}
+                  ) : null}
 
                   {user?.role === "Admin" && (
                     <Link href="/admin-dashboard" className="block text-white text-xl hover:text-white/70 transition-colors" onClick={closeMenu}>

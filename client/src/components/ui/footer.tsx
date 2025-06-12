@@ -4,7 +4,7 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <footer className="bg-black text-gray-300 py-6 px-6 mt-12">
+    <footer className="bg-black text-gray-300 py-6 px-6">
       <div className="container mx-auto px-4 text-center">
         <p className="text-sm">
           &copy; {new Date().getFullYear()} <strong>Batteri Bois</strong>. All rights reserved.

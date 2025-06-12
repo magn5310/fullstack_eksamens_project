@@ -20,8 +20,8 @@ export default function ShopRating({ rating = 0, openHours }: shopRating) {
                         key={index}
                         icon={faStar}
                         className={`w-4 ${index < rating ? "text-black-500" : "text-gray-300"}`}
-                    />
-                ))}
+                    />                ))}
+                <p className="text-gray-500">{rating !== undefined ? rating.toFixed(1) : '0.0'}</p>
                 </>
             </span>
             {openHours && (
