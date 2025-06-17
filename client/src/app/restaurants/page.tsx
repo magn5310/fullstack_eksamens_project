@@ -241,7 +241,7 @@ function RestaurantsList() {
 
   useEffect(() => {
     const fetchRestaurants = async () => {
-      const res = await fetch("/api/restaurants");
+      const res = await fetch("/backend/restaurants");
       const data = await res.json();
       setRestaurants(data);
     };
