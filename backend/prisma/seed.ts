@@ -1,6 +1,6 @@
 // prisma/seed.ts
 import { PrismaClient } from "@prisma/client";
-import { hashPassword } from "@/lib/auth";
+import { hashPassword } from "../src/lib/auth";
 
 const prisma = new PrismaClient();
 
