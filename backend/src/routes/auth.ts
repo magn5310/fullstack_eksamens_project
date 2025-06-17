@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
-import { verifyPassword, generateToken, verifyToken } from "../lib/auth";
-import { registerSchema, loginSchema } from "../lib/validations/auth";
+import { verifyPassword, generateToken, verifyToken, hashPassword } from "../lib/auth";
+import { registerSchema } from "../lib/validations/auth";
 import { z } from "zod";
 
 const router = Router();
@@ -167,7 +167,6 @@ router.post('/register', async (req: Request, res: Response): Promise<void> => {
       }
   
       // Hash password
-      const { hashPassword } = await import('../lib/auth');
       const hashedPassword = await hashPassword(password);
   
       const userRole = await prisma.role.findUnique({

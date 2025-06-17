@@ -2,14 +2,15 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
-import dotenv from "dotenv";
+import dotenv from "dotenv"
+import cookieParser from "cookie-parser";
 
 // Import routes (vi laver dem om til Express format)
-import authRoutes from "./routes/auth";
-// import adminRoutes from "./routes/admin";
-// import restaurantRoutes from "./routes/restaurants";
-// import reviewRoutes from "./routes/reviews";
-// import profileRoutes from "./routes/profile";
+ import authRoutes from "./routes/auth";
+ import adminRoutes from "./routes/admin";
+ import restaurantRoutes from "./routes/restaurants";
+ import reviewRoutes from "./routes/reviews";
+ import profileRoutes from "./routes/profile";
 
 dotenv.config();
 
@@ -25,15 +26,16 @@ app.use(
   })
 );
 app.use(morgan("combined"));
+app.use(cookieParser());
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 
 // Routes
  app.use("/api/auth", authRoutes);
-// app.use("/api/admin", adminRoutes);
-// app.use("/api/restaurants", restaurantRoutes);
-// app.use("/api/reviews", reviewRoutes);
-// app.use("/api/profile", profileRoutes);
+ app.use("/api/admin", adminRoutes);
+ app.use("/api/restaurants", restaurantRoutes);
+ app.use("/api/reviews", reviewRoutes);
+ app.use("/api/profile", profileRoutes);
 
 // Health check
 app.get("/health", (req, res) => {
