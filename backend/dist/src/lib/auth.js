@@ -46,4 +46,3 @@ function verifyToken(token) {
         return null;
     }
 }
-//# sourceMappingURL=auth.js.map

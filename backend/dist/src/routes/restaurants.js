@@ -393,4 +393,3 @@ router.put('/report/:id', async (req, res) => {
     }
 });
 exports.default = router;
-//# sourceMappingURL=restaurants.js.map

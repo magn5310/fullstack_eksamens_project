@@ -209,4 +209,3 @@ router.delete("/restaurant/:id", requireAdmin, async (req, res) => {
     }
 });
 exports.default = router;
-//# sourceMappingURL=admin.js.map

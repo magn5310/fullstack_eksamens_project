@@ -78,4 +78,3 @@ router.get("/", async (req, res) => {
     }
 });
 exports.default = router;
-//# sourceMappingURL=profile.js.map
